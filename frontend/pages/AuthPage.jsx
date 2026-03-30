@@ -1,69 +1,94 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import HomePage from './HomePage';
 
-const AuthPage = () => {
-  const [isLogin, setIsLogin] = useState(true);
+// Reusable Input Component
+const AuthInput = ({ label, type, placeholder }) => (
+  <div className="mb-4 text-left">
+    <label className="block text-sm font-medium text-gray-700">{label}</label>
+    <input 
+      type={type} 
+      className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none transition"
+      placeholder={placeholder}
+      required
+    />
+  </div>
+);
+
+// --- LOGIN PAGE ---
+const LoginPage = () => {
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // Logic for authentication goes here
+    navigate('/home'); 
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800">
-            {isLogin ? 'Welcome Back' : 'Create Account'}
-          </h2>
-          <p className="text-gray-500 mt-2">
-            {isLogin ? 'Please enter your details' : 'Join our community today'}
-          </p>
-        </div>
+    <div className="max-w-md w-full bg-white rounded-xl shadow-2xl p-8 border border-gray-100">
+      <h2 className="text-3xl font-bold text-gray-800 text-center mb-2">Welcome Back</h2>
+      <p className="text-gray-500 text-center mb-8">Enter your credentials to access your account</p>
+      
+      <form onSubmit={handleLogin}>
+        <AuthInput label="Email Address" type="email" placeholder="name@company.com" />
+        <AuthInput label="Password" type="password" placeholder="••••••••" />
+        
+        <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-md transition duration-200 mt-2">
+          Sign In
+        </button>
+      </form>
 
-        {/* Form */}
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-          {!isLogin && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Full Name</label>
-              <input 
-                type="text" 
-                className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition"
-                placeholder="John Doe"
-              />
-            </div>
-          )}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email Address</label>
-            <input 
-              type="email" 
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input 
-              type="password" 
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition"
-              placeholder="••••••••"
-            />
-          </div>
-
-          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition duration-200">
-            {isLogin ? 'Sign In' : 'Sign Up'}
-          </button>
-        </form>
-
-        {/* Footer Toggle */}
-        <div className="mt-6 text-center">
-          <button 
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-sm text-blue-600 hover:underline"
-          >
-            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Log in"}
-          </button>
-        </div>
-      </div>
+      <p className="mt-6 text-center text-sm text-gray-600">
+        New here? <Link to="/signup" className="text-indigo-600 font-semibold hover:underline">Create an account</Link>
+      </p>
     </div>
   );
 };
 
-export default AuthPage;
+// --- SIGNUP PAGE ---
+const SignupPage = () => {
+  const navigate = useNavigate();
+
+  const handleSignup = (e) => {
+    e.preventDefault();
+    navigate('/home');
+  };
+
+  return (
+    <div className="max-w-md w-full bg-white rounded-xl shadow-2xl p-8 border border-gray-100">
+      <h2 className="text-3xl font-bold text-gray-800 text-center mb-2">Get Started</h2>
+      <p className="text-gray-500 text-center mb-8">Create a free account and start building</p>
+      
+      <form onSubmit={handleSignup}>
+        <AuthInput label="Full Name" type="text" placeholder="Jane Doe" />
+        <AuthInput label="Email Address" type="email" placeholder="name@company.com" />
+        <AuthInput label="Password" type="password" placeholder="••••••••" />
+        
+        <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-md transition duration-200 mt-2">
+          Create Account
+        </button>
+      </form>
+
+      <p className="mt-6 text-center text-sm text-gray-600">
+        Already have an account? <Link to="/login" className="text-indigo-600 font-semibold hover:underline">Log in</Link>
+      </p>
+    </div>
+  );
+};
+
+// --- MAIN APP ---
+export default function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/home" element={<HomePage />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
