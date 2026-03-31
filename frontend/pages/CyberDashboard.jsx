@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  LayoutDashboard, ShieldAlert, Search, Settings, Bell, User, Globe, 
-  Terminal, Zap, ShieldCheck, Lock, Play, ShieldOff, Database, Fingerprint
+  LayoutDashboard, ShieldAlert, Settings, 
+  User, Terminal, Play, ShieldCheck, 
+  ShieldOff, Database, Fingerprint, LogOut // Added LogOut icon
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CyberDashboard = () => {
   const [activeAttack, setActiveAttack] = useState('Brute Force');
@@ -10,6 +12,22 @@ const CyberDashboard = () => {
   const [isHardened, setIsHardened] = useState(false);
   const [progress, setProgress] = useState(0);
   const [logs, setLogs] = useState(["[SYSTEM]: HackAware v1.0 Ready."]);
+  
+  const navigate = useNavigate(); // Initialize navigation
+
+  // Security Check: Redirect to login if no token exists
+  useEffect(() => {
+    const token = localStorage.getItem('operator_token');
+    if (!token) {
+      navigate('/');
+    }
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('operator_token');
+    localStorage.removeItem('operator_name');
+    navigate('/'); // Redirect back to Auth Gate
+  };
 
   // Handle the simulation logic
   useEffect(() => {
@@ -25,7 +43,6 @@ const CyberDashboard = () => {
           return next;
         });
         
-        // Add random "Hacker" logs
         const mockIPs = ["192.168.0.1", "10.0.0.42", "172.16.254.1"];
         const logEntries = [
           `[TRYING]: admin / password${Math.floor(Math.random() * 100)}`,
@@ -55,7 +72,7 @@ const CyberDashboard = () => {
   return (
     <div className="flex h-screen bg-[#020817] text-slate-300 font-sans p-6 overflow-hidden">
       
-      {/* --- Sidebar Navigation (Your original code) --- */}
+      {/* --- Sidebar Navigation --- */}
       <nav className="w-64 flex flex-col border-r border-slate-800 pr-4">
         <div className="flex items-center gap-3 mb-10 px-2">
           <div className="p-2 bg-blue-600 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.5)]">
@@ -63,12 +80,21 @@ const CyberDashboard = () => {
           </div>
           <h1 className="text-xl font-bold tracking-widest text-white uppercase tracking-tighter">HackAware</h1>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 flex-1">
           <NavItem icon={<LayoutDashboard size={20} />} label="Dashboard" active />
           <NavItem icon={<ShieldAlert size={20} />} label="Vulnerability Lab" />
           <NavItem icon={<Database size={20} />} label="Data Leaks" />
           <NavItem icon={<Settings size={20} />} label="Settings" />
         </div>
+
+        {/* Actionable Logout Button added to Sidebar */}
+        <button 
+          onClick={handleLogout}
+          className="flex items-center gap-4 px-4 py-3 rounded cursor-pointer transition-all hover:bg-red-900/10 text-slate-400 hover:text-red-500 mt-auto mb-4"
+        >
+          <LogOut size={20} />
+          <span className="text-sm font-medium uppercase tracking-tighter">Terminate Session</span>
+        </button>
       </nav>
 
       {/* --- Main Dashboard Area --- */}
@@ -83,7 +109,10 @@ const CyberDashboard = () => {
               <div className={`w-2 h-2 rounded-full ${isSimulating ? 'bg-red-500 animate-pulse' : 'bg-green-500'}`}></div>
               <span className="text-[10px] font-bold uppercase">{isSimulating ? 'Active Simulation' : 'System Secure'}</span>
             </div>
-            <User size={20} className="hover:text-blue-400 cursor-pointer" />
+            <div className="flex items-center gap-2">
+              <User size={20} className="hover:text-blue-400 cursor-pointer" />
+              <span className="text-xs font-mono">{localStorage.getItem('operator_name') || 'Operator'}</span>
+            </div>
           </div>
         </header>
 
@@ -147,7 +176,7 @@ const CyberDashboard = () => {
               <div className="flex-1 px-4">
                 <div className="w-full bg-slate-800 h-1 rounded-full relative overflow-hidden">
                   <div 
-                    className={`h-full transition-all duration-500 ${isHardened ? 'bg-green-400' : 'bg-red-500'}`} 
+                    className={`h-full transition-all duration-500 ${isHardened ? 'bg-cyan-500' : 'bg-red-500'}`} 
                     style={{ width: `${progress}%` }}
                   ></div>
                 </div>
@@ -171,7 +200,7 @@ const CyberDashboard = () => {
             </div>
             <div className="space-y-1 overflow-y-auto h-40 custom-scrollbar">
               {logs.map((log, i) => (
-                <div key={i} className={`text-[11px] ${log.includes('[SUCCESS]') ? 'text-green-400' : log.includes('[BLOCKED]') ? 'text-red-400' : 'text-slate-400'}`}>
+                <div key={i} className={`text-[11px] ${log.includes('[SUCCESS]') ? 'text-green-400 font-bold' : log.includes('[BLOCKED]') ? 'text-cyan-400' : 'text-slate-400'}`}>
                   <span className="opacity-30 mr-2">[{new Date().toLocaleTimeString()}]</span>
                   {log}
                 </div>
@@ -182,12 +211,12 @@ const CyberDashboard = () => {
           {/* 4. Educational Defense Panel */}
           <Card className="col-span-5 h-60 border-l-4 border-l-green-500">
             <h3 className="text-xs font-black uppercase text-green-500 mb-4 flex items-center gap-2">
-              <Lock size={14} /> Security Briefing
+              <ShieldCheck size={14} /> Security Briefing
             </h3>
             <div className="p-3 bg-slate-950 rounded border border-slate-800">
               <h4 className="text-[10px] font-bold text-blue-400 uppercase mb-1">Vulnerability Info:</h4>
               <p className="text-xs leading-relaxed italic">
-                {activeAttack === 'Brute Force' ? "The system lacks rate-limiting. Attackers can guess passwords infinitely." : "Attackers inject malicious scripts into forms to steal session cookies."}
+                {activeAttack === 'Brute Force' ? "The system lacks rate-limiting. Attackers can guess passwords infinitely." : activeAttack === 'Phishing' ? "Attackers craft fake portals to trick operators into giving up credentials." : "Injection of malicious parameters into backend calls to dump database tables."}
               </p>
             </div>
             <div className="mt-4">
@@ -195,11 +224,11 @@ const CyberDashboard = () => {
               <ul className="text-[11px] space-y-1 text-slate-400">
                 <li className="flex items-center gap-2 font-mono">
                    <div className="w-1 h-1 bg-green-500 rounded-full"></div> 
-                   {isHardened ? "✓ 2FA Enabled" : "× 2FA Disabled"}
+                   {isHardened ? "✓ Multi-Factor Authentication: ACTIVE" : "× Multi-Factor Authentication: INACTIVE"}
                 </li>
                 <li className="flex items-center gap-2 font-mono">
                    <div className="w-1 h-1 bg-green-500 rounded-full"></div> 
-                   {isHardened ? "✓ IP Rate Limiting: ON" : "× Rate Limiting: OFF"}
+                   {isHardened ? "✓ IP Rate Limiting: SECURE" : "× Rate Limiting: BYPASSED"}
                 </li>
               </ul>
             </div>
