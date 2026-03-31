@@ -148,13 +148,13 @@ const AuthPage = () => {
         </div>
       )}
 
-      <style jsx>{`
-        .grid-bg {
-          background-image: linear-gradient(to right, #1e293b 1px, transparent 1px),
-                            linear-gradient(to bottom, #1e293b 1px, transparent 1px);
-          background-size: 40px 40px;
-        }
-      `}</style>
+      <style>{`
+  .grid-bg {
+    background-image: linear-gradient(to right, #1e293b 1px, transparent 1px),
+                      linear-gradient(to bottom, #1e293b 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+`}</style> ✅
     </div>
   );
 };
