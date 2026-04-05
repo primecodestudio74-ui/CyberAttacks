@@ -1,11 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from '../pages/AuthPage';
-import CyberDashboard from '../pages/CyberDashboard'; // Your separate file
+import CyberDashboard from '../pages/CyberDashboard'; 
+// Import your new attack modules here
+import SqlInjection from '../pages/Attacks/SQLInejection'; 
 
-// A simple helper to check if the user is logged in
+// Protected Route Helper
 const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('operator_token');
+  const token = localStorage.getItem('operator_token') || localStorage.getItem('token');
   if (!token) {
     return <Navigate to="/" replace />;
   }
@@ -19,7 +21,7 @@ function App() {
         {/* Public Route */}
         <Route path="/" element={<AuthPage />} />
 
-        {/* Protected Route - Only accessible if logged in */}
+        {/* Main Dashboard */}
         <Route 
           path="/dashboard" 
           element={
@@ -28,6 +30,22 @@ function App() {
             </ProtectedRoute>
           } 
         />
+
+        {/* SQL Injection Module Route */}
+        <Route 
+          path="/dashboard/sql-injection" 
+          element={
+            <ProtectedRoute>
+              <SqlInjection />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Future Module Placeholders (You can add these as you build them) */}
+        {/* <Route path="/dashboard/phishing" element={<ProtectedRoute><Phishing /></ProtectedRoute>} />
+        <Route path="/dashboard/brute-force" element={<ProtectedRoute><BruteForce /></ProtectedRoute>} />
+        <Route path="/dashboard/dictionary" element={<ProtectedRoute><Dictionary /></ProtectedRoute>} /> 
+        */}
 
         {/* Catch-all: Redirect unknown URLs to Login */}
         <Route path="*" element={<Navigate to="/" replace />} />

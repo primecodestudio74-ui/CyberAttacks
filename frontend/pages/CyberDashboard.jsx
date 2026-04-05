@@ -17,11 +17,13 @@ const CyberDashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
 
+  // Update clock every second
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
+  // Auth check
   useEffect(() => {
     const token = localStorage.getItem('operator_token') || localStorage.getItem('token');
     if (!token) navigate('/'); 
@@ -30,51 +32,62 @@ const CyberDashboard = () => {
 
   const operatorName = localStorage.getItem('operator_name') || 'Aniket';
 
-  // --- FULL MODULE LIST ---
+  // --- MODULE LIST ---
   const attacks = [
     { 
       id: 'SQL_INJECTION', 
       title: 'SQL Injection', 
       desc: 'Exploit database vulnerabilities via malicious query manipulation.', 
       icon: <Database className="text-purple-400" />,
-      tag: 'DATABASE_SEC'
+      tag: 'DATABASE_SEC',
+      path: '/dashboard/sql-injection'
     },
     { 
       id: 'PHISHING', 
       title: 'Phishing Attack', 
       desc: 'Simulate deceptive communication to identify social engineering risks.', 
       icon: <Mail className="text-blue-400" />,
-      tag: 'SOCIAL_ENG'
+      tag: 'SOCIAL_ENG',
+      path: '/dashboard/phishing'
     },
     { 
       id: 'BRUTE_FORCE', 
       title: 'Brute-Force Attack', 
       desc: 'Systematic credential guessing to test password complexity and lockouts.', 
       icon: <Lock className="text-cyan-400" />,
-      tag: 'AUTH_TEST'
+      tag: 'AUTH_TEST',
+      path: '/dashboard/brute-force'
     },
     { 
       id: 'DICTIONARY', 
       title: 'Dictionary Attack', 
       desc: 'Automated login attempts using high-probability wordlists and common leaks.', 
       icon: <FileSearch className="text-emerald-400" />,
-      tag: 'CRYPTO_ANALYSIS'
+      tag: 'CRYPTO_ANALYSIS',
+      path: '/dashboard/dictionary'
     }
   ];
+
+  const handleLaunchProtocol = () => {
+    if (selectedAttack) {
+      // Navigates to the specific module route defined in the object
+      navigate(selectedAttack.path);
+    }
+  };
 
   if (!isAuthorized) return null;
 
   return (
     <div className="flex h-screen bg-[#020617] text-slate-400 font-sans overflow-hidden selection:bg-cyan-500/30 relative">
       
-      {/* SCANLINE OVERLAY */}
+      {/* SCANLINE EFFECT */}
       <div className="absolute inset-0 pointer-events-none z-50 opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div>
 
       {/* --- SIDEBAR --- */}
       <aside className={`bg-[#030712] border-r border-slate-800/40 flex flex-col transition-all duration-500 ease-in-out z-30 ${isSidebarOpen ? 'w-72' : 'w-20'}`}>
         
         <div className="h-20 flex items-center px-4 justify-between shrink-0 overflow-hidden">
-          <AnimatePresence>
+          <AnimatePresence mode="wait">
             {isSidebarOpen && (
               <motion.div 
                 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}
@@ -129,6 +142,8 @@ const CyberDashboard = () => {
               <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full animate-pulse shadow-[0_0_8px_#06b6d4]"></div>
               <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-tighter">Virtual_Env_Live</span>
             </div>
+            <span className="text-slate-800 hidden md:block">/</span>
+            <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest hidden md:block">Main_Hub</span>
           </div>
 
           <div className="flex items-center gap-6">
@@ -148,7 +163,7 @@ const CyberDashboard = () => {
           </div>
         </header>
 
-        {/* --- GRID CONTENT --- */}
+        {/* --- DYNAMIC GRID --- */}
         <div className="p-8 lg:p-12 max-w-6xl mx-auto w-full">
           <AnimatePresence mode="wait">
             {activeTab === 'hub' ? (
@@ -180,7 +195,7 @@ const CyberDashboard = () => {
         </div>
       </main>
 
-      {/* --- MODAL --- */}
+      {/* --- PROTOCOL LAUNCH MODAL --- */}
       <AnimatePresence>
         {selectedAttack && (
           <motion.div 
@@ -202,7 +217,10 @@ const CyberDashboard = () => {
                 </p>
 
                 <div className="flex flex-col gap-3">
-                  <button className="w-full py-4 bg-cyan-600 text-[#020617] font-black rounded-xl hover:bg-cyan-500 transition-all text-[11px] uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(34,211,238,0.2)]">
+                  <button 
+                    onClick={handleLaunchProtocol}
+                    className="w-full py-4 bg-cyan-600 text-[#020617] font-black rounded-xl hover:bg-cyan-500 transition-all text-[11px] uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+                  >
                     Launch Protocol
                   </button>
                   <button onClick={() => setSelectedAttack(null)} className="w-full py-2 text-slate-600 font-bold hover:text-white transition-all text-[10px] uppercase tracking-widest">
@@ -232,6 +250,7 @@ const SidebarLink = ({ icon, label, active, onClick, isOpen }) => (
     )}
     <div className="shrink-0 group-hover:scale-110 transition-transform">{icon}</div>
     {isOpen && <span className="text-[11px] font-black tracking-widest uppercase">{label}</span>}
+    
     {!isOpen && (
       <div className="absolute left-full ml-4 px-2 py-1 bg-slate-800 text-white text-[9px] font-bold rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity uppercase tracking-widest z-50 whitespace-nowrap">
         {label}
