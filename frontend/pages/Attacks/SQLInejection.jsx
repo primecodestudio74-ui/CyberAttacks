@@ -16,11 +16,15 @@ const SQLInejection = () => {
   const navigate = useNavigate();
   const [view, setView] = useState('lab'); 
   const [step, setStep] = useState(0); 
-  const [dbColumns, setDbColumns] = useState([
+  
+  // Default Schema State
+  const defaultColumns = [
     { name: "id", type: "INT" },
     { name: "username", type: "STRING" },
     { name: "password", type: "SECRET" }
-  ]);
+  ];
+
+  const [dbColumns, setDbColumns] = useState(defaultColumns);
   const [newCol, setNewCol] = useState({ name: "", type: "STRING" });
   const [mockData, setMockData] = useState([]);
   const [tempRow, setTempRow] = useState({});
@@ -68,12 +72,15 @@ const SQLInejection = () => {
     setMockData(seedData);
   };
 
+  // NEW: Feature to delete/reset the database
   const clearData = () => {
     setMockData([]);
+    setDbColumns(defaultColumns);
     setIsExploited(false);
     setTerminalLines([]);
     setSelectedAttack(null);
     setStep(0);
+    setTempRow({});
   };
 
   const handleAddRow = () => {
@@ -134,7 +141,7 @@ const SQLInejection = () => {
           </div>
         </header>
 
-        {/* LAB NAVIGATION STEPS - Horizontal scroll on very small screens */}
+        {/* LAB NAVIGATION STEPS */}
         <div className="mb-8 flex justify-center overflow-x-auto pb-2">
           <div className="flex bg-slate-900/40 p-1 rounded-xl border border-slate-800 backdrop-blur-md min-w-max">
             {["1. Schema", "2. Attack", "3. Defense"].map((label, i) => {
@@ -198,8 +205,20 @@ const SQLInejection = () => {
 
               <div className="bg-black/40 border border-slate-800 rounded-3xl p-5 flex flex-col min-h-[350px]">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-slate-600 font-bold text-[10px] uppercase tracking-widest">Instance_Active</h2>
-                    {mockData.length > 0 && <span className="text-[9px] text-emerald-500 font-mono animate-pulse">● SYNC_LIVE</span>}
+                    <h2 className="text-slate-600 font-bold text-[10px] uppercase tracking-widest flex items-center gap-2"><Database size={12}/> Instance_Active</h2>
+                    <div className="flex items-center gap-4">
+                      {mockData.length > 0 && (
+                        <>
+                          <span className="text-[9px] text-emerald-500 font-mono animate-pulse uppercase">● Sync_Live</span>
+                          <button 
+                            onClick={clearData}
+                            className="flex items-center gap-1.5 text-[9px] font-black text-red-500 hover:text-red-400 uppercase transition-colors border border-red-900/30 px-2 py-1 rounded-md bg-red-500/5 group"
+                          >
+                            <Trash2 size={12} className="group-hover:scale-110 transition-transform"/> Drop_DB
+                          </button>
+                        </>
+                      )}
+                    </div>
                 </div>
                 <div className="overflow-x-auto flex-1 custom-scrollbar">
                   <table className="w-full text-[10px] font-mono min-w-[450px]">
@@ -217,7 +236,7 @@ const SQLInejection = () => {
                   {mockData.length === 0 && (
                     <div className="text-center py-16">
                       <p className="text-slate-600 italic text-[10px] mb-4 uppercase">Awaiting data injection...</p>
-                      <button onClick={quickSeed} className="text-[10px] text-cyan-400 font-black border border-cyan-400/20 px-6 py-2 rounded-lg uppercase">Initialize Core</button>
+                      <button onClick={quickSeed} className="text-[10px] text-cyan-400 font-black border border-cyan-400/20 px-6 py-2 rounded-lg uppercase hover:bg-cyan-400/5 transition-all">Initialize Core</button>
                     </div>
                   )}
                 </div>
@@ -343,4 +362,4 @@ const SQLInejection = () => {
   );
 };
 
-export default SQLInejection;   
+export default SQLInejection;

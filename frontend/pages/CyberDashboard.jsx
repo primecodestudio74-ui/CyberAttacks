@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Shield, LogOut, LayoutDashboard, Lock, Mail, 
-  Database, Activity, Zap, Menu, ChevronLeft, X, 
-  ExternalLink, User, Settings, Terminal, Globe, 
-  Bell, Search, Cpu, ShieldCheck, Clock, Wifi,
-  KeyRound, Hash, AlertTriangle, FileSearch, ArrowDown,
-  BookOpen, Target, HardDrive
+  Database, Activity, Menu, ChevronLeft, 
+  ExternalLink, User, Terminal, Clock, 
+  BrainCircuit, ArrowDown, Target, BookOpen
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Note: Ensure these components exist in your project structure
 import OperatorProfile from './OperatorProfile'; 
+import SystemLogs from './SystemLogs'; 
 
 const CyberDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
@@ -70,13 +70,13 @@ const CyberDashboard = () => {
       difficulty: 'Beginner'
     },
     { 
-      id: 'DICTIONARY', 
-      title: 'Dictionary Attack', 
-      desc: 'Automated login attempts using high-probability wordlists and common leaks.', 
-      icon: <FileSearch className="text-emerald-400" />,
-      tag: 'CRYPTO_ANALYSIS',
-      path: '/dashboard/dictionary',
-      difficulty: 'Beginner'
+      id: 'AI_POISONING', 
+      title: 'AI Data Poisoning', 
+      desc: 'Corrupt neural network training sets to create backdoors and model bias.', 
+      icon: <BrainCircuit className="text-fuchsia-500" />,
+      tag: 'ADVERSARIAL_ML',
+      path: '/dashboard/ai-poisoning',
+      difficulty: 'Advanced'
     }
   ];
 
@@ -98,6 +98,7 @@ const CyberDashboard = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/40 via-[#020617]/90 to-[#020617]"></div>
       </div>
 
+      {/* CRT SCANLINE EFFECT */}
       <div className="absolute inset-0 pointer-events-none z-50 opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div>
 
       <aside className={`fixed lg:relative bg-[#030712]/80 backdrop-blur-md border-r border-slate-800/40 flex flex-col transition-all duration-500 ease-in-out z-[100] h-full ${isSidebarOpen ? 'w-72 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'}`}>
@@ -170,11 +171,11 @@ const CyberDashboard = () => {
           </div>
         </header>
 
+        {/* --- DYNAMIC CONTENT AREA --- */}
         <AnimatePresence mode="wait">
           {activeTab === 'hub' ? (
             <motion.div key="hub" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col w-full">
               
-              {/* --- HERO SECTION --- */}
               <section className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center text-center p-6 lg:p-12 relative">
                 <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="max-w-4xl z-10">
                   <h1 className="text-5xl lg:text-8xl font-black text-white tracking-tighter uppercase italic leading-none mb-6">
@@ -189,7 +190,7 @@ const CyberDashboard = () => {
                       What is HackAware?
                     </button>
                     <button onClick={() => scrollToSection('attack-section')} className="px-8 py-4 border border-slate-700 text-slate-300 font-black rounded-xl hover:bg-slate-800 transition-all text-[11px] uppercase tracking-[0.2em]">
-                      Explore Protocols
+                      Explore Attacks
                     </button>
                   </div>
                 </motion.div>
@@ -199,7 +200,6 @@ const CyberDashboard = () => {
                 </motion.div>
               </section>
 
-              {/* --- ABOUT SECTION (Why HackAware?) --- */}
               <section id="about-hackaware" className="py-24 px-6 lg:px-12 bg-slate-950/50 backdrop-blur-md border-y border-slate-800/40">
                 <div className="max-w-6xl mx-auto">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -207,20 +207,19 @@ const CyberDashboard = () => {
                       <h2 className="text-2xl lg:text-3xl font-black text-white uppercase italic tracking-tight mb-6">Strategic Briefing</h2>
                       <p className="text-slate-400 text-sm leading-loose mb-8">
                         In an era of rising digital threats, <span className="text-cyan-500 font-bold">HackAware</span> is designed to demystify complex cyber attacks. 
-                        We believe that the best defense is a deep understanding of the offense. This platform allows you to simulate real-world attack vectors in a 
-                        controlled, educational environment to learn how they work—and more importantly, how to stop them.
+                        We believe that the best defense is a deep understanding of the offense.
                       </p>
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl">
                           <Target className="text-cyan-500 mb-3" size={20} />
                           <h4 className="text-xs font-black text-white uppercase mb-2">Simulate</h4>
-                          <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-tight">Run live demonstrations of Phishing, SQLi, and Brute Force attacks.</p>
+                          <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-tight">Run live demonstrations of vectors.</p>
                         </div>
                         <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl">
                           <BookOpen className="text-cyan-500 mb-3" size={20} />
                           <h4 className="text-xs font-black text-white uppercase mb-2">Educate</h4>
-                          <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-tight">Step-by-step guidance on vulnerabilities for beginners and pros.</p>
+                          <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-tight">Guidance for beginners and pros.</p>
                         </div>
                       </div>
                     </div>
@@ -231,9 +230,7 @@ const CyberDashboard = () => {
                         <Terminal size={32} className="text-cyan-500 mb-6" />
                         <div className="space-y-4 font-mono text-[10px] lg:text-xs">
                           <p className="text-emerald-500">$ system_init --mode=hackaware</p>
-                          <p className="text-slate-500">{'>'} Loading demonstration modules...</p>
-                          <p className="text-slate-500">{'>'} Phishing Vector [READY]</p>
-                          <p className="text-slate-500">{'>'} SQL Injection Engine [READY]</p>
+                          <p className="text-slate-500">{'>'} Loading modules...</p>
                           <p className="text-slate-300 italic">{'>'} "Awareness is the first layer of security."</p>
                         </div>
                       </div>
@@ -242,15 +239,11 @@ const CyberDashboard = () => {
                 </div>
               </section>
 
-              {/* --- PROTOCOL HUB --- */}
               <section id="attack-section" className="py-24 px-6 lg:px-12 max-w-6xl mx-auto w-full">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                   <div>
                     <h2 className="text-2xl lg:text-3xl font-black text-white tracking-tighter uppercase italic">Operation Hub</h2>
-                    <p className="text-[10px] text-cyan-600 font-bold uppercase tracking-[0.3em] mt-2">Active Simulation Protocols</p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Filter: All_Vectors</span>
+                    <p className="text-[10px] text-cyan-600 font-bold uppercase tracking-[0.3em] mt-2">Active Simulation Attacks</p>
                   </div>
                 </div>
 
@@ -262,15 +255,19 @@ const CyberDashboard = () => {
               </section>
 
             </motion.div>
+          ) : activeTab === 'logs' ? (
+            <motion.div key="logs" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }} className="p-6 lg:p-12 max-w-6xl mx-auto w-full h-full">
+               <SystemLogs />
+            </motion.div>
           ) : activeTab === 'profile' ? (
-            <div className="p-6 lg:p-12 max-w-6xl mx-auto w-full">
-              <OperatorProfile key="profile" />
-            </div>
+            <motion.div key="profile" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 lg:p-12 max-w-6xl mx-auto w-full">
+              <OperatorProfile />
+            </motion.div>
           ) : null}
         </AnimatePresence>
       </main>
 
-      {/* --- PROTOCOL LAUNCH MODAL --- */}
+      {/* --- MODAL --- */}
       <AnimatePresence>
         {selectedAttack && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-[#020617]/95 backdrop-blur-md">
@@ -281,8 +278,8 @@ const CyberDashboard = () => {
                 </div>
                 <h3 className="text-lg font-black text-white mb-2 uppercase italic tracking-widest">{selectedAttack.title}</h3>
                 <p className="text-slate-500 text-[10px] font-mono mb-8 uppercase tracking-tighter leading-relaxed">
-                   Authorized Operator: {operatorName} <br/> 
-                   Vector Status: <span className="text-emerald-500">Deployable</span>
+                    Authorized Operator: {operatorName} <br/> 
+                    Vector Status: <span className="text-emerald-500">Deployable</span>
                 </p>
 
                 <div className="flex flex-col gap-3">
@@ -320,7 +317,11 @@ const AttackCard = ({ atk, index, onClick }) => (
         </div>
         <div className="flex flex-col items-end gap-2">
            <span className="text-[8px] font-black text-slate-600 bg-slate-900 border border-slate-800 px-2 py-1 rounded tracking-[0.2em]">{atk.tag}</span>
-           <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${atk.difficulty === 'Beginner' ? 'text-emerald-500 bg-emerald-500/5' : 'text-orange-500 bg-orange-500/5'}`}>{atk.difficulty}</span>
+           <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${
+             atk.difficulty === 'Beginner' ? 'text-emerald-500 bg-emerald-500/5' : 
+             atk.difficulty === 'Intermediate' ? 'text-orange-500 bg-orange-500/5' : 
+             'text-fuchsia-500 bg-fuchsia-500/5'
+           }`}>{atk.difficulty}</span>
         </div>
       </div>
       <div>
