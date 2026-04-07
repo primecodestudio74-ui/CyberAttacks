@@ -343,4 +343,4 @@ const SQLInejection = () => {
   );
 };
 
-export default SQLInejection;
+export default SQLInejection;   
