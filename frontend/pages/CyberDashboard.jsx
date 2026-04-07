@@ -47,7 +47,6 @@ const CyberDashboard = () => {
       title: 'SQL Injection', 
       desc: 'Exploit database vulnerabilities via malicious query manipulation.', 
       icon: <Database className="text-purple-400" />,
-      tag: 'DATABASE_SEC',
       path: '/dashboard/sql-injection'
     },
     { 
@@ -55,7 +54,6 @@ const CyberDashboard = () => {
       title: 'Phishing Attack', 
       desc: 'Simulate deceptive communication to identify social engineering risks.', 
       icon: <Mail className="text-blue-400" />,
-      tag: 'SOCIAL_ENG',
       path: '/dashboard/phishing'
     },
     { 
@@ -63,7 +61,6 @@ const CyberDashboard = () => {
       title: 'Brute-Force Attack', 
       desc: 'Systematic credential guessing to test password complexity and lockouts.', 
       icon: <Lock className="text-cyan-400" />,
-      tag: 'AUTH_TEST',
       path: '/dashboard/brute-force'
     },
     { 
@@ -71,7 +68,6 @@ const CyberDashboard = () => {
       title: 'Dictionary Attack', 
       desc: 'Automated login attempts using high-probability wordlists and common leaks.', 
       icon: <FileSearch className="text-emerald-400" />,
-      tag: 'CRYPTO_ANALYSIS',
       path: '/dashboard/dictionary'
     }
   ];
