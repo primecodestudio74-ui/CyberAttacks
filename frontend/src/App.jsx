@@ -4,6 +4,7 @@ import AuthPage from "../pages/AuthPage";
 import CyberDashboard from "../pages/CyberDashboard";
 import SqlInjection from "../pages/Attacks/SQLInejection";
 import BruteForce from "../pages/Attacks/BruteForce";
+import Phishing from "../pages/Attacks/Phishing";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("operator_token") || localStorage.getItem("token");
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<AuthPage />} />
         <Route path="/dashboard" element={<ProtectedRoute><CyberDashboard /></ProtectedRoute>} />
         <Route path="/dashboard/sql-injection" element={<ProtectedRoute><SqlInjection /></ProtectedRoute>} />
+        <Route path="/dashboard/phishing" element={<ProtectedRoute><Phishing /></ProtectedRoute>} />
         <Route path="/dashboard/brute-force" element={<ProtectedRoute><BruteForce /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
