@@ -9,8 +9,10 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// --- IMPORT NEW COMPONENT ---
+import OperatorProfile from './OperatorProfile'; 
+
 const CyberDashboard = () => {
-  // Mobile-first: Sidebar starts closed on small screens
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
   const [selectedAttack, setSelectedAttack] = useState(null);
   const [activeTab, setActiveTab] = useState('hub');
@@ -83,9 +85,23 @@ const CyberDashboard = () => {
   return (
     <div className="flex h-screen bg-[#020617] text-slate-400 font-sans overflow-hidden selection:bg-cyan-500/30 relative">
       
+      {/* --- BACKGROUND VIDEO IMPLEMENTATION --- */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none brightness-100">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover opacity-30" // Adjust opacity as needed
+        >
+          <source src="/DashBoard_Video.mp4" type="video/mp4" />
+        </video>
+        {/* Dark overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-[#020617]/60"></div>
+      </div>
+
       <div className="absolute inset-0 pointer-events-none z-50 opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div>
 
-      {/* --- MOBILE OVERLAY --- */}
       <AnimatePresence>
         {isSidebarOpen && window.innerWidth < 1024 && (
           <motion.div 
@@ -96,8 +112,7 @@ const CyberDashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* --- SIDEBAR --- */}
-      <aside className={`fixed lg:relative bg-[#030712] border-r border-slate-800/40 flex flex-col transition-all duration-500 ease-in-out z-[100] h-full ${isSidebarOpen ? 'w-72 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'}`}>
+      <aside className={`fixed lg:relative bg-[#030712]/80 backdrop-blur-md border-r border-slate-800/40 flex flex-col transition-all duration-500 ease-in-out z-[100] h-full ${isSidebarOpen ? 'w-72 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'}`}>
         
         <div className="h-20 flex items-center px-4 justify-between shrink-0 overflow-hidden">
           <AnimatePresence mode="wait">
@@ -146,15 +161,13 @@ const CyberDashboard = () => {
         </div>
       </aside>
 
-      {/* --- MAIN CONTENT --- */}
-      <main className="flex-1 flex flex-col overflow-y-auto bg-[#020617] scroll-smooth relative">
+      <main className="flex-1 flex flex-col overflow-y-auto bg-transparent scroll-smooth relative z-10">
         
-        <header className="h-20 flex items-center justify-between px-4 lg:px-8 border-b border-slate-800/30 bg-[#020617]/80 backdrop-blur-xl sticky top-0 z-20 shrink-0">
+        <header className="h-20 flex items-center justify-between px-4 lg:px-8 border-b border-slate-800/30 bg-[#020617]/40 backdrop-blur-xl sticky top-0 z-20 shrink-0">
           <div className="flex items-center gap-4">
-            {/* Mobile Menu Trigger */}
             {!isSidebarOpen && (
                 <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden p-2 text-slate-400 hover:text-cyan-400">
-                    <Menu size={20} />
+                  <Menu size={20} />
                 </button>
             )}
             <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-900/40 border border-slate-800 rounded-lg">
@@ -162,7 +175,9 @@ const CyberDashboard = () => {
               <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-tighter">Live</span>
             </div>
             <span className="text-slate-800 hidden sm:block">/</span>
-            <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest hidden sm:block">Main_Hub</span>
+            <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest hidden sm:block">
+              {activeTab === 'hub' ? 'Main_Hub' : activeTab === 'profile' ? 'Operator_Profile' : 'Restricted_Zone'}
+            </span>
           </div>
 
           <div className="flex items-center gap-3 lg:gap-6">
@@ -200,10 +215,12 @@ const CyberDashboard = () => {
                   ))}
                 </div>
               </motion.div>
+            ) : activeTab === 'profile' ? (
+              <OperatorProfile key="profile" />
             ) : (
               <motion.div 
                 key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                className="py-20 lg:py-40 flex flex-col items-center justify-center border border-slate-800/40 rounded-[2rem] lg:rounded-[2.5rem] bg-slate-900/5"
+                className="py-20 lg:py-40 flex flex-col items-center justify-center border border-slate-800/40 rounded-[2rem] lg:rounded-[2.5rem] bg-slate-900/5 backdrop-blur-sm"
               >
                  <Cpu size={32} className="text-slate-800 mb-4 animate-pulse" />
                  <p className="text-slate-700 font-mono text-[10px] uppercase tracking-[0.4em]">Restricted_Module</p>
@@ -213,7 +230,7 @@ const CyberDashboard = () => {
         </div>
       </main>
 
-      {/* --- PROTOCOL LAUNCH MODAL --- */}
+      {/* Launch Modal logic remains the same */}
       <AnimatePresence>
         {selectedAttack && (
           <motion.div 
@@ -254,13 +271,12 @@ const CyberDashboard = () => {
   );
 };
 
-// --- SUB-COMPONENTS (With minor size adjustments for mobile) ---
-
+// --- SUB-COMPONENTS ---
 const SidebarLink = ({ icon, label, active, onClick, isOpen }) => (
   <button 
     onClick={onClick} 
-    className={`flex items-center gap-3 w-full px-3 py-3 rounded-xl transition-all relative group ${
-      active ? 'text-cyan-400 bg-cyan-500/5' : 'text-slate-600 hover:text-slate-300 hover:bg-slate-800/30'
+    className={`flex items-center gap-3 w-full px-3 py-3 rounded-xl transition-all relative group z-10 ${
+      active ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-600 hover:text-slate-300 hover:bg-slate-800/30'
     } ${!isOpen && 'justify-center'}`}
   >
     {active && (
@@ -276,7 +292,7 @@ const AttackCard = ({ atk, index, onClick }) => (
     initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }}
     whileHover={{ y: -5, borderColor: 'rgba(34, 211, 238, 0.3)' }}
     onClick={onClick} 
-    className="group relative bg-slate-900/10 border border-slate-800/40 p-6 lg:p-8 rounded-[1.5rem] lg:rounded-[2rem] cursor-pointer overflow-hidden transition-all duration-300"
+    className="group relative bg-slate-900/40 backdrop-blur-sm border border-slate-800/40 p-6 lg:p-8 rounded-[1.5rem] lg:rounded-[2rem] cursor-pointer overflow-hidden transition-all duration-300"
   >
     <div className="relative z-10 flex flex-col gap-4 lg:gap-6">
       <div className="flex justify-between items-start">
