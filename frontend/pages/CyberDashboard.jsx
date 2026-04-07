@@ -1,257 +1,340 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
-  LayoutDashboard, ShieldAlert, Settings, 
-  User, Terminal, Play, ShieldCheck, 
-  ShieldOff, Database, Fingerprint, LogOut // Added LogOut icon
+  Shield, LogOut, LayoutDashboard, Lock, Mail, 
+  Database, Activity, Zap, Menu, ChevronLeft, X, 
+  ExternalLink, User, Settings, Terminal, Globe, 
+  Bell, Search, Cpu, ShieldCheck, Clock, Wifi,
+  KeyRound, Hash, AlertTriangle, FileSearch, ArrowDown,
+  BookOpen, Target, HardDrive
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+
+import OperatorProfile from './OperatorProfile'; 
 
 const CyberDashboard = () => {
-  const [activeAttack, setActiveAttack] = useState('Brute Force');
-  const [isSimulating, setIsSimulating] = useState(false);
-  const [isHardened, setIsHardened] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [logs, setLogs] = useState(["[SYSTEM]: HackAware v1.0 Ready."]);
-  
-  const navigate = useNavigate(); // Initialize navigation
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
+  const [selectedAttack, setSelectedAttack] = useState(null);
+  const [activeTab, setActiveTab] = useState('hub');
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const navigate = useNavigate();
 
-  // Security Check: Redirect to login if no token exists
   useEffect(() => {
-    const token = localStorage.getItem('operator_token');
-    if (!token) {
-      navigate('/');
-    }
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    const handleResize = () => {
+        if (window.innerWidth < 1024) setIsSidebarOpen(false);
+        else setIsSidebarOpen(true);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+        clearInterval(timer);
+        window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('operator_token') || localStorage.getItem('token');
+    if (!token) navigate('/'); 
+    else setIsAuthorized(true);
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('operator_token');
-    localStorage.removeItem('operator_name');
-    navigate('/'); // Redirect back to Auth Gate
-  };
+  const operatorName = localStorage.getItem('operator_name') || 'Aniket';
 
-  // Handle the simulation logic
-  useEffect(() => {
-    let interval;
-    if (isSimulating && progress < 100) {
-      interval = setInterval(() => {
-        setProgress(prev => {
-          const next = prev + Math.floor(Math.random() * 15);
-          if (next >= 100) {
-            finishSimulation();
-            return 100;
-          }
-          return next;
-        });
-        
-        const mockIPs = ["192.168.0.1", "10.0.0.42", "172.16.254.1"];
-        const logEntries = [
-          `[TRYING]: admin / password${Math.floor(Math.random() * 100)}`,
-          `[PACKET]: Intercepted from ${mockIPs[Math.floor(Math.random() * 3)]}`,
-          `[AUTH]: Handshake request sent...`
-        ];
-        setLogs(prev => [logEntries[Math.floor(Math.random() * 3)], ...prev.slice(0, 10)]);
-      }, 600);
+  const attacks = [
+    { 
+      id: 'SQL_INJECTION', 
+      title: 'SQL Injection', 
+      desc: 'Exploit database vulnerabilities via malicious query manipulation.', 
+      icon: <Database className="text-purple-400" />,
+      tag: 'DATABASE_SEC',
+      path: '/dashboard/sql-injection',
+      difficulty: 'Intermediate'
+    },
+    { 
+      id: 'PHISHING', 
+      title: 'Phishing Attack', 
+      desc: 'Simulate deceptive communication to identify social engineering risks.', 
+      icon: <Mail className="text-blue-400" />,
+      tag: 'SOCIAL_ENG',
+      path: '/dashboard/phishing',
+      difficulty: 'Beginner'
+    },
+    { 
+      id: 'BRUTE_FORCE', 
+      title: 'Brute-Force Attack', 
+      desc: 'Systematic credential guessing to test password complexity and lockouts.', 
+      icon: <Lock className="text-cyan-400" />,
+      tag: 'AUTH_TEST',
+      path: '/dashboard/brute-force',
+      difficulty: 'Beginner'
+    },
+    { 
+      id: 'DICTIONARY', 
+      title: 'Dictionary Attack', 
+      desc: 'Automated login attempts using high-probability wordlists and common leaks.', 
+      icon: <FileSearch className="text-emerald-400" />,
+      tag: 'CRYPTO_ANALYSIS',
+      path: '/dashboard/dictionary',
+      difficulty: 'Beginner'
     }
-    return () => clearInterval(interval);
-  }, [isSimulating, progress]);
+  ];
 
-  const startSimulation = () => {
-    setProgress(0);
-    setIsSimulating(true);
-    setLogs([`[INIT]: Launching ${activeAttack} attack...`, ...logs]);
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    element?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const finishSimulation = () => {
-    setIsSimulating(false);
-    const result = isHardened 
-      ? `[BLOCKED]: ${activeAttack} failed. Firewall dropped unauthorized packets.`
-      : `[SUCCESS]: ${activeAttack} exploited vulnerability! Access Granted.`;
-    setLogs([result, ...logs]);
-  };
+  if (!isAuthorized) return null;
 
   return (
-    <div className="flex h-screen bg-[#020817] text-slate-300 font-sans p-6 overflow-hidden">
+    <div className="flex h-screen bg-[#020617] text-slate-400 font-sans overflow-hidden selection:bg-cyan-500/30 relative">
       
-      {/* --- Sidebar Navigation --- */}
-      <nav className="w-64 flex flex-col border-r border-slate-800 pr-4">
-        <div className="flex items-center gap-3 mb-10 px-2">
-          <div className="p-2 bg-blue-600 rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.5)]">
-            <ShieldAlert className="text-white w-6 h-6" />
-          </div>
-          <h1 className="text-xl font-bold tracking-widest text-white uppercase tracking-tighter">HackAware</h1>
-        </div>
-        <div className="space-y-2 flex-1">
-          <NavItem icon={<LayoutDashboard size={20} />} label="Dashboard" active />
-          <NavItem icon={<ShieldAlert size={20} />} label="Vulnerability Lab" />
-          <NavItem icon={<Database size={20} />} label="Data Leaks" />
-          <NavItem icon={<Settings size={20} />} label="Settings" />
+      {/* --- BACKGROUND VIDEO --- */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-20">
+          <source src="/DashBoard_Video.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/40 via-[#020617]/90 to-[#020617]"></div>
+      </div>
+
+      <div className="absolute inset-0 pointer-events-none z-50 opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div>
+
+      <aside className={`fixed lg:relative bg-[#030712]/80 backdrop-blur-md border-r border-slate-800/40 flex flex-col transition-all duration-500 ease-in-out z-[100] h-full ${isSidebarOpen ? 'w-72 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'}`}>
+        <div className="h-20 flex items-center px-4 justify-between shrink-0 overflow-hidden">
+          <AnimatePresence mode="wait">
+            {isSidebarOpen && (
+              <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex items-center gap-2 pl-2">
+                <Shield className="text-cyan-500" size={16} />
+                <h1 className="font-black text-[10px] tracking-[0.25em] text-white uppercase italic">HACK<span className="text-cyan-500">AWARE</span></h1>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className={`p-2.5 hover:bg-slate-800/60 rounded-xl transition-all text-slate-500 hover:text-cyan-400 flex items-center justify-center ${!isSidebarOpen && 'mx-auto'}`}>
+            {isSidebarOpen ? <ChevronLeft size={18} /> : <Menu size={20} />}
+          </button>
         </div>
 
-        {/* Actionable Logout Button added to Sidebar */}
-        <button 
-          onClick={handleLogout}
-          className="flex items-center gap-4 px-4 py-3 rounded cursor-pointer transition-all hover:bg-red-900/10 text-slate-400 hover:text-red-500 mt-auto mb-4"
-        >
-          <LogOut size={20} />
-          <span className="text-sm font-medium uppercase tracking-tighter">Terminate Session</span>
-        </button>
-      </nav>
-
-      {/* --- Main Dashboard Area --- */}
-      <main className="flex-1 px-8 overflow-y-auto">
-        <header className="flex justify-between items-center mb-8">
+        <nav className="flex-1 px-3 py-4 space-y-8 overflow-y-auto custom-scrollbar overflow-x-hidden">
           <div>
-            <h2 className="text-2xl font-bold text-white uppercase tracking-widest">Operation Center</h2>
-            <p className="text-xs text-blue-500 font-mono">ENCRYPTION: AES-256 ACTIVE</p>
-          </div>
-          <div className="flex items-center gap-6 text-slate-400">
-            <div className="flex items-center gap-2 px-3 py-1 bg-slate-900 rounded-full border border-slate-800">
-              <div className={`w-2 h-2 rounded-full ${isSimulating ? 'bg-red-500 animate-pulse' : 'bg-green-500'}`}></div>
-              <span className="text-[10px] font-bold uppercase">{isSimulating ? 'Active Simulation' : 'System Secure'}</span>
+            <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>Operations</p>
+            <div className="space-y-1">
+              <SidebarLink icon={<LayoutDashboard size={18}/>} label="Attack Hub" active={activeTab === 'hub'} onClick={() => {setActiveTab('hub'); if(window.innerWidth < 1024) setIsSidebarOpen(false); }} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<Terminal size={18}/>} label="System Logs" active={activeTab === 'logs'} onClick={() => {setActiveTab('logs'); if(window.innerWidth < 1024) setIsSidebarOpen(false); }} isOpen={isSidebarOpen} />
             </div>
-            <div className="flex items-center gap-2">
-              <User size={20} className="hover:text-blue-400 cursor-pointer" />
-              <span className="text-xs font-mono">{localStorage.getItem('operator_name') || 'Operator'}</span>
+          </div>
+          <div>
+            <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>Identity</p>
+            <div className="space-y-1">
+              <SidebarLink icon={<User size={18}/>} label="Operator Profile" active={activeTab === 'profile'} onClick={() => {setActiveTab('profile'); if(window.innerWidth < 1024) setIsSidebarOpen(false); }} isOpen={isSidebarOpen} />
+            </div>
+          </div>
+        </nav>
+
+        <div className="p-3 border-t border-slate-800/40">
+          <button onClick={() => { localStorage.clear(); navigate('/'); }} className={`flex items-center gap-3 w-full px-3 py-3 text-slate-500 hover:text-red-400 hover:bg-red-500/5 rounded-xl transition-all text-[10px] font-black tracking-widest uppercase ${!isSidebarOpen && 'justify-center'}`}>
+            <LogOut size={18} />
+            {isSidebarOpen && <span>Terminate</span>}
+          </button>
+        </div>
+      </aside>
+
+      <main className="flex-1 flex flex-col overflow-y-auto bg-transparent scroll-smooth relative z-10">
+        <header className="h-20 flex items-center justify-between px-4 lg:px-8 border-b border-slate-800/30 bg-[#020617]/40 backdrop-blur-xl sticky top-0 z-20 shrink-0">
+          <div className="flex items-center gap-4">
+            {!isSidebarOpen && (
+                <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden p-2 text-slate-400 hover:text-cyan-400">
+                  <Menu size={20} />
+                </button>
+            )}
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-900/40 border border-slate-800 rounded-lg">
+              <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full animate-pulse shadow-[0_0_8px_#06b6d4]"></div>
+              <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-tighter">Secure_Connection</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div className="hidden sm:flex items-center gap-3 px-3 py-1.5 bg-slate-900/40 border border-slate-800/50 rounded-lg">
+              <Clock className="text-cyan-500" size={12} />
+              <span className="text-[10px] font-mono font-medium text-slate-300">{currentTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second: '2-digit'})}</span>
+            </div>
+            <div className="flex items-center gap-3 pl-6 border-l border-slate-800/60">
+              <div className="text-right hidden xs:block">
+                <p className="text-[11px] font-black text-white uppercase tracking-tight">{operatorName}</p>
+                <p className="text-[9px] font-bold text-cyan-600 tracking-tighter uppercase tracking-[0.1em]">Level 1 Admin</p>
+              </div>
+              <div className="w-9 h-9 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center font-black text-cyan-400 text-xs shadow-inner uppercase">
+                {operatorName[0]}
+              </div>
             </div>
           </div>
         </header>
 
-        <div className="grid grid-cols-12 gap-6">
-          
-          {/* 1. Attack Controls */}
-          <Card className="col-span-4 border-t-2 border-t-blue-500">
-            <h3 className="text-xs font-black uppercase mb-4 text-blue-400">Select Vulnerability</h3>
-            <div className="space-y-2">
-              {['Brute Force', 'Phishing', 'SQL Injection', 'XSS Attack'].map(atk => (
-                <button 
-                  key={atk}
-                  onClick={() => setActiveAttack(atk)}
-                  className={`w-full text-left px-4 py-3 rounded text-sm transition-all flex justify-between items-center ${activeAttack === atk ? 'bg-blue-600 text-white font-bold' : 'bg-slate-900 hover:bg-slate-800'}`}
-                >
-                  {atk}
-                  {activeAttack === atk && <Fingerprint size={16} />}
-                </button>
-              ))}
-            </div>
-            
-            <div className="mt-6 pt-6 border-t border-slate-800">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-bold uppercase tracking-widest text-slate-500">System Hardening</span>
-                <button 
-                  onClick={() => setIsHardened(!isHardened)}
-                  className={`relative w-10 h-5 rounded-full transition-colors ${isHardened ? 'bg-green-500' : 'bg-slate-700'}`}
-                >
-                  <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${isHardened ? 'left-6' : 'left-1'}`}></div>
-                </button>
-              </div>
-              <p className="text-[10px] text-slate-500 italic">Toggle defense to see if the attack succeeds.</p>
-            </div>
-          </Card>
+        <AnimatePresence mode="wait">
+          {activeTab === 'hub' ? (
+            <motion.div key="hub" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col w-full">
+              
+              {/* --- HERO SECTION --- */}
+              <section className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center text-center p-6 lg:p-12 relative">
+                <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="max-w-4xl z-10">
+                  <h1 className="text-5xl lg:text-8xl font-black text-white tracking-tighter uppercase italic leading-none mb-6">
+                    HACK<span className="text-cyan-500">AWARE</span>
+                  </h1>
+                  <p className="text-slate-400 text-base lg:text-lg font-medium leading-relaxed mb-8 max-w-2xl mx-auto uppercase tracking-wide">
+                    The Ultimate Cybersecurity Demonstration & Prevention Environment.
+                  </p>
+                  
+                  <div className="flex flex-wrap justify-center gap-4">
+                    <button onClick={() => scrollToSection('about-hackaware')} className="px-8 py-4 bg-cyan-600 text-[#020617] font-black rounded-xl hover:bg-cyan-500 transition-all text-[11px] uppercase tracking-[0.2em]">
+                      What is HackAware?
+                    </button>
+                    <button onClick={() => scrollToSection('attack-section')} className="px-8 py-4 border border-slate-700 text-slate-300 font-black rounded-xl hover:bg-slate-800 transition-all text-[11px] uppercase tracking-[0.2em]">
+                      Explore Protocols
+                    </button>
+                  </div>
+                </motion.div>
 
-          {/* 2. Live Simulation Visualizer */}
-          <Card className="col-span-8 bg-[#050b1a] border-slate-700 relative">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="text-sm font-bold uppercase tracking-widest text-white">{activeAttack} Simulator</h3>
-                <p className="text-xs text-slate-500 font-mono mt-1">Target: victim_server_01</p>
-              </div>
-              <button 
-                onClick={startSimulation}
-                disabled={isSimulating}
-                className="bg-red-600 hover:bg-red-500 disabled:bg-slate-800 text-white px-6 py-2 rounded font-black text-xs uppercase flex items-center gap-2 shadow-[0_0_20px_rgba(220,38,38,0.3)] transition-all"
-              >
-                {isSimulating ? 'Attacking...' : <><Play size={14} fill="white" /> Execute Attack</>}
-              </button>
-            </div>
+                <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-10 left-1/2 -translate-x-1/2">
+                   <ArrowDown size={24} className="text-slate-800" />
+                </motion.div>
+              </section>
 
-            {/* Animation Area */}
-            <div className="mt-8 flex justify-between items-center px-10">
-              <div className="flex flex-col items-center">
-                <div className="p-4 bg-red-600/10 border border-red-600/50 rounded-xl mb-2">
-                  <Terminal className="text-red-500" size={32} />
+              {/* --- ABOUT SECTION (Why HackAware?) --- */}
+              <section id="about-hackaware" className="py-24 px-6 lg:px-12 bg-slate-950/50 backdrop-blur-md border-y border-slate-800/40">
+                <div className="max-w-6xl mx-auto">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                      <h2 className="text-2xl lg:text-3xl font-black text-white uppercase italic tracking-tight mb-6">Strategic Briefing</h2>
+                      <p className="text-slate-400 text-sm leading-loose mb-8">
+                        In an era of rising digital threats, <span className="text-cyan-500 font-bold">HackAware</span> is designed to demystify complex cyber attacks. 
+                        We believe that the best defense is a deep understanding of the offense. This platform allows you to simulate real-world attack vectors in a 
+                        controlled, educational environment to learn how they work—and more importantly, how to stop them.
+                      </p>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl">
+                          <Target className="text-cyan-500 mb-3" size={20} />
+                          <h4 className="text-xs font-black text-white uppercase mb-2">Simulate</h4>
+                          <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-tight">Run live demonstrations of Phishing, SQLi, and Brute Force attacks.</p>
+                        </div>
+                        <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl">
+                          <BookOpen className="text-cyan-500 mb-3" size={20} />
+                          <h4 className="text-xs font-black text-white uppercase mb-2">Educate</h4>
+                          <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-tight">Step-by-step guidance on vulnerabilities for beginners and pros.</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="relative">
+                      <div className="absolute -inset-4 bg-cyan-500/10 blur-3xl rounded-full"></div>
+                      <div className="relative bg-[#080c17] border border-slate-800 p-8 rounded-[2rem] shadow-2xl">
+                        <Terminal size={32} className="text-cyan-500 mb-6" />
+                        <div className="space-y-4 font-mono text-[10px] lg:text-xs">
+                          <p className="text-emerald-500">$ system_init --mode=hackaware</p>
+                          <p className="text-slate-500">{'>'} Loading demonstration modules...</p>
+                          <p className="text-slate-500">{'>'} Phishing Vector [READY]</p>
+                          <p className="text-slate-500">{'>'} SQL Injection Engine [READY]</p>
+                          <p className="text-slate-300 italic">{'>'} "Awareness is the first layer of security."</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <span className="text-[10px] font-bold">ATTACKER</span>
-              </div>
+              </section>
 
-              <div className="flex-1 px-4">
-                <div className="w-full bg-slate-800 h-1 rounded-full relative overflow-hidden">
-                  <div 
-                    className={`h-full transition-all duration-500 ${isHardened ? 'bg-cyan-500' : 'bg-red-500'}`} 
-                    style={{ width: `${progress}%` }}
-                  ></div>
+              {/* --- PROTOCOL HUB --- */}
+              <section id="attack-section" className="py-24 px-6 lg:px-12 max-w-6xl mx-auto w-full">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                  <div>
+                    <h2 className="text-2xl lg:text-3xl font-black text-white tracking-tighter uppercase italic">Operation Hub</h2>
+                    <p className="text-[10px] text-cyan-600 font-bold uppercase tracking-[0.3em] mt-2">Active Simulation Protocols</p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Filter: All_Vectors</span>
+                  </div>
                 </div>
-                <p className="text-center text-[10px] font-mono mt-2 text-blue-500">{progress}% Payload Delivered</p>
-              </div>
 
-              <div className="flex flex-col items-center">
-                <div className={`p-4 border rounded-xl mb-2 transition-colors ${isHardened ? 'bg-green-600/10 border-green-500' : 'bg-slate-900 border-slate-800'}`}>
-                  {isHardened ? <ShieldCheck className="text-green-500" size={32} /> : <ShieldOff className="text-slate-500" size={32} />}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {attacks.map((atk, index) => (
+                    <AttackCard key={atk.id} atk={atk} index={index} onClick={() => setSelectedAttack(atk)} />
+                  ))}
                 </div>
-                <span className="text-[10px] font-bold">VICTIM</span>
-              </div>
-            </div>
-          </Card>
+              </section>
 
-          {/* 3. Real-time Log Console */}
-          <Card className="col-span-7 h-60 bg-black/80 font-mono border-slate-800">
-            <div className="flex items-center gap-2 mb-3 text-blue-400 border-b border-slate-800 pb-2">
-              <Terminal size={14} />
-              <span className="text-xs font-bold uppercase tracking-widest">Intercepted Data Logs</span>
+            </motion.div>
+          ) : activeTab === 'profile' ? (
+            <div className="p-6 lg:p-12 max-w-6xl mx-auto w-full">
+              <OperatorProfile key="profile" />
             </div>
-            <div className="space-y-1 overflow-y-auto h-40 custom-scrollbar">
-              {logs.map((log, i) => (
-                <div key={i} className={`text-[11px] ${log.includes('[SUCCESS]') ? 'text-green-400 font-bold' : log.includes('[BLOCKED]') ? 'text-cyan-400' : 'text-slate-400'}`}>
-                  <span className="opacity-30 mr-2">[{new Date().toLocaleTimeString()}]</span>
-                  {log}
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          {/* 4. Educational Defense Panel */}
-          <Card className="col-span-5 h-60 border-l-4 border-l-green-500">
-            <h3 className="text-xs font-black uppercase text-green-500 mb-4 flex items-center gap-2">
-              <ShieldCheck size={14} /> Security Briefing
-            </h3>
-            <div className="p-3 bg-slate-950 rounded border border-slate-800">
-              <h4 className="text-[10px] font-bold text-blue-400 uppercase mb-1">Vulnerability Info:</h4>
-              <p className="text-xs leading-relaxed italic">
-                {activeAttack === 'Brute Force' ? "The system lacks rate-limiting. Attackers can guess passwords infinitely." : activeAttack === 'Phishing' ? "Attackers craft fake portals to trick operators into giving up credentials." : "Injection of malicious parameters into backend calls to dump database tables."}
-              </p>
-            </div>
-            <div className="mt-4">
-              <h4 className="text-[10px] font-bold text-green-500 uppercase mb-2">Defense Implementation:</h4>
-              <ul className="text-[11px] space-y-1 text-slate-400">
-                <li className="flex items-center gap-2 font-mono">
-                   <div className="w-1 h-1 bg-green-500 rounded-full"></div> 
-                   {isHardened ? "✓ Multi-Factor Authentication: ACTIVE" : "× Multi-Factor Authentication: INACTIVE"}
-                </li>
-                <li className="flex items-center gap-2 font-mono">
-                   <div className="w-1 h-1 bg-green-500 rounded-full"></div> 
-                   {isHardened ? "✓ IP Rate Limiting: SECURE" : "× Rate Limiting: BYPASSED"}
-                </li>
-              </ul>
-            </div>
-          </Card>
-
-        </div>
+          ) : null}
+        </AnimatePresence>
       </main>
+
+      {/* --- PROTOCOL LAUNCH MODAL --- */}
+      <AnimatePresence>
+        {selectedAttack && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-[#020617]/95 backdrop-blur-md">
+            <motion.div initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }} className="w-full max-w-md bg-[#080c17] border border-slate-800 rounded-[2rem] overflow-hidden shadow-2xl">
+              <div className="p-10 text-center relative">
+                <div className="w-16 h-16 bg-slate-950 border border-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  {React.cloneElement(selectedAttack.icon, { size: 28 })}
+                </div>
+                <h3 className="text-lg font-black text-white mb-2 uppercase italic tracking-widest">{selectedAttack.title}</h3>
+                <p className="text-slate-500 text-[10px] font-mono mb-8 uppercase tracking-tighter leading-relaxed">
+                   Authorized Operator: {operatorName} <br/> 
+                   Vector Status: <span className="text-emerald-500">Deployable</span>
+                </p>
+
+                <div className="flex flex-col gap-3">
+                  <button onClick={() => navigate(selectedAttack.path)} className="w-full py-4 bg-cyan-600 text-[#020617] font-black rounded-xl hover:bg-cyan-500 transition-all text-[11px] uppercase tracking-[0.2em]">
+                    Initialize Protocol
+                  </button>
+                  <button onClick={() => setSelectedAttack(null)} className="w-full py-2 text-slate-600 font-bold hover:text-white transition-all text-[10px] uppercase tracking-widest">
+                    Abort Session
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
-// Sub-components
-const NavItem = ({ icon, label, active = false }) => (
-  <div className={`flex items-center gap-4 px-4 py-3 rounded cursor-pointer transition-all ${active ? 'bg-blue-600/10 text-blue-400 border-l-4 border-blue-600' : 'hover:bg-slate-800/50'}`}>
-    {icon}
-    <span className="text-sm font-medium uppercase tracking-tighter">{label}</span>
-  </div>
+// --- HELPER COMPONENTS ---
+const SidebarLink = ({ icon, label, active, onClick, isOpen }) => (
+  <button onClick={onClick} className={`flex items-center gap-3 w-full px-3 py-3 rounded-xl transition-all relative group z-10 ${active ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-600 hover:text-slate-300 hover:bg-slate-800/30'} ${!isOpen && 'justify-center'}`}>
+    {active && <motion.div layoutId="activeTab" className="absolute left-0 w-1 h-5 bg-cyan-500 rounded-r-full" />}
+    <div className="shrink-0 group-hover:scale-110 transition-transform">{icon}</div>
+    {isOpen && <span className="text-[11px] font-black tracking-widest uppercase">{label}</span>}
+  </button>
 );
 
-const Card = ({ children, className }) => (
-  <div className={`bg-[#0b1224] border border-slate-800 p-5 rounded-lg shadow-2xl ${className}`}>
-    {children}
-  </div>
+const AttackCard = ({ atk, index, onClick }) => (
+  <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }} whileHover={{ y: -5, borderColor: 'rgba(34, 211, 238, 0.4)' }} onClick={onClick} className="group relative bg-[#030712]/40 backdrop-blur-sm border border-slate-800/50 p-8 rounded-[2rem] cursor-pointer overflow-hidden transition-all duration-300">
+    <div className="relative z-10 flex flex-col gap-6">
+      <div className="flex justify-between items-start">
+        <div className="w-12 h-12 bg-slate-950 border border-slate-800 group-hover:border-cyan-500/30 rounded-xl flex items-center justify-center transition-colors">
+          {React.cloneElement(atk.icon, { size: 24 })}
+        </div>
+        <div className="flex flex-col items-end gap-2">
+           <span className="text-[8px] font-black text-slate-600 bg-slate-900 border border-slate-800 px-2 py-1 rounded tracking-[0.2em]">{atk.tag}</span>
+           <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${atk.difficulty === 'Beginner' ? 'text-emerald-500 bg-emerald-500/5' : 'text-orange-500 bg-orange-500/5'}`}>{atk.difficulty}</span>
+        </div>
+      </div>
+      <div>
+        <h3 className="text-base font-black text-white mb-2 uppercase italic tracking-wider group-hover:text-cyan-400 transition-colors">{atk.title}</h3>
+        <p className="text-[11px] text-slate-500 font-medium leading-relaxed">{atk.desc}</p>
+      </div>
+      <div className="pt-6 border-t border-slate-800/30 flex items-center justify-between">
+        <span className="text-[9px] font-black text-cyan-600 uppercase tracking-[0.25em] group-hover:text-cyan-400 transition-colors">Enter_Environment</span>
+        <div className="w-6 h-6 rounded-full border border-slate-800 flex items-center justify-center group-hover:border-cyan-500 transition-colors">
+           <ExternalLink size={10} className="text-slate-600 group-hover:text-cyan-500" />
+        </div>
+      </div>
+    </div>
+  </motion.div>
 );
 
 export default CyberDashboard;
