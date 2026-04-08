@@ -1,133 +1,152 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  User, Shield, Cpu, Zap, Code, 
-  Terminal, Globe, Mail, Fingerprint,
-  Award, Activity, Database, Server,Wifi,Hash,
+  User, Shield, Terminal, Cpu, 
+  Code, Globe, Mail, Activity,
+  Clock, Signal
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const OperatorProfile = () => {
-  const operatorName = localStorage.getItem('operator_name') || 'Aniket';
-  
-  // Example stats - can be linked to your backend later
-  const stats = [
-    { label: 'Clearance', value: 'Level 5 / Root', icon: <Shield size={14} className="text-cyan-500" /> },
-    { label: 'Uptime', value: '99.9%', icon: <Activity size={14} className="text-emerald-500" /> },
-    { label: 'Node Status', value: 'Active', icon: <Wifi size={14} className="text-blue-500" /> },
-    { label: 'Protocol ID', value: 'HA-0407-X', icon: <Hash size={14} className="text-purple-500" /> },
-  ];
+  // 1. Dynamic State for Operator Data
+  const [operator, setOperator] = useState({
+    name: "Aniket", // Default fallback
+    role: "Lead Developer",
+    org: "Bit2Byte_Core",
+    node: "Mumbai_Node_01",
+    email: "aniket@ops.local",
+    site: "bit2byte.dev"
+  });
 
-  const techStack = [
-    { name: 'Java', level: 90 },
-    { name: 'Node.js', level: 85 },
-    { name: 'React', level: 88 },
-    { name: 'MongoDB', level: 82 },
-    { name: 'CyberSec', level: 75 }
-  ];
+  // 2. Dynamic Systems State
+  const [systemTime, setSystemTime] = useState(new Date().toLocaleTimeString());
+  const [latency, setLatency] = useState(14);
+  const [isOnline, setIsOnline] = useState(true);
+
+  // 3. Logic to Fetch Logged-in User
+  useEffect(() => {
+    // Check localStorage for the name stored during login
+    // Change 'operator_name' to whatever key you used in your Login.jsx
+    const storedName = localStorage.getItem('operator_name');
+    const storedEmail = localStorage.getItem('operator_email');
+
+    if (storedName) {
+      setOperator(prev => ({
+        ...prev,
+        name: storedName,
+        // Optional: create a dynamic email based on name if not in storage
+        email: storedEmail || `${storedName.toLowerCase().replace(/\s/g, '')}@ops.local`
+      }));
+    }
+
+    // Interval for Clock and Latency
+    const timer = setInterval(() => {
+      setSystemTime(new Date().toLocaleTimeString());
+      setLatency(Math.floor(Math.random() * (25 - 10 + 1)) + 10);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 10 }} 
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-6 lg:space-y-8"
+      className="max-w-4xl mx-auto p-6 bg-[#020617] border border-slate-800 rounded-2xl shadow-2xl font-mono text-slate-300"
     >
-      {/* --- HEADER --- */}
-      <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between bg-slate-900/10 border border-slate-800/40 p-6 lg:p-10 rounded-[2rem]">
-        <div className="flex items-center gap-6">
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-            <div className="relative w-20 h-20 lg:w-24 lg:h-24 bg-[#080c17] border border-slate-700 rounded-2xl flex items-center justify-center text-3xl font-black text-cyan-400 italic shadow-2xl">
-              {operatorName[0]}
-            </div>
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-cyan-500 border-4 border-[#020617] rounded-full animate-pulse"></div>
+      {/* TOP DYNAMIC HUD */}
+      <div className="flex justify-between items-center mb-6 px-2 text-[10px] text-slate-500 uppercase tracking-[0.2em]">
+        <div className="flex items-center gap-4">
+          <span className="flex items-center gap-2">
+            <Clock size={12} className="text-cyan-500" /> {systemTime}
+          </span>
+          <span className="flex items-center gap-2">
+            <Signal size={12} className={latency > 20 ? "text-amber-500" : "text-emerald-500"} /> 
+            {latency}ms
+          </span>
+        </div>
+        <span className="text-cyan-900 hidden md:block italic">Encryption: AES-256-GCM</span>
+      </div>
+
+      {/* HEADER SECTION */}
+      <div className="flex flex-col md:flex-row items-center gap-8 border-b border-slate-800 pb-8 mb-8">
+        <div className="relative cursor-pointer" onClick={() => setIsOnline(!isOnline)}>
+          <div className="w-24 h-24 bg-slate-900 border-2 border-cyan-500 rounded-xl flex items-center justify-center text-4xl font-black text-cyan-500 italic shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+            {/* Dynamic Initial */}
+            {operator.name.charAt(0).toUpperCase()}
           </div>
-          
-          <div>
-            <h2 className="text-2xl lg:text-3xl font-black text-white tracking-tighter uppercase italic">{operatorName}</h2>
-            <div className="flex items-center gap-3 mt-2">
-              <span className="text-[10px] font-bold text-cyan-600 px-2 py-0.5 border border-cyan-900/50 bg-cyan-500/5 rounded uppercase tracking-widest">Lead Developer</span>
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Bit2Byte_Core</span>
-            </div>
-          </div>
+          <motion.div 
+            animate={{ scale: isOnline ? [1, 1.2, 1] : 1 }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className={`absolute -bottom-1 -right-1 w-4 h-4 border-2 border-[#020617] rounded-full ${isOnline ? "bg-emerald-500" : "bg-red-500"}`}
+          />
         </div>
 
-        <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
-          {stats.map((stat, i) => (
-            <div key={i} className="px-4 py-3 bg-slate-900/20 border border-slate-800/50 rounded-xl min-w-[140px]">
-              <div className="flex items-center gap-2 mb-1">
-                {stat.icon}
-                <span className="text-[9px] font-black text-slate-600 uppercase tracking-tighter">{stat.label}</span>
-              </div>
-              <p className="text-[11px] font-mono text-slate-300 font-bold">{stat.value}</p>
-            </div>
-          ))}
+        <div className="text-center md:text-left flex-1">
+          <h1 className="text-3xl font-black text-white uppercase italic tracking-tighter">
+            {/* Dynamic Name */}
+            {operator.name} <span className="text-cyan-500 text-sm font-mono not-italic tracking-widest ml-2">[{operator.role}]</span>
+          </h1>
+          <p className="text-[10px] text-slate-500 uppercase tracking-[0.4em] mt-2">
+            {operator.org} // {operator.node}
+          </p>
+        </div>
+
+        <div className="hidden md:block bg-slate-900/50 p-4 border border-slate-800 rounded-lg min-w-[140px]">
+           <Activity size={20} className={isOnline ? "text-cyan-500 mb-2 animate-pulse" : "text-slate-700 mb-2"} />
+           <p className="text-[9px] text-slate-500 uppercase tracking-tighter">System Status</p>
+           <p className={`text-[10px] font-bold uppercase tracking-widest ${isOnline ? "text-emerald-500" : "text-red-500"}`}>
+             {isOnline ? "Optimal" : "Offline"}
+           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* --- BIO / TERMINAL --- */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#080c17] border border-slate-800 rounded-[2rem] overflow-hidden flex flex-col h-full">
-            <div className="bg-slate-900/40 px-6 py-3 border-b border-slate-800 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Terminal size={14} className="text-cyan-500" />
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Operator_Manifest.exe</span>
-              </div>
-              <div className="flex gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-slate-800"></div>
-                <div className="w-2 h-2 rounded-full bg-slate-800"></div>
-                <div className="w-2 h-2 rounded-full bg-slate-800"></div>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* BIO / TERMINAL SECTION */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-cyan-500 mb-2">
+            <Terminal size={16} />
+            <span className="text-xs font-black uppercase tracking-widest italic">Operator_Manifest</span>
+          </div>
+          <div className="bg-black/50 p-6 border border-slate-800 rounded-xl leading-relaxed text-xs h-full">
+            <div className="flex items-center gap-2 mb-4">
+               <span className="text-cyan-600 font-bold">root@hackaware:~$</span> 
+               <motion.span
+                 animate={{ opacity: [1, 0] }}
+                 transition={{ repeat: Infinity, duration: 0.8 }}
+                 className="w-2 h-4 bg-cyan-500 inline-block"
+               />
             </div>
-            <div className="p-6 lg:p-8 font-mono text-[12px] leading-relaxed text-slate-400">
-              <p className="mb-4"><span className="text-cyan-600">root@hackaware:~$</span> cat identity_brief.txt</p>
-              <p className="text-slate-300">
-                Specializing in full-stack architecture and cybersecurity research. 
-                Currently focused on the <span className="text-cyan-500">HackAware</span> framework, 
-                demonstrating vulnerability vectors and defensive mitigation strategies.
-              </p>
-              <p className="mt-4 text-slate-500 italic">
-                // System proficiency: Java, Node.js, React, TailwindCSS. <br/>
-                // Research focus: SQLi, Phishing simulation, Brute-force resilience.
-              </p>
-              <div className="mt-6 flex items-center gap-4">
-                 <div className="flex items-center gap-2 text-cyan-700">
-                    <Globe size={14} />
-                    <span className="hover:text-cyan-400 cursor-pointer transition-colors">bit2byte.dev</span>
-                 </div>
-                 <div className="flex items-center gap-2 text-cyan-700">
-                    <Mail size={14} />
-                    <span className="hover:text-cyan-400 cursor-pointer transition-colors">aniket@op.local</span>
-                 </div>
-              </div>
+            
+            <p className="text-slate-400 mb-6">
+              Welcome, <span className="text-white font-bold">{operator.name}</span>. 
+              Session established at <span className="text-cyan-500">Mumbai_Node_01</span>. 
+              All defensive protocols for HackAware are currently active.
+            </p>
+            
+            <div className="space-y-3 pt-4 border-t border-slate-900">
+               <a href={`https://${operator.site}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-slate-500 hover:text-cyan-400 transition-all group">
+                  <Globe size={14} className="group-hover:rotate-12" /> 
+                  <span className="text-[10px] font-bold">{operator.site}</span>
+               </a>
+               <a href={`mailto:${operator.email}`} className="flex items-center gap-3 text-slate-500 hover:text-cyan-400 transition-all group">
+                  <Mail size={14} className="group-hover:translate-x-1" /> 
+                  <span className="text-[10px] uppercase font-bold">{operator.email}</span>
+               </a>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* --- TECH SKILLS GRID --- */}
-        <div className="bg-slate-900/10 border border-slate-800/40 p-6 rounded-[2rem]">
-          <h3 className="text-[11px] font-black text-white uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
-            <Cpu size={14} className="text-cyan-500" /> System Proficiency
-          </h3>
-          <div className="space-y-5">
-            {techStack.map((tech, i) => (
-              <div key={i}>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{tech.name}</span>
-                  <span className="text-[9px] font-mono text-cyan-600">{tech.level}%</span>
-                </div>
-                <div className="h-1 bg-slate-900 rounded-full overflow-hidden border border-slate-800/50">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: `${tech.level}%` }}
-                    transition={{ duration: 1, delay: i * 0.1 }}
-                    className="h-full bg-gradient-to-r from-cyan-600 to-blue-500 shadow-[0_0_8px_rgba(6,182,212,0.4)]"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* FOOTER STATUS */}
+      <div className="mt-12 pt-4 border-t border-slate-900 flex justify-between items-center opacity-50">
+         <div className="flex items-center gap-2">
+            <Shield size={12} className="text-cyan-900" />
+            <span className="text-[8px] uppercase tracking-widest">Secured by HackAware Protocol</span>
+         </div>
+         <div className="flex items-center gap-4">
+            <span className="text-[8px] uppercase tracking-widest text-cyan-700">Node_ID: 77-41-AF</span>
+            <span className="text-[8px] uppercase tracking-widest">v.2.0.4-Stable</span>
+         </div>
       </div>
     </motion.div>
   );
