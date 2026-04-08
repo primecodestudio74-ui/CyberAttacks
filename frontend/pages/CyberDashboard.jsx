@@ -223,8 +223,10 @@ const CyberDashboard = () => {
                     <div>
                       <h2 className="text-2xl lg:text-3xl font-black text-white uppercase italic tracking-tight mb-6">Strategic Briefing</h2>
                       <p className="text-slate-400 text-sm leading-loose mb-8">
-                        In an era of rising digital threats, <span className="text-cyan-500 font-bold">HackAware</span> is designed to demystify complex cyber attacks. 
-                        We believe that the best defense is a deep understanding of the offense.
+                        In an era of rising digital threats, <span className="text-cyan-500 font-bold">HackAware</span> helps make complex cyber attacks simple and easy to understand.
+                        It breaks down how different attacks work in a clear and practical way.
+                        By learning how hackers think and operate, users can better protect themselves and their systems.
+                        We believe that the best defense is not just tools, but knowledge and awareness of real-world threats.
                       </p>
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
