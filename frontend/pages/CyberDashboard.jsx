@@ -3,14 +3,13 @@ import {
   Shield, LogOut, LayoutDashboard, Lock, Mail, 
   Database, Activity, Menu, ChevronLeft, 
   ExternalLink, User, Terminal, Clock, 
-  BrainCircuit, ArrowDown, Target, BookOpen
+  BrainCircuit, ArrowDown, Target, BookOpen, Settings
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Note: Ensure these components exist in your project structure
+// Component Imports
 import OperatorProfile from './OperatorProfile'; 
-import SystemLogs from './SystemLogs'; 
 
 const CyberDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
@@ -85,6 +84,11 @@ const CyberDashboard = () => {
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    if(window.innerWidth < 1024) setIsSidebarOpen(false);
+  };
+
   if (!isAuthorized) return null;
 
   return (
@@ -95,7 +99,6 @@ const CyberDashboard = () => {
         <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-20">
           <source src="/DashBoard_Video.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/40 via-[#020617]/90 to-[#020617]"></div>
       </div>
 
       {/* CRT SCANLINE EFFECT */}
@@ -107,7 +110,7 @@ const CyberDashboard = () => {
             {isSidebarOpen && (
               <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex items-center gap-2 pl-2">
                 <Shield className="text-cyan-500" size={16} />
-                <h1 className="font-black text-[10px] tracking-[0.25em] text-white uppercase italic">HACK<span className="text-cyan-500">AWARE</span></h1>
+                <h1 className="font-black text-[18px] tracking-[0.15em] text-white uppercase italic">HACK<span className="text-cyan-500">AWARE</span></h1>
               </motion.div>
             )}
           </AnimatePresence>
@@ -116,18 +119,32 @@ const CyberDashboard = () => {
           </button>
         </div>
 
-        <nav className="flex-1 px-3 py-4 space-y-8 overflow-y-auto custom-scrollbar overflow-x-hidden">
+        <nav className="flex-1 px-3 py-4 space-y-8 overflow-y-auto overflow-y-hidden overflow-x-hidden">
+          
+          {/* OPERATIONS GROUP */}
           <div>
             <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>Operations</p>
             <div className="space-y-1">
-              <SidebarLink icon={<LayoutDashboard size={18}/>} label="Attack Hub" active={activeTab === 'hub'} onClick={() => {setActiveTab('hub'); if(window.innerWidth < 1024) setIsSidebarOpen(false); }} isOpen={isSidebarOpen} />
-              <SidebarLink icon={<Terminal size={18}/>} label="System Logs" active={activeTab === 'logs'} onClick={() => {setActiveTab('logs'); if(window.innerWidth < 1024) setIsSidebarOpen(false); }} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<LayoutDashboard size={18}/>} label="Attack Hub" active={activeTab === 'hub'} onClick={() => handleTabChange('hub')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<Shield size={18}/>} label="Prevention" active={activeTab === 'prevention'} onClick={() => handleTabChange('prevention')} isOpen={isSidebarOpen} />
             </div>
           </div>
+
+          {/* ACADEMY GROUP */}
           <div>
-            <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>Identity</p>
+            <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>Academy</p>
             <div className="space-y-1">
-              <SidebarLink icon={<User size={18}/>} label="Operator Profile" active={activeTab === 'profile'} onClick={() => {setActiveTab('profile'); if(window.innerWidth < 1024) setIsSidebarOpen(false); }} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<BookOpen size={18}/>} label="Learning" active={activeTab === 'learning'} onClick={() => handleTabChange('learning')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<Target size={18}/>} label="Quiz" active={activeTab === 'quiz'} onClick={() => handleTabChange('quiz')} isOpen={isSidebarOpen} />
+            </div>
+          </div>
+
+          {/* IDENTITY & SYSTEM GROUP */}
+          <div>
+            <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>System</p>
+            <div className="space-y-1">
+              <SidebarLink icon={<User size={18}/>} label="Profile" active={activeTab === 'profile'} onClick={() => handleTabChange('profile')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<Settings size={18}/>} label="Settings" active={activeTab === 'settings'} onClick={() => handleTabChange('settings')} isOpen={isSidebarOpen} />
             </div>
           </div>
         </nav>
@@ -141,7 +158,7 @@ const CyberDashboard = () => {
       </aside>
 
       <main className="flex-1 flex flex-col overflow-y-auto bg-transparent scroll-smooth relative z-10">
-        <header className="h-20 flex items-center justify-between px-4 lg:px-8 border-b border-slate-800/30 bg-[#020617]/40 backdrop-blur-xl sticky top-0 z-20 shrink-0">
+        <header className="h-18 flex items-center justify-between px-4 lg:px-8 border-b border-slate-800/30 bg-[#020617]/40 backdrop-blur-xl sticky top-0 z-20 shrink-0">
           <div className="flex items-center gap-4">
             {!isSidebarOpen && (
                 <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden p-2 text-slate-400 hover:text-cyan-400">
@@ -150,7 +167,7 @@ const CyberDashboard = () => {
             )}
             <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-900/40 border border-slate-800 rounded-lg">
               <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full animate-pulse shadow-[0_0_8px_#06b6d4]"></div>
-              <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-tighter">Secure_Connection</span>
+              <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-tight">Secure_Connection</span>
             </div>
           </div>
 
@@ -255,15 +272,17 @@ const CyberDashboard = () => {
               </section>
 
             </motion.div>
-          ) : activeTab === 'logs' ? (
-            <motion.div key="logs" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }} className="p-6 lg:p-12 max-w-6xl mx-auto w-full h-full">
-               <SystemLogs />
-            </motion.div>
           ) : activeTab === 'profile' ? (
             <motion.div key="profile" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 lg:p-12 max-w-6xl mx-auto w-full">
               <OperatorProfile />
             </motion.div>
-          ) : null}
+          ) : (
+            /* Placeholder for new sections */
+            <motion.div key="other" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center h-[calc(100vh-80px)]">
+               <h2 className="text-3xl font-black text-white uppercase italic">{activeTab} Section</h2>
+               <p className="text-cyan-600 font-bold uppercase tracking-widest mt-4">Module Under Construction</p>
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
 
