@@ -14,8 +14,8 @@ import {
 
 const SQLInejection = () => {
   const navigate = useNavigate();
-  const [view, setView] = useState('lab'); 
-  const [step, setStep] = useState(0); 
+  const [view, setView] = useState('lab');
+  const [step, setStep] = useState(0);
   
   // Default Schema State
   const defaultColumns = [
@@ -43,9 +43,9 @@ const SQLInejection = () => {
   const attackPayloads = [
     { 
       id: 'tautology',
-      title: "Authentication Bypass", 
+      title: "Authentication Bypass",
       vector: "Tautology (' OR 1=1)",
-      payload: "' OR '1'='1", 
+      payload: "' OR '1'='1",
       intel: "Bypasses logic by injecting a condition that is always true. The SQL engine executes: WHERE user = '' OR '1'='1', which returns the first record in the table.",
       vulnerableCode: "const sql = `SELECT * FROM users WHERE user = '${userInput}'`;",
       secureCode: "const sql = 'SELECT * FROM users WHERE user = ?';\nawait db.execute(sql, [userInput]);",
@@ -53,7 +53,7 @@ const SQLInejection = () => {
     },
     { 
       id: 'union',
-      title: "Data Exfiltration", 
+      title: "Data Exfiltration",
       vector: "UNION-Based",
       payload: "' UNION SELECT NULL, table_name, NULL FROM information_schema.tables--", 
       intel: "Forces the database to combine results from a hidden system table with the current query. This is how attackers 'dump' your entire database structure.",
@@ -148,8 +148,8 @@ const SQLInejection = () => {
               const isLocked = i > 0 && mockData.length === 0;
               return (
                 <button 
-                  key={i} 
-                  onClick={() => !isLocked && setStep(i)} 
+                  key={i}
+                  onClick={() => !isLocked && setStep(i)}
                   disabled={isLocked}
                   className={`px-4 md:px-6 py-2 rounded-lg text-[10px] font-black uppercase transition-all 
                     ${step === i ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-600'}
@@ -293,11 +293,11 @@ const SQLInejection = () => {
             <motion.div key="s3" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="space-y-6 pb-12">
               <div className="bg-slate-900/40 border border-slate-800 p-5 md:p-8 rounded-3xl shadow-2xl relative overflow-hidden">
                 <div className={`absolute top-0 right-0 w-64 h-64 blur-[120px] rounded-full transition-colors duration-1000 ${isSecured ? 'bg-emerald-500/10' : 'bg-red-500/10'}`} />
-                
+
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10 gap-6 relative z-10">
                   <div className="flex items-center gap-4 md:gap-6">
-                    <div className={`p-4 rounded-2xl transition-all duration-700 shadow-xl shrink-0 ${isSecured ? 'bg-emerald-500 text-black scale-105' : 'bg-red-600 text-white'}`}>
-                      {isSecured ? <Lock size={28}/> : <Unlock size={28}/>}
+                    <div className={`p-4 rounded-2xl transition-all duration-700 shadow-xl shrink-0 ${isSecured ? 'bg-emerald-500 text-black scale-105' : 'bg-red-600 text-white'}`}> 
+                      {isSecured ? <Lock size={28}/> : <Unlock size={28}/>} 
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
@@ -311,7 +311,7 @@ const SQLInejection = () => {
                   </div>
 
                   <button 
-                    onClick={() => setIsSecured(!isSecured)} 
+                    onClick={() => setIsSecured(!isSecured)}
                     className={`w-full lg:w-auto px-8 py-4 rounded-xl font-black text-xs uppercase transition-all shadow-xl ${isSecured ? 'bg-slate-800 text-slate-400 border border-slate-700' : 'bg-emerald-600 text-white hover:bg-emerald-500'}`}
                   >
                     {isSecured ? "Rollback Security Patch" : "Apply Prepared Statement"}
@@ -324,18 +324,13 @@ const SQLInejection = () => {
                       <div className="bg-red-950/30 px-5 py-3 text-[10px] font-black text-red-400 flex items-center justify-between uppercase tracking-widest">
                         <div className="flex items-center gap-2"><EyeOff size={14}/> Vulnerable_Block</div>
                       </div>
-                      <pre className="p-5 text-[11px] text-slate-400 font-mono italic overflow-x-auto whitespace-pre-wrap">
-                        {selectedAttack?.vulnerableCode || "// Select a vector in Attack Lab"}
-                      </pre>
+                      <pre className="p-5 text-[11px] text-slate-400 font-mono italic overflow-x-auto whitespace-pre-wrap">{selectedAttack?.vulnerableCode || "// Select a vector in Attack Lab"}</pre>
                     </div>
-                    
                     <div className={`bg-black/60 rounded-2xl border overflow-hidden transition-all duration-700 shadow-lg ${isSecured ? 'border-emerald-500/50' : 'border-slate-800'}`}>
                       <div className={`px-5 py-3 text-[10px] font-black flex items-center justify-between transition-colors uppercase tracking-widest ${isSecured ? 'bg-emerald-950/40 text-emerald-400' : 'bg-slate-900/50 text-slate-500'}`}>
                         <div className="flex items-center gap-2"><Eye size={14}/> Secure_Block</div>
                       </div>
-                      <pre className={`p-5 text-[11px] font-mono overflow-x-auto whitespace-pre-wrap ${isSecured ? 'text-emerald-400' : 'text-slate-600'}`}>
-                        {selectedAttack?.secureCode || "// Security logic locked"}
-                      </pre>
+                      <pre className={`p-5 text-[11px] font-mono overflow-x-auto whitespace-pre-wrap ${isSecured ? 'text-emerald-400' : 'text-slate-600'}`}>{selectedAttack?.secureCode || "// Security logic locked"}</pre>
                     </div>
                   </div>
 
@@ -363,3 +358,4 @@ const SQLInejection = () => {
 };
 
 export default SQLInejection;
+

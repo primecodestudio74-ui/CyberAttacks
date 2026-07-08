@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Lock, Mail, User } from 'lucide-react';
+
 
 // --- 1. TYPEWRITER ENGINE ---
 const Typewriter = ({ sequences, speed = 80, delay = 2500 }) => {
@@ -12,23 +13,21 @@ const Typewriter = ({ sequences, speed = 80, delay = 2500 }) => {
   useEffect(() => {
     const handleTyping = () => {
       const currentFullText = sequences[loopIndex % sequences.length];
+
       if (isDeleting) {
         setText(currentFullText.substring(0, text.length - 1));
         setTypingSpeed(speed / 2);
-      } else {
-        setText(currentFullText.substring(0, text.length + 1));
-        setTypingSpeed(speed);
+        return;
       }
-      if (!isDeleting && text === currentFullText) {
-        setTimeout(() => setIsDeleting(true), delay);
-      } else if (isDeleting && text === '') {
-        setIsDeleting(false);
-        setLoopIndex(loopIndex + 1);
-      }
+
+      setText(currentFullText.substring(0, text.length + 1));
+      setTypingSpeed(speed);
     };
+
     const timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
   }, [text, isDeleting, loopIndex, sequences, speed, delay, typingSpeed]);
+
 
   return (
     <div className="font-mono text-cyan-500 tracking-[0.15em] text-[10px] md:text-[11px] uppercase flex items-center justify-center gap-2">
@@ -45,21 +44,27 @@ const AuthPage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const mottos = [
-    "HackAware Cyber Security Platform",
-    "Simulate Attack | Learn Defense",
-    "Stay Aware, Stay Secure",
-    "Terminal Handshake Initialized",
-    "Vulnerability Assessment Active"
-  ];
+  const mottos = useMemo(
+    () => [
+      "HackAware Cyber Security Platform",
+      "Simulate Attack | Learn Defense",
+      "Stay Aware, Stay Secure",
+      "Terminal Handshake Initialized",
+      "Vulnerability Assessment Active",
+    ],
+    []
+  );
+
 
   useEffect(() => {
-    const savedToken = localStorage.getItem('operator_token');
-    if (savedToken) {
-      navigate('/dashboard');
+    try {
+      const savedToken = localStorage.getItem('operator_token');
+      if (savedToken) navigate('/dashboard');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, [navigate]);
+
 
   const handleAuthSuccess = (data) => {
     localStorage.setItem('operator_token', data.token);
@@ -79,7 +84,7 @@ const AuthPage = () => {
       {/* Video Background Layer */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <video autoPlay muted loop playsInline className="w-full h-full object-cover opacity-40">
-          <source src="/HA_BG.mp4" type="video/mp4" />
+<source src="/videos/HA_BG.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1a]/80 via-transparent to-[#0a0f1a]/80" />
         <div className="absolute inset-0 bg-[#0a0f1a]/20 backdrop-blur-[2px]" />
@@ -109,11 +114,15 @@ const AuthPage = () => {
             <button 
               onClick={() => setView('login')}
               className={`transition-all duration-300 ${view === 'login' ? 'text-cyan-400 border-b-2 border-cyan-400 pb-1' : 'text-gray-400'}`}
-            >ACCESS_GATE</button>
+            >
+              ACCESS_GATE
+            </button>
             <button 
               onClick={() => setView('register')}
               className={`transition-all duration-300 ${view === 'register' ? 'text-cyan-400 border-b-2 border-cyan-400 pb-1' : 'text-gray-400'}`}
-            >NEW_IDENTITY</button>
+            >
+              NEW_IDENTITY
+            </button>
           </div>
 
           {view === 'login' ? (
@@ -166,9 +175,11 @@ const LoginForm = ({ onLogin }) => {
     e.preventDefault();
     setStatus({ type: 'info', msg: 'AUTHENTICATING...' });
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
+      const res = await fetch(`${apiBaseUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+
         body: JSON.stringify(formData),
       });
       const data = await res.json();
@@ -211,9 +222,11 @@ const RegisterForm = ({ onRegister }) => {
     e.preventDefault();
     setStatus({ type: 'info', msg: 'INITIALIZING_ID...' });
     try {
-      const res = await fetch('http://localhost:5000/api/auth/signup', {
+      const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
+      const res = await fetch(`${apiBaseUrl}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+
         body: JSON.stringify(formData),
       });
       const data = await res.json();
@@ -247,3 +260,4 @@ const RegisterForm = ({ onRegister }) => {
 };
 
 export default AuthPage;
+

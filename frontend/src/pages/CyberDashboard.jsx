@@ -42,36 +42,36 @@ const CyberDashboard = () => {
 
   const attacks = [
     { 
-      id: 'SQL_INJECTION', 
-      title: 'SQL Injection', 
-      desc: 'Exploit database vulnerabilities via malicious query manipulation.', 
+      id: 'SQL_INJECTION',
+      title: 'SQL Injection',
+      desc: 'Exploit database vulnerabilities via malicious query manipulation.',
       icon: <Database className="text-purple-400" />,
       tag: 'DATABASE_SEC',
       path: '/dashboard/sql-injection',
       difficulty: 'Intermediate'
     },
     { 
-      id: 'PHISHING', 
-      title: 'Phishing Attack', 
-      desc: 'Simulate deceptive communication to identify social engineering risks.', 
+      id: 'PHISHING',
+      title: 'Phishing Attack',
+      desc: 'Simulate deceptive communication to identify social engineering risks.',
       icon: <Mail className="text-blue-400" />,
       tag: 'SOCIAL_ENG',
       path: '/dashboard/phishing',
       difficulty: 'Beginner'
     },
     { 
-      id: 'BRUTE_FORCE', 
-      title: 'Brute-Force Attack', 
-      desc: 'Systematic credential guessing to test password complexity and lockouts.', 
+      id: 'BRUTE_FORCE',
+      title: 'Brute-Force Attack',
+      desc: 'Systematic credential guessing to test password complexity and lockouts.',
       icon: <Lock className="text-cyan-400" />,
       tag: 'AUTH_TEST',
       path: '/dashboard/brute-force',
       difficulty: 'Beginner'
     },
     { 
-      id: 'AI_POISONING', 
-      title: 'AI Data Poisoning', 
-      desc: 'Corrupt neural network training sets to create backdoors and model bias.', 
+      id: 'AI_POISONING',
+      title: 'AI Data Poisoning',
+      desc: 'Corrupt neural network training sets to create backdoors and model bias.',
       icon: <BrainCircuit className="text-fuchsia-500" />,
       tag: 'ADVERSARIAL_ML',
       path: '/dashboard/ai-poisoning',
@@ -97,7 +97,7 @@ const CyberDashboard = () => {
       {/* --- BACKGROUND VIDEO --- */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-20">
-          <source src="/DashBoard_Video.mp4" type="video/mp4" />
+          <source src="/videos/DashBoard_Video.mp4" type="video/mp4" />
         </video>
       </div>
 
@@ -360,3 +360,4 @@ const AttackCard = ({ atk, index, onClick }) => (
 );
 
 export default CyberDashboard;
+
