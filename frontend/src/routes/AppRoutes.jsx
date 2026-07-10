@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-import AuthPage from '../pages/AuthPage.jsx';
+import Login from '../pages/Auth/Login.jsx';
+import Signup from '../pages/Auth/Signup.jsx';
 import CyberDashboard from '../pages/CyberDashboard.jsx';
 import SqlInjection from '../pages/Attacks/SQLInejection.jsx';
 import BruteForce from '../pages/Attacks/BruteForce.jsx';
@@ -20,7 +21,9 @@ export default function AppRoutes() {
     <Router>
       <Routes>
         {/* Public Authentication Gate */}
-        <Route path="/" element={<AuthPage />} />
+        <Route path="/" element={<Login />} />
+
+        <Route path="/signup" element={<Signup />} />
 
         {/* Main Dashboard Hub */}
         <Route
