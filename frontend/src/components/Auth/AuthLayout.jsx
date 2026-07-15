@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Shield } from "lucide-react";
-import Typewriter from "./Typewriter";
+import Typewriter from "./TypeWriter";
 
 const AuthLayout = ({ children }) => {
   const navigate = useNavigate();

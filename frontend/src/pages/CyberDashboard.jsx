@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 // Component Imports
 import OperatorProfile from './OperatorProfile'; 
+import LearningHub from '../components/Learning/LearningHub';
 
 const CyberDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
@@ -277,6 +278,10 @@ const CyberDashboard = () => {
           ) : activeTab === 'profile' ? (
             <motion.div key="profile" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 lg:p-12 max-w-6xl mx-auto w-full">
               <OperatorProfile />
+            </motion.div>
+          ) : activeTab === 'learning' ? (
+            <motion.div key="learning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
+              <LearningHub onLaunchLab={(path) => navigate(path)} />
             </motion.div>
           ) : (
             /* Placeholder for new sections */
