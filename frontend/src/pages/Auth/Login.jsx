@@ -3,9 +3,12 @@ import LoginForm from "../../components/Auth/LoginForm";
 
 const Login = () => {
   return (
-    <AuthLayout>
-      <LoginForm />
-    </AuthLayout>
+    <AuthLayout
+  title="Welcome Back"
+  subtitle="Sign in to continue to HackAware."
+>
+  <LoginForm />
+</AuthLayout>
   );
 };
 

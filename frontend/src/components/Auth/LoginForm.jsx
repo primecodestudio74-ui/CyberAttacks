@@ -4,78 +4,163 @@ import { Lock, Mail } from "lucide-react";
 
 import { apiBaseUrl } from "../../utils/api";
 import { InputField } from "./InputField";
+import LoginButton from "./LoginButton";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [status, setStatus] = useState({ type: "", msg: "" });
+
+  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [status, setStatus] = useState({
+    type: "",
+    msg: "",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus({ type: "info", msg: "AUTHENTICATING..." });
+
+    setLoading(true);
+    setStatus({ type: "", msg: "" });
 
     try {
       const res = await fetch(`${apiBaseUrl}/api/auth/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
+
       if (res.ok) {
         localStorage.setItem("operator_token", data.token);
         localStorage.setItem("operator_name", data.fullName);
+
         navigate("/dashboard");
       } else {
-        setStatus({ type: "error", msg: data.message || "ACCESS_DENIED" });
+        setStatus({
+          type: "error",
+          msg: data.message || "Invalid email or password.",
+        });
       }
-    } catch (err) {
-      setStatus({ type: "error", msg: "GATEWAY_TIMEOUT" });
+    } catch {
+      setStatus({
+        type: "error",
+        msg: "Unable to connect to the server.",
+      });
     }
+
+    setLoading(false);
   };
 
   return (
-    <div className="bg-[#0d1525]/80 border border-gray-700 p-8 rounded-lg shadow-2xl backdrop-blur-lg animate-in fade-in zoom-in duration-500">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xs font-bold text-gray-300 uppercase tracking-widest">Operator Login</h2>
-        <span className="text-[9px] text-red-500 font-bold border border-red-500/20 px-2 py-0.5 rounded bg-red-500/5 animate-pulse">LOCKED</span>
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-5">
 
       {status.msg && (
         <div
-          className={`mb-4 p-2 text-[10px] border font-mono ${
-            status.type === "error"
-              ? "border-red-500/40 text-red-400 bg-red-900/10"
-              : "border-cyan-500/40 text-cyan-400 bg-cyan-900/10"
-          }`}
+          className={`
+            rounded-xl
+            border
+            px-4
+            py-3
+            text-sm
+            ${
+              status.type === "error"
+                ? "border-red-500/30 bg-red-500/10 text-red-300"
+                : "border-cyan-500/30 bg-cyan-500/10 text-cyan-300"
+            }
+          `}
         >
           {status.msg}
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
-        <InputField
-          label="Identity_Email"
-          type="email"
-          icon={Mail}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        />
-        <InputField
-          label="Secure_Passphrase"
-          type="password"
-          icon={Lock}
-          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-        />
+      <InputField
+        label="Email Address"
+        type="email"
+        placeholder="john@example.com"
+        icon={Mail}
+        value={formData.email}
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            email: e.target.value,
+          })
+        }
+      />
+
+      <InputField
+        label="Password"
+        type="password"
+        placeholder="Enter your password"
+        icon={Lock}
+        value={formData.password}
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            password: e.target.value,
+          })
+        }
+      />
+
+      {/* Remember Me + Forgot Password */}
+
+      <div className="flex items-center justify-between">
+
+        <label className="flex items-center gap-2 text-sm text-slate-400 cursor-pointer">
+
+          <input
+            type="checkbox"
+            className="
+              h-4
+              w-4
+              rounded
+              border-slate-600
+              bg-slate-800
+              accent-cyan-500
+            "
+          />
+
+          Remember me
+
+        </label>
+
         <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-cyan-700 to-cyan-500 hover:from-cyan-600 hover:to-cyan-400 text-white font-bold py-3 rounded shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all uppercase tracking-widest text-[10px]"
+          type="button"
+          onClick={() => navigate("/forgot-password")}
+          className="text-sm text-cyan-400 transition hover:text-cyan-300"
         >
-          Grant_Access
+          Forgot password?
         </button>
-      </form>
-    </div>
+
+      </div>
+
+      <LoginButton loading={loading}>
+        Sign In
+      </LoginButton>
+
+      <div className="text-center text-sm text-slate-400">
+
+        Don't have an account?{" "}
+
+        <button
+          type="button"
+          onClick={() => navigate("/signup")}
+          className="font-medium text-cyan-400 transition hover:text-cyan-300"
+        >
+          Create Account
+        </button>
+
+      </div>
+
+    </form>
   );
 };
 
 export default LoginForm;
-
