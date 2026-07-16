@@ -3,7 +3,7 @@ import {
   Shield, LogOut, LayoutDashboard, Lock, Mail, 
   Database, Activity, Menu, ChevronLeft, 
   ExternalLink, User, Terminal, Clock, 
-  BrainCircuit, ArrowDown, Target, BookOpen, Settings
+  BrainCircuit, ArrowDown, Target, BookOpen, Settings,Keyboard
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -77,6 +77,15 @@ const CyberDashboard = () => {
       tag: 'ADVERSARIAL_ML',
       path: '/dashboard/ai-poisoning',
       difficulty: 'Advanced'
+    },
+    { 
+      id: 'KEYLOGGER',
+      title: 'Keylogger Attack',
+      desc: 'Intercept and record keystrokes to understand data exfiltration risks.',
+      icon: <Keyboard className="text-red-400" />,
+      tag: 'DATA_EXFIL',
+      path: '/dashboard/keylogger',
+      difficulty: 'Intermediate'
     }
   ];
 

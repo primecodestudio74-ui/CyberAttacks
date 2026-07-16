@@ -8,6 +8,7 @@ import SqlInjection from '../pages/Attacks/SQLInejection.jsx';
 import BruteForce from '../pages/Attacks/BruteForce.jsx';
 import Phishing from '../pages/Attacks/Phishing.jsx';
 import AIPoisoningLab from '../pages/Attacks/AiPoisoningLab.jsx';
+import Keylogger from '../pages/Attacks/Keylogger.jsx';
 
 // Secure Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -69,6 +70,15 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute>
               <AIPoisoningLab />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/keylogger"
+          element={
+            <ProtectedRoute>
+              <Keylogger />
             </ProtectedRoute>
           }
         />
