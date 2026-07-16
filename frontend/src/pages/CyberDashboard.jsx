@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Shield, LogOut, LayoutDashboard, Lock, Mail, 
-  Database, Activity, Menu, ChevronLeft, 
-  ExternalLink, User, Terminal, Clock, 
-  BrainCircuit, ArrowDown, Target, BookOpen, Settings,Keyboard
+import {
+  Shield, LogOut, LayoutDashboard, Lock, Mail,
+  Database, Activity, Menu, ChevronLeft,
+  ExternalLink, User, Terminal, Clock,
+  BrainCircuit, ArrowDown, Target, BookOpen, Settings, Keyboard, Key
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Component Imports
-import OperatorProfile from './OperatorProfile'; 
+import OperatorProfile from './OperatorProfile';
 import LearningHub from '../components/Learning/LearningHub';
 
 const CyberDashboard = () => {
@@ -23,26 +23,26 @@ const CyberDashboard = () => {
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     const handleResize = () => {
-        if (window.innerWidth < 1024) setIsSidebarOpen(false);
-        else setIsSidebarOpen(true);
+      if (window.innerWidth < 1024) setIsSidebarOpen(false);
+      else setIsSidebarOpen(true);
     };
     window.addEventListener('resize', handleResize);
     return () => {
-        clearInterval(timer);
-        window.removeEventListener('resize', handleResize);
+      clearInterval(timer);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('operator_token') || localStorage.getItem('token');
-    if (!token) navigate('/'); 
+    if (!token) navigate('/');
     else setIsAuthorized(true);
   }, [navigate]);
 
   const operatorName = localStorage.getItem('operator_name') || 'Aniket';
 
   const attacks = [
-    { 
+    {
       id: 'SQL_INJECTION',
       title: 'SQL Injection',
       desc: 'Exploit database vulnerabilities via malicious query manipulation.',
@@ -51,7 +51,7 @@ const CyberDashboard = () => {
       path: '/dashboard/sql-injection',
       difficulty: 'Intermediate'
     },
-    { 
+    {
       id: 'PHISHING',
       title: 'Phishing Attack',
       desc: 'Simulate deceptive communication to identify social engineering risks.',
@@ -60,7 +60,7 @@ const CyberDashboard = () => {
       path: '/dashboard/phishing',
       difficulty: 'Beginner'
     },
-    { 
+    {
       id: 'BRUTE_FORCE',
       title: 'Brute-Force Attack',
       desc: 'Systematic credential guessing to test password complexity and lockouts.',
@@ -69,7 +69,7 @@ const CyberDashboard = () => {
       path: '/dashboard/brute-force',
       difficulty: 'Beginner'
     },
-    { 
+    {
       id: 'AI_POISONING',
       title: 'AI Data Poisoning',
       desc: 'Corrupt neural network training sets to create backdoors and model bias.',
@@ -78,13 +78,22 @@ const CyberDashboard = () => {
       path: '/dashboard/ai-poisoning',
       difficulty: 'Advanced'
     },
-    { 
+    {
       id: 'KEYLOGGER',
       title: 'Keylogger Attack',
       desc: 'Intercept and record keystrokes to understand data exfiltration risks.',
       icon: <Keyboard className="text-red-400" />,
       tag: 'DATA_EXFIL',
       path: '/dashboard/keylogger',
+      difficulty: 'Intermediate'
+    },
+    {
+      id: 'SESSION_HIJACKING',
+      title: 'Session Hijacking Attack',
+      desc: 'Intercept and exploit active session tokens to understand sidejacking and cookie vulnerability risks.',
+      icon: <Key className="text-cyan-400" />,
+      tag: 'SESSION_MGMT',
+      path: '/dashboard/sessionhijacking',
       difficulty: 'Intermediate'
     }
   ];
@@ -96,14 +105,14 @@ const CyberDashboard = () => {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    if(window.innerWidth < 1024) setIsSidebarOpen(false);
+    if (window.innerWidth < 1024) setIsSidebarOpen(false);
   };
 
   if (!isAuthorized) return null;
 
   return (
     <div className="flex h-screen bg-[#020617] text-slate-400 font-sans overflow-hidden selection:bg-cyan-500/30 relative">
-      
+
       {/* --- BACKGROUND VIDEO --- */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-20">
@@ -130,13 +139,13 @@ const CyberDashboard = () => {
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-8 overflow-y-auto overflow-y-hidden overflow-x-hidden">
-          
+
           {/* OPERATIONS GROUP */}
           <div>
             <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>Operations</p>
             <div className="space-y-1">
-              <SidebarLink icon={<LayoutDashboard size={18}/>} label="Attack Hub" active={activeTab === 'hub'} onClick={() => handleTabChange('hub')} isOpen={isSidebarOpen} />
-              <SidebarLink icon={<Shield size={18}/>} label="Prevention" active={activeTab === 'prevention'} onClick={() => handleTabChange('prevention')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<LayoutDashboard size={18} />} label="Attack Hub" active={activeTab === 'hub'} onClick={() => handleTabChange('hub')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<Shield size={18} />} label="Prevention" active={activeTab === 'prevention'} onClick={() => handleTabChange('prevention')} isOpen={isSidebarOpen} />
             </div>
           </div>
 
@@ -144,8 +153,8 @@ const CyberDashboard = () => {
           <div>
             <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>Academy</p>
             <div className="space-y-1">
-              <SidebarLink icon={<BookOpen size={18}/>} label="Learning" active={activeTab === 'learning'} onClick={() => handleTabChange('learning')} isOpen={isSidebarOpen} />
-              <SidebarLink icon={<Target size={18}/>} label="Quiz" active={activeTab === 'quiz'} onClick={() => handleTabChange('quiz')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<BookOpen size={18} />} label="Learning" active={activeTab === 'learning'} onClick={() => handleTabChange('learning')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<Target size={18} />} label="Quiz" active={activeTab === 'quiz'} onClick={() => handleTabChange('quiz')} isOpen={isSidebarOpen} />
             </div>
           </div>
 
@@ -153,8 +162,8 @@ const CyberDashboard = () => {
           <div>
             <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>System</p>
             <div className="space-y-1">
-              <SidebarLink icon={<User size={18}/>} label="Profile" active={activeTab === 'profile'} onClick={() => handleTabChange('profile')} isOpen={isSidebarOpen} />
-              <SidebarLink icon={<Settings size={18}/>} label="Settings" active={activeTab === 'settings'} onClick={() => handleTabChange('settings')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<User size={18} />} label="Profile" active={activeTab === 'profile'} onClick={() => handleTabChange('profile')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<Settings size={18} />} label="Settings" active={activeTab === 'settings'} onClick={() => handleTabChange('settings')} isOpen={isSidebarOpen} />
             </div>
           </div>
         </nav>
@@ -171,9 +180,9 @@ const CyberDashboard = () => {
         <header className="h-18 flex items-center justify-between px-4 lg:px-8 border-b border-slate-800/30 bg-[#020617]/40 backdrop-blur-xl sticky top-0 z-20 shrink-0">
           <div className="flex items-center gap-4">
             {!isSidebarOpen && (
-                <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden p-2 text-slate-400 hover:text-cyan-400">
-                  <Menu size={20} />
-                </button>
+              <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden p-2 text-slate-400 hover:text-cyan-400">
+                <Menu size={20} />
+              </button>
             )}
             <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-900/40 border border-slate-800 rounded-lg">
               <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full animate-pulse shadow-[0_0_8px_#06b6d4]"></div>
@@ -184,7 +193,7 @@ const CyberDashboard = () => {
           <div className="flex items-center gap-6">
             <div className="hidden sm:flex items-center gap-3 px-3 py-1.5 bg-slate-900/40 border border-slate-800/50 rounded-lg">
               <Clock className="text-cyan-500" size={12} />
-              <span className="text-[10px] font-mono font-medium text-slate-300">{currentTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second: '2-digit'})}</span>
+              <span className="text-[10px] font-mono font-medium text-slate-300">{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
             </div>
             <div className="flex items-center gap-3 pl-6 border-l border-slate-800/60">
               <div className="text-right hidden xs:block">
@@ -202,7 +211,7 @@ const CyberDashboard = () => {
         <AnimatePresence mode="wait">
           {activeTab === 'hub' ? (
             <motion.div key="hub" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col w-full">
-              
+
               <section className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center text-center p-6 lg:p-12 relative">
                 <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="max-w-4xl z-10">
                   <h1 className="text-5xl lg:text-8xl font-black text-white tracking-tighter uppercase italic leading-none mb-6">
@@ -211,7 +220,7 @@ const CyberDashboard = () => {
                   <p className="text-slate-400 text-base lg:text-lg font-medium leading-relaxed mb-8 max-w-2xl mx-auto uppercase tracking-wide">
                     The Ultimate Cybersecurity Demonstration & Prevention Environment.
                   </p>
-                  
+
                   <div className="flex flex-wrap justify-center gap-4">
                     <button onClick={() => scrollToSection('about-hackaware')} className="px-8 py-4 bg-cyan-600 text-[#020617] font-black rounded-xl hover:bg-cyan-500 transition-all text-[11px] uppercase tracking-[0.2em]">
                       What is HackAware?
@@ -223,7 +232,7 @@ const CyberDashboard = () => {
                 </motion.div>
 
                 <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-10 left-1/2 -translate-x-1/2">
-                   <ArrowDown size={24} className="text-slate-800" />
+                  <ArrowDown size={24} className="text-slate-800" />
                 </motion.div>
               </section>
 
@@ -238,7 +247,7 @@ const CyberDashboard = () => {
                         By learning how hackers think and operate, users can better protect themselves and their systems.
                         We believe that the best defense is not just tools, but knowledge and awareness of real-world threats.
                       </p>
-                      
+
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl">
                           <Target className="text-cyan-500 mb-3" size={20} />
@@ -252,7 +261,7 @@ const CyberDashboard = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="relative">
                       <div className="absolute -inset-4 bg-cyan-500/10 blur-3xl rounded-full"></div>
                       <div className="relative bg-[#080c17] border border-slate-800 p-8 rounded-[2rem] shadow-2xl">
@@ -295,8 +304,8 @@ const CyberDashboard = () => {
           ) : (
             /* Placeholder for new sections */
             <motion.div key="other" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center h-[calc(100vh-80px)]">
-               <h2 className="text-3xl font-black text-white uppercase italic">{activeTab} Section</h2>
-               <p className="text-cyan-600 font-bold uppercase tracking-widest mt-4">Module Under Construction</p>
+              <h2 className="text-3xl font-black text-white uppercase italic">{activeTab} Section</h2>
+              <p className="text-cyan-600 font-bold uppercase tracking-widest mt-4">Module Under Construction</p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -313,8 +322,8 @@ const CyberDashboard = () => {
                 </div>
                 <h3 className="text-lg font-black text-white mb-2 uppercase italic tracking-widest">{selectedAttack.title}</h3>
                 <p className="text-slate-500 text-[10px] font-mono mb-8 uppercase tracking-tighter leading-relaxed">
-                    Authorized Operator: {operatorName} <br/> 
-                    Vector Status: <span className="text-emerald-500">Deployable</span>
+                  Authorized Operator: {operatorName} <br />
+                  Vector Status: <span className="text-emerald-500">Deployable</span>
                 </p>
 
                 <div className="flex flex-col gap-3">
@@ -351,12 +360,11 @@ const AttackCard = ({ atk, index, onClick }) => (
           {React.cloneElement(atk.icon, { size: 24 })}
         </div>
         <div className="flex flex-col items-end gap-2">
-           <span className="text-[8px] font-black text-slate-600 bg-slate-900 border border-slate-800 px-2 py-1 rounded tracking-[0.2em]">{atk.tag}</span>
-           <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${
-             atk.difficulty === 'Beginner' ? 'text-emerald-500 bg-emerald-500/5' : 
-             atk.difficulty === 'Intermediate' ? 'text-orange-500 bg-orange-500/5' : 
-             'text-fuchsia-500 bg-fuchsia-500/5'
-           }`}>{atk.difficulty}</span>
+          <span className="text-[8px] font-black text-slate-600 bg-slate-900 border border-slate-800 px-2 py-1 rounded tracking-[0.2em]">{atk.tag}</span>
+          <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${atk.difficulty === 'Beginner' ? 'text-emerald-500 bg-emerald-500/5' :
+              atk.difficulty === 'Intermediate' ? 'text-orange-500 bg-orange-500/5' :
+                'text-fuchsia-500 bg-fuchsia-500/5'
+            }`}>{atk.difficulty}</span>
         </div>
       </div>
       <div>
@@ -366,7 +374,7 @@ const AttackCard = ({ atk, index, onClick }) => (
       <div className="pt-6 border-t border-slate-800/30 flex items-center justify-between">
         <span className="text-[9px] font-black text-cyan-600 uppercase tracking-[0.25em] group-hover:text-cyan-400 transition-colors">Enter_Environment</span>
         <div className="w-6 h-6 rounded-full border border-slate-800 flex items-center justify-center group-hover:border-cyan-500 transition-colors">
-           <ExternalLink size={10} className="text-slate-600 group-hover:text-cyan-500" />
+          <ExternalLink size={10} className="text-slate-600 group-hover:text-cyan-500" />
         </div>
       </div>
     </div>
