@@ -10,6 +10,7 @@ import BruteForce from '../pages/Attacks/BruteForce.jsx';
 import Phishing from '../pages/Attacks/Phishing.jsx';
 import AIPoisoningLab from '../pages/Attacks/AiPoisoningLab.jsx';
 import Keylogger from '../pages/Attacks/Keylogger.jsx';
+import SessionHijacking from '../pages/Attacks/SessionHijacking.jsx';
 
 // Secure Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -84,6 +85,15 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute>
               <Keylogger />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/sessionhijacking"
+          element={
+            <ProtectedRoute>
+              <SessionHijacking />
             </ProtectedRoute>
           }
         />
