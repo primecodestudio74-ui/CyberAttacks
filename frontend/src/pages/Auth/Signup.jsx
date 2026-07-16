@@ -3,9 +3,12 @@ import SignupForm from "../../components/Auth/SignupForm";
 
 const Signup = () => {
   return (
-    <AuthLayout>
-      <SignupForm />
-    </AuthLayout>
+    <AuthLayout
+  title="Create Account"
+  subtitle="Join HackAware and start your cybersecurity journey."
+>
+  <SignupForm />
+</AuthLayout>
   );
 };
 

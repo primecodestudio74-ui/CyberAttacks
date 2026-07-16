@@ -1,18 +1,29 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Shield } from "lucide-react";
-import Typewriter from "./TypeWriter";
+import {
+  Shield,
+  Terminal,
+  Lock,
+  Activity,
+} from "lucide-react";
 
-const AuthLayout = ({ children }) => {
+import FeatureCard from "./FeatureCard";
+import StatusBar from "./StatusBar";
+import TypeWriter from "./TypeWriter";
+
+const AuthLayout = ({  children,
+  title = "Welcome Back",
+  subtitle = "Sign in to continue to HackAware.", }) => {
   const navigate = useNavigate();
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
-  const mottos = useMemo(
+  const terminalMessages = useMemo(
     () => [
-      "HackAware Cyber Security Platform",
-      "Simulate Attack | Learn Defense",
-      "Stay Aware, Stay Secure",
-      "Terminal Handshake Initialized",
-      "Vulnerability Assessment Active",
+      "Initializing Secure Session...",
+      "Loading Threat Intelligence...",
+      "Verifying Encryption Keys...",
+      "Authentication Gateway Online...",
+      "HackAware Security Platform Ready...",
     ],
     []
   );
@@ -22,85 +33,259 @@ const AuthLayout = ({ children }) => {
 
     if (token) {
       navigate("/dashboard");
+    } else {
+      setCheckingAuth(false);
     }
   }, [navigate]);
 
+  if (checkingAuth) {
+    return <div className="h-screen bg-[#060b16]" />;
+  }
+
   return (
-    <div className="min-h-screen bg-[#0a0f1a] text-gray-100 font-sans selection:bg-cyan-500/30 overflow-x-hidden relative">
+    <div className="relative min-h-screen overflow-hidden bg-[#060b16] text-white">
 
-      {/* Video Background */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover opacity-40"
-        >
-          <source src="/videos/HA_BG.mp4" type="video/mp4" />
-        </video>
+      {/* ================= VIDEO ================= */}
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1a]/80 via-transparent to-[#0a0f1a]/80" />
-        <div className="absolute inset-0 bg-[#0a0f1a]/20 backdrop-blur-[2px]" />
-      </div>
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover opacity-15"
+      >
+        <source src="/videos/HA_BG.mp4" type="video/mp4" />
+      </video>
 
-      {/* Grid Background */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="grid-bg w-full h-full" />
-      </div>
+      {/* ================= OVERLAYS ================= */}
 
-      {/* Main Content */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
+      <div className="absolute inset-0 bg-[#060b16]/75" />
 
-        <div className="w-full max-w-md">
+      <div className="absolute inset-0 cyber-grid" />
 
-          {/* Logo */}
-          <div className="text-center mb-8">
+      <div className="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-cyan-500/10 blur-[160px]" />
 
-            <div className="flex justify-center mb-4">
-              <div className="p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-xl backdrop-blur-md">
-                <Shield className="w-10 h-10 text-cyan-500 drop-shadow-[0_0_10px_rgba(6,182,212,0.4)]" />
+      <div className="absolute bottom-0 right-0 h-[450px] w-[450px] rounded-full bg-blue-500/10 blur-[160px]" />
+
+      <div className="absolute inset-0 scanlines opacity-[0.03]" />
+
+      {/* ================= CONTENT ================= */}
+
+      <div className="relative z-10 flex min-h-screen flex-col">
+
+        <StatusBar />
+
+        <div className="mx-auto flex w-full max-w-7xl flex-1 items-center px-6 py-10">
+
+          {/* LEFT */}
+
+          <div className="hidden lg:flex w-1/2 flex-col justify-center pr-16">
+
+            <div className="mb-10 flex items-center gap-5">
+
+              <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-cyan-500/20 bg-cyan-500/10">
+
+                <Shield
+                  size={42}
+                  className="text-cyan-400"
+                />
+
               </div>
+
+              <div>
+
+                <h1 className="text-6xl font-black tracking-tight">
+
+                  HACK
+
+                  <span className="text-cyan-400">
+
+                    AWARE
+
+                  </span>
+
+                </h1>
+
+                <p className="mt-1 text-gray-400 tracking-[3px] uppercase">
+
+                  Cyber Security Platform
+
+                </p>
+
+              </div>
+
             </div>
 
-            <h1 className="text-4xl font-black italic tracking-tighter uppercase mb-4 drop-shadow-[0_0_15px_rgba(0,0,0,1)]">
-              HACK
-              <span className="text-cyan-500 text-shadow-glow">
-                AWARE
-              </span>
-            </h1>
+            <h2 className="max-w-xl text-4xl font-bold leading-tight">
 
-            <div className="h-10 flex items-center justify-center border-y border-white/5 bg-black/40 backdrop-blur-sm mb-8">
-              <Typewriter sequences={mottos} />
+              Learn.
+
+              <span className="text-cyan-400">
+
+                {" "}Practice.
+
+              </span>
+
+              {" "}Defend.
+
+            </h2>
+
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-400">
+
+              Build real-world cybersecurity skills through
+              interactive labs, attack simulations,
+              AI-assisted learning and practical exercises.
+
+            </p>
+
+            {/* Terminal */}
+
+            <div className="mt-10 rounded-xl border border-cyan-500/20 bg-black/40 p-5 backdrop-blur-lg">
+
+              <div className="mb-3 flex gap-2">
+
+                <span className="h-3 w-3 rounded-full bg-red-500" />
+
+                <span className="h-3 w-3 rounded-full bg-yellow-500" />
+
+                <span className="h-3 w-3 rounded-full bg-green-500" />
+
+              </div>
+
+              <div className="font-mono text-cyan-400">
+
+                <span>$ </span>
+
+                <TypeWriter sequences={terminalMessages} />
+
+              </div>
+
+            </div>
+
+            {/* Feature Cards */}
+
+            <div className="mt-10 grid grid-cols-2 gap-5">
+
+              <FeatureCard
+                icon={Lock}
+                title="Secure Login"
+                description="AES-256 encrypted authentication."
+              />
+
+              <FeatureCard
+                icon={Terminal}
+                title="Virtual Labs"
+                description="Practice ethical hacking safely."
+              />
+
+              <FeatureCard
+                icon={Shield}
+                title="Threat Defense"
+                description="Learn attack detection."
+              />
+
+              <FeatureCard
+                icon={Activity}
+                title="Live Monitoring"
+                description="Track your progress instantly."
+              />
+
             </div>
 
           </div>
 
-          {/* Login / Signup Form */}
-          {children}
+          {/* RIGHT */}
 
-          {/* Footer */}
-          <div className="mt-4 flex justify-between items-center px-2 font-mono text-[8px] text-gray-400 uppercase tracking-widest opacity-60">
-            <span>DB_STABLE_V2</span>
-            <span>NODE: MUMBAI_EDGE_01</span>
-            <span>AES_256_ACTIVE</span>
+          <div className="flex w-full lg:w-1/2 justify-center">
+    
+            <div
+              className="
+              w-full
+              max-w-md
+              rounded-2xl
+              border
+              border-cyan-500/20
+              bg-white/[0.04]
+              backdrop-blur-2xl
+              shadow-[0_25px_60px_rgba(0,0,0,.45)]
+              p-8
+              "
+            >
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-300">
+  <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+  Secure Authentication
+</div>
+
+              <div className="mb-8">
+  <h2 className="text-3xl font-bold text-white">
+    {title}
+  </h2>
+
+  <p className="mt-2 text-slate-400">
+    {subtitle}
+  </p>
+</div>
+
+              {children}
+
+            </div>
+
           </div>
 
         </div>
 
       </div>
 
-      <style>{`
-        .grid-bg {
-          background-image:
-            linear-gradient(to right, #1e293b 1px, transparent 1px),
-            linear-gradient(to bottom, #1e293b 1px, transparent 1px);
-          background-size: 40px 40px;
-        }
+      {/* ================= CSS ================= */}
 
-        .text-shadow-glow {
-          text-shadow: 0 0 10px rgba(6, 182, 212, 0.8);
-        }
+      <style>{`
+
+      .cyber-grid{
+
+      background-image:
+
+      linear-gradient(rgba(6,182,212,.08) 1px,transparent 1px),
+
+      linear-gradient(90deg,rgba(6,182,212,.08) 1px,transparent 1px);
+
+      background-size:40px 40px;
+
+      mask-image:radial-gradient(circle,white,transparent 95%);
+
+      animation:gridMove 18s linear infinite;
+
+      }
+
+      @keyframes gridMove{
+
+      from{
+
+      transform:translateY(0);
+
+      }
+
+      to{
+
+      transform:translateY(40px);
+
+      }
+
+      }
+
+      .scanlines{
+
+      background:linear-gradient(
+
+      rgba(255,255,255,0) 50%,
+
+      rgba(0,0,0,.25) 50%
+
+      );
+
+      background-size:100% 4px;
+
+      }
+
       `}</style>
 
     </div>
