@@ -154,7 +154,7 @@ const CyberDashboard = () => {
             <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>Academy</p>
             <div className="space-y-1">
               <SidebarLink icon={<BookOpen size={18} />} label="Learning" active={activeTab === 'learning'} onClick={() => handleTabChange('learning')} isOpen={isSidebarOpen} />
-              <SidebarLink icon={<Target size={18} />} label="Quiz" active={activeTab === 'quiz'} onClick={() => handleTabChange('quiz')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<Target size={18} />} label="ChatBot" active={activeTab === 'chatbot'} onClick={() => handleTabChange('Chatbot')} isOpen={isSidebarOpen} />
             </div>
           </div>
 
