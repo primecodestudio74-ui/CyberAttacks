@@ -3,7 +3,7 @@ import {
   Shield, LogOut, LayoutDashboard, Lock, Mail,
   Database, Activity, Menu, ChevronLeft,
   ExternalLink, User, Terminal, Clock,
-  BrainCircuit, ArrowDown, Target, BookOpen, Settings, Keyboard, Key
+  BrainCircuit, ArrowDown, Bot, BookOpen, Settings, Keyboard, Key
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 // Component Imports
 import OperatorProfile from './OperatorProfile';
 import LearningHub from '../components/Learning/LearningHub';
+import ChatbotPanel from '../components/Chatbot/ChatbotPanel';
 
 const CyberDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
@@ -138,7 +139,7 @@ const CyberDashboard = () => {
           </button>
         </div>
 
-        <nav className="flex-1 px-3 py-4 space-y-8 overflow-y-auto overflow-y-hidden overflow-x-hidden">
+        <nav className="custom-scrollbar flex-1 px-3 py-4 space-y-8 overflow-y-auto overflow-y-hidden overflow-x-hidden">
 
           {/* OPERATIONS GROUP */}
           <div>
@@ -154,7 +155,7 @@ const CyberDashboard = () => {
             <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>Academy</p>
             <div className="space-y-1">
               <SidebarLink icon={<BookOpen size={18} />} label="Learning" active={activeTab === 'learning'} onClick={() => handleTabChange('learning')} isOpen={isSidebarOpen} />
-              <SidebarLink icon={<Target size={18} />} label="ChatBot" active={activeTab === 'chatbot'} onClick={() => handleTabChange('Chatbot')} isOpen={isSidebarOpen} />
+              <SidebarLink icon={<Bot size={18} />} label="ChatBot" active={activeTab === 'chatbot'} onClick={() => handleTabChange('chatbot')} isOpen={isSidebarOpen} />
             </div>
           </div>
 
@@ -176,7 +177,7 @@ const CyberDashboard = () => {
         </div>
       </aside>
 
-      <main className="flex-1 flex flex-col overflow-y-auto bg-transparent scroll-smooth relative z-10">
+      <main className="custom-scrollbar flex-1 flex flex-col overflow-y-auto bg-transparent scroll-smooth relative z-10">
         <header className="h-18 flex items-center justify-between px-4 lg:px-8 border-b border-slate-800/30 bg-[#020617]/40 backdrop-blur-xl sticky top-0 z-20 shrink-0">
           <div className="flex items-center gap-4">
             {!isSidebarOpen && (
@@ -250,7 +251,7 @@ const CyberDashboard = () => {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl">
-                          <Target className="text-cyan-500 mb-3" size={20} />
+                          <Bot className="text-cyan-500 mb-3" size={20} />
                           <h4 className="text-xs font-black text-white uppercase mb-2">Simulate</h4>
                           <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-tight">Run live demonstrations of vectors.</p>
                         </div>
@@ -301,6 +302,8 @@ const CyberDashboard = () => {
             <motion.div key="learning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
               <LearningHub onLaunchLab={(path) => navigate(path)} />
             </motion.div>
+          ) : activeTab === 'chatbot' ? (
+            <ChatbotPanel key="chatbot" />
           ) : (
             /* Placeholder for new sections */
             <motion.div key="other" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center h-[calc(100vh-80px)]">
