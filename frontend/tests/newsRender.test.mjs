@@ -76,6 +76,25 @@ test('every article in the payload renders without crashing', () => {
   assert.equal((html.match(/<article/g) || []).length, payload.articles.length);
 });
 
+test('floating ticker uses a real article link and accessible, non-live controls', () => {
+  const html = render(payload).ticker;
+  const article = payload.articles[0];
+  assert.ok(html.includes(article.title), 'the API headline is displayed');
+  assert.ok(html.includes(article.source), 'the publisher is displayed');
+  assert.ok(html.includes(`href="${article.url}"`), 'the headline links to its original article');
+  assert.ok(html.includes('target="_blank"'));
+  assert.ok(html.includes('rel="noopener noreferrer"'));
+  assert.ok(html.includes('aria-live="off"'), 'changing headlines are not repeatedly announced');
+  assert.ok(html.includes('Pause headline rotation'));
+  assert.ok(html.includes('Minimize cybersecurity news ticker'));
+  assert.ok(html.includes('Dismiss cybersecurity news ticker for this session'));
+  assert.ok(!html.includes('undefined'));
+});
+
+test('floating ticker stays hidden for empty API results', () => {
+  assert.equal(render(payload).emptyTicker, '');
+});
+
 test('cards degrade gracefully when image, description and date are missing', () => {
   const html = render(payload).cardWithoutImage;
   assert.ok(html.includes('Headline without an image or a summary'));

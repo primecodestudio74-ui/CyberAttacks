@@ -6,6 +6,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import ArticleCard, { CompactArticle } from '../src/components/News/ArticleCard';
 import FeaturedStory from '../src/components/News/FeaturedStory';
 import NewsSidebar from '../src/components/News/NewsSidebar';
+import FloatingNewsTicker from '../src/components/News/FloatingNewsTicker';
 import NewsHeader from '../src/components/News/NewsHeader';
 import CategoryRail from '../src/components/News/CategoryRail';
 import {
@@ -23,6 +24,8 @@ export const renderAll = (payload) => {
   const articles = payload.articles || [];
   const html = {
     card: articles[0] ? renderToStaticMarkup(<ArticleCard article={articles[0]} />) : '',
+    ticker: renderToStaticMarkup(<FloatingNewsTicker articles={articles} />),
+    emptyTicker: renderToStaticMarkup(<FloatingNewsTicker articles={[]} />),
     cardWithoutImage: renderToStaticMarkup(
       <ArticleCard
         article={{

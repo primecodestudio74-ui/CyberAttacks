@@ -9,6 +9,7 @@
  *  - append pages for "Load more" without duplicating articles
  *  - expose a manual refresh and a quiet background refresh that only runs when
  *    the page becomes visible again and the cached data has expired
+ *  - optionally disable its request effects when a parent shares the same query
  *
  * No polling: nothing is fetched while the tab is hidden, and nothing is
  * fetched on ordinary re-renders (the effect is keyed on the serialised
@@ -32,7 +33,7 @@ const mergeArticles = (existing, incoming) => {
   return merged;
 };
 
-export default function useNews({ category = 'all-news', q = '', source = '', sort = 'newest', limit = 12 } = {}) {
+export default function useNews({ category = 'all-news', q = '', source = '', sort = 'newest', limit = 12, enabled = true } = {}) {
   const [debouncedQuery, setDebouncedQuery] = useState(q);
   const [reloadToken, setReloadToken] = useState(0);
 
@@ -63,10 +64,10 @@ export default function useNews({ category = 'all-news', q = '', source = '', so
 
   /* ---------------- debounce the search box ---------------- */
   useEffect(() => {
-    if (q === debouncedQuery) return undefined;
+    if (!enabled || q === debouncedQuery) return undefined;
     const timer = setTimeout(() => setDebouncedQuery(q), SEARCH_DEBOUNCE_MS);
     return () => clearTimeout(timer);
-  }, [q, debouncedQuery]);
+  }, [q, debouncedQuery, enabled]);
 
   /* ---------------- first page ---------------- */
   const load = useCallback(
@@ -130,14 +131,21 @@ export default function useNews({ category = 'all-news', q = '', source = '', so
   );
 
   useEffect(() => {
+    if (!enabled) {
+      inFlightRef.current?.abort();
+      return undefined;
+    }
+
     firstLoadRef.current = false;
     load();
     return () => inFlightRef.current?.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterKey, reloadToken]);
+  }, [filterKey, reloadToken, enabled]);
 
   /* ---------------- quiet revalidation when the tab returns ---------------- */
   useEffect(() => {
+    if (!enabled) return undefined;
+
     const onVisibilityChange = () => {
       if (document.visibilityState !== 'visible') return;
       const now = Date.now();
@@ -150,7 +158,7 @@ export default function useNews({ category = 'all-news', q = '', source = '', so
     };
     document.addEventListener('visibilitychange', onVisibilityChange);
     return () => document.removeEventListener('visibilitychange', onVisibilityChange);
-  }, [load]);
+  }, [load, enabled]);
 
   /* ---------------- load more ---------------- */
   const loadMore = useCallback(async () => {

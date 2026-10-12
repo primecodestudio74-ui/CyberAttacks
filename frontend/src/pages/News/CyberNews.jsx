@@ -9,7 +9,7 @@ import ArticleCard from '../../components/News/ArticleCard';
 import NewsSidebar from '../../components/News/NewsSidebar';
 import { FeaturedSkeleton, NewsGridSkeleton, ErrorState, EmptyState, StaleNotice, SampleDataNotice, RateLimitNotice } from '../../components/News/NewsStates';
 import useNews from '../../hooks/useNews';
-import { categoryLabel } from '../../utils/newsFormat';
+import { categoryLabel, NEWS_CATEGORY_IDS } from '../../utils/newsFormat';
 
 const PAGE_SIZE = 12;
 
@@ -25,19 +25,6 @@ const FeedGrid = React.memo(function FeedGrid({ articles }) {
   );
 });
 
-const CATEGORY_IDS = new Set([
-  'all-news',
-  'cyber-attacks',
-  'data-breaches',
-  'hacking-exploits',
-  'ai-security',
-  'cybercrime-scams',
-  'vulnerabilities-cves',
-  'india-cyber',
-  'government-advisories',
-  'cloud-enterprise-security',
-]);
-
 /**
  * Cyber News - the editorial news page inside the HackAware dashboard.
  *
@@ -46,12 +33,12 @@ const CATEGORY_IDS = new Set([
  * from /api/news, which aggregates real publisher feeds - the UI contains no
  * articles of its own.
  */
-export default function CyberNews() {
+export default function CyberNews({ newsData } = {}) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const category = useMemo(() => {
     const value = searchParams.get('category') || 'all-news';
-    return CATEGORY_IDS.has(value) ? value : 'all-news';
+    return NEWS_CATEGORY_IDS.has(value) ? value : 'all-news';
   }, [searchParams]);
   const urlQuery = searchParams.get('q') || '';
   const source = searchParams.get('source') || '';
@@ -98,7 +85,11 @@ export default function CyberNews() {
     return () => clearTimeout(timer);
   }, [draftQuery, urlQuery, updateParams]);
 
-  const news = useNews({ category, q: searchInput, source, sort, limit: PAGE_SIZE });
+  // The authenticated dashboard passes its shared query here so the ticker and
+  // editorial page use the same response. The standalone public news page keeps
+  // using this component's own query hook.
+  const localNews = useNews({ category, q: searchInput, source, sort, limit: PAGE_SIZE, enabled: !newsData });
+  const news = newsData || localNews;
   const {
     articles,
     featured,
