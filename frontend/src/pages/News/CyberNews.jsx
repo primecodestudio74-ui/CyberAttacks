@@ -1,13 +1,21 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ChevronDown, Loader2, RotateCcw } from 'lucide-react';
+import { ChevronDown, Loader2, RotateCcw, X } from 'lucide-react';
 
 import NewsHeader from '../../components/News/NewsHeader';
 import CategoryRail from '../../components/News/CategoryRail';
 import FeaturedStory from '../../components/News/FeaturedStory';
 import ArticleCard from '../../components/News/ArticleCard';
 import NewsSidebar from '../../components/News/NewsSidebar';
-import { FeaturedSkeleton, NewsGridSkeleton, ErrorState, EmptyState, StaleNotice, SampleDataNotice, RateLimitNotice } from '../../components/News/NewsStates';
+import { 
+  FeaturedSkeleton, 
+  NewsGridSkeleton, 
+  ErrorState, 
+  EmptyState, 
+  StaleNotice, 
+  SampleDataNotice, 
+  RateLimitNotice 
+} from '../../components/News/NewsStates';
 import useNews from '../../hooks/useNews';
 import { categoryLabel, NEWS_CATEGORY_IDS } from '../../utils/newsFormat';
 
@@ -25,6 +33,23 @@ const FeedGrid = React.memo(function FeedGrid({ articles }) {
   );
 });
 
+/** Active filter badge with dismiss action */
+function ActiveFilterBadge({ label, onRemove }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-200">
+      {label}
+      <button
+        type="button"
+        onClick={onRemove}
+        className="rounded-full p-0.5 text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-100 focus:outline-none focus:ring-1 focus:ring-cyan-400"
+        aria-label={`Remove filter: ${label}`}
+      >
+        <X size={12} aria-hidden="true" />
+      </button>
+    </span>
+  );
+}
+
 /**
  * Cyber News - the editorial news page inside the HackAware dashboard.
  *
@@ -40,15 +65,13 @@ export default function CyberNews({ newsData } = {}) {
     const value = searchParams.get('category') || 'all-news';
     return NEWS_CATEGORY_IDS.has(value) ? value : 'all-news';
   }, [searchParams]);
+  
   const urlQuery = searchParams.get('q') || '';
   const source = searchParams.get('source') || '';
   const sort = searchParams.get('sort') === 'oldest' ? 'oldest' : 'newest';
 
   // The search box is "uncontrolled with respect to the URL": while the user is
   // typing we keep a local draft, then push it to the URL after a short pause.
-  // When the draft is empty the URL is the single source of truth, which keeps
-  // browser back/forward and shared links working without mirroring state in an
-  // effect.
   const [draftQuery, setDraftQuery] = useState(null);
   const searchInput = draftQuery ?? urlQuery;
   const feedRef = useRef(null);
@@ -74,8 +97,6 @@ export default function CyberNews({ newsData } = {}) {
   );
 
   // draft -> URL, debounced so typing neither spams the API nor the history.
-  // Both state updates happen inside the timer callback (never synchronously in
-  // the effect body), so React does not cascade renders.
   useEffect(() => {
     if (draftQuery === null || draftQuery === urlQuery) return undefined;
     const timer = setTimeout(() => {
@@ -127,7 +148,7 @@ export default function CyberNews({ newsData } = {}) {
     updateParams({ category: 'all-news', q: '', source: '', sort: 'newest' });
   }, [updateParams]);
 
-  const resultSummary = (() => {
+  const resultSummary = useMemo(() => {
     if (loading) return 'Loading the latest cybersecurity news…';
     if (error && articles.length === 0) return '';
     const count = pagination?.total ?? articles.length;
@@ -136,10 +157,9 @@ export default function CyberNews({ newsData } = {}) {
     if (urlQuery) parts.push(`matching “${urlQuery}”`);
     if (sort === 'oldest') parts.push('oldest first');
     return parts.join(' ');
-  })();
+  }, [loading, error, articles.length, pagination?.total, category, activeCategoryLabel, urlQuery, sort]);
 
-  // Distinguish "no results for this filter" from "the providers are down":
-  // the first is an empty state, the second deserves a retry affordance.
+  // Distinguish "no results for this filter" from "the providers are down"
   const providersDown = Boolean(meta?.unavailable) && articles.length === 0;
   const showError = (Boolean(error) && articles.length === 0) || providersDown;
   const showRateLimit = showError && error?.code === 'RATE_LIMITED';
@@ -187,18 +207,20 @@ export default function CyberNews({ newsData } = {}) {
       </div>
 
       <div className="mt-6 grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[220px_minmax(0,1fr)_330px]">
-        <CategoryRail categories={categories} activeCategory={category} onChange={(id) => updateParams({ category: id })} variant="rail" />
+        <div className="hidden lg:block">
+          <CategoryRail categories={categories} activeCategory={category} onChange={(id) => updateParams({ category: id })} variant="rail" />
+        </div>
 
         <div ref={feedRef} className="min-w-0 scroll-mt-24 space-y-8">
           {hasActiveFilters && (
-            <div className="flex flex-wrap items-center gap-3 rounded-xl border border-slate-800/60 bg-slate-900/30 px-4 py-3">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Active filters</span>
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-800/60 bg-slate-900/30 px-4 py-3">
               <div className="flex flex-wrap items-center gap-2">
+                <span className="mr-1 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Active filters:</span>
                 {category !== 'all-news' && (
-                  <FilterChip label={activeCategoryLabel} onRemove={() => updateParams({ category: 'all-news' })} />
+                  <ActiveFilterBadge label={activeCategoryLabel} onRemove={() => updateParams({ category: 'all-news' })} />
                 )}
                 {urlQuery && (
-                  <FilterChip
+                  <ActiveFilterBadge
                     label={`“${urlQuery}”`}
                     onRemove={() => {
                       setDraftQuery(null);
@@ -206,22 +228,25 @@ export default function CyberNews({ newsData } = {}) {
                     }}
                   />
                 )}
-                {source && <FilterChip label={source} onRemove={() => updateParams({ source: '' })} />}
-                {sort !== 'newest' && <FilterChip label="Oldest first" onRemove={() => updateParams({ sort: 'newest' })} />}
+                {source && <ActiveFilterBadge label={source} onRemove={() => updateParams({ source: '' })} />}
+                {sort !== 'newest' && <ActiveFilterBadge label="Oldest first" onRemove={() => updateParams({ sort: 'newest' })} />}
               </div>
-              <div className="ml-auto flex items-center gap-2">
-                <label htmlFor="news-sort" className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                  Sort
-                </label>
-                <select
-                  id="news-sort"
-                  value={sort}
-                  onChange={(event) => updateParams({ sort: event.target.value })}
-                  className="rounded-lg border border-slate-800/80 bg-[#070c17] px-2 py-1.5 text-[11px] text-slate-300 focus:border-cyan-500/60 focus:outline-none focus:ring-1 focus:ring-cyan-500/40"
-                >
-                  <option value="newest">Newest first</option>
-                  <option value="oldest">Oldest first</option>
-                </select>
+
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <label htmlFor="news-sort" className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                    Sort
+                  </label>
+                  <select
+                    id="news-sort"
+                    value={sort}
+                    onChange={(event) => updateParams({ sort: event.target.value })}
+                    className="rounded-lg border border-slate-800/80 bg-[#070c17] px-2 py-1.5 text-[11px] text-slate-300 focus:border-cyan-500/60 focus:outline-none focus:ring-1 focus:ring-cyan-500/40"
+                  >
+                    <option value="newest">Newest first</option>
+                    <option value="oldest">Oldest first</option>
+                  </select>
+                </div>
                 <button
                   type="button"
                   onClick={resetFilters}
@@ -256,7 +281,7 @@ export default function CyberNews({ newsData } = {}) {
                       Latest News
                     </h2>
                     <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-600">
-                      {category !== 'all-news' ? activeCategoryLabel : 'All sections'} · newest first
+                      {category !== 'all-news' ? activeCategoryLabel : 'All sections'} · {sort === 'oldest' ? 'oldest first' : 'newest first'}
                     </p>
                   </div>
                   <span className="text-[10px] text-slate-600">
@@ -311,4 +336,3 @@ export default function CyberNews({ newsData } = {}) {
     </div>
   );
 }
-
