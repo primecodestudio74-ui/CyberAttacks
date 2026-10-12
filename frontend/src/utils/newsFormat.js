@@ -102,6 +102,11 @@ const CATEGORY_LABELS = {
   'general-cyber': 'Cybersecurity',
 };
 
+// Shared by the dashboard and Cyber News page so deep links are validated the
+// same way before reaching the existing news API. `general-cyber` is an
+// internal fallback badge, not a selectable API filter.
+export const NEWS_CATEGORY_IDS = new Set(Object.keys(CATEGORY_LABELS).filter((id) => id !== 'general-cyber'));
+
 export const categoryLabel = (id, fallback) => CATEGORY_LABELS[id] || fallback || 'Cybersecurity';
 
 /** Tone for a category badge - never the only signal (text is always shown). */

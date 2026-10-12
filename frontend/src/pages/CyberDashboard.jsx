@@ -12,7 +12,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import OperatorProfile from './OperatorProfile';
 import LearningHub from '../components/Learning/LearningHub';
 import ChatbotPanel from '../components/Chatbot/ChatbotPanel';
+import FloatingNewsTicker from '../components/News/FloatingNewsTicker.jsx';
 import CyberNews from './News/CyberNews';
+import useNews from '../hooks/useNews.js';
+import { NEWS_CATEGORY_IDS } from '../utils/newsFormat.js';
 
 // Tabs that the dashboard can render. Keeping them in one list lets the
 // sidebar, the URL (?tab=...) and the content area stay in sync.
@@ -32,6 +35,19 @@ const CyberDashboard = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
+
+  // Keep one Cyber News query in the dashboard shell. The floating ticker and
+  // the in-dashboard news page share this response rather than making parallel
+  // requests to the existing /api/news service.
+  const isNewsTab = activeTab === 'news';
+  const requestedCategory = searchParams.get('category') || 'all-news';
+  const dashboardNews = useNews({
+    category: isNewsTab && NEWS_CATEGORY_IDS.has(requestedCategory) ? requestedCategory : 'all-news',
+    q: isNewsTab ? searchParams.get('q') || '' : '',
+    source: isNewsTab ? searchParams.get('source') || '' : '',
+    sort: isNewsTab && searchParams.get('sort') === 'oldest' ? 'oldest' : 'newest',
+    limit: 12,
+  });
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -337,7 +353,7 @@ const CyberDashboard = () => {
             <ChatbotPanel key="chatbot" />
           ) : activeTab === 'news' ? (
             <motion.div key="news" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
-              <CyberNews />
+              <CyberNews newsData={dashboardNews} />
             </motion.div>
           ) : (
             /* Placeholder for new sections */
@@ -377,6 +393,11 @@ const CyberDashboard = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <FloatingNewsTicker
+        articles={dashboardNews.articles}
+        avoidBottomWidget={activeTab === 'learning'}
+      />
     </div>
   );
 };
