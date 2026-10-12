@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets - never commit real credentials
+.env
+.env.*
+!.env.example
+backend/.env
+frontend/.env
+
+# Build output
+dist/
+build/
+frontend/dist/
+
+# Logs & editors
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/

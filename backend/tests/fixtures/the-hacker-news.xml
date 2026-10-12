@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Test fixture / offline demo feed.
+  Item structure mirrors the live The Hacker News (FeedBurner) feed, including
+  feedburner:origLink, the "admin@site (Site Name)" author form and CDATA bodies.
+  Headlines, links and timestamps are real items captured from the live feed
+  (2026-10-12) so the pipeline is exercised with genuine provider data.
+-->
+<rss version="2.0" xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The Hacker News</title>
+    <link>https://thehackernews.com</link>
+    <description>Most trusted, widely-read independent cybersecurity news source.</description>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 12 Oct 2026 14:11:13 +0530</lastBuildDate>
+    <item>
+      <title>Attackers Exploit CVSS 10.0 Bricksforge WordPress Flaw Enabling Unauthenticated RCE</title>
+      <link>https://thehackernews.com/2026/10/attackers-exploit-cvss-100-bricksforge.html</link>
+      <feedburner:origLink>https://thehackernews.com/2026/10/attackers-exploit-cvss-100-bricksforge.html</feedburner:origLink>
+      <pubDate>Mon, 12 Oct 2026 14:32:14 +0530</pubDate>
+      <dc:creator>info@thehackernews.com (The Hacker News)</dc:creator>
+      <category>Vulnerability</category>
+      <description><![CDATA[<img src="https://blogger.googleusercontent.com/img/bricksforge-cover.jpg" alt="cover" /><p>Attackers have begun exploiting a maximum-severity vulnerability in the Bricksforge WordPress plugin that makes it possible to achieve remote code execution without authentication.</p><p>The post <a href="https://thehackernews.com/2026/10/attackers-exploit-cvss-100-bricksforge.html">Attackers Exploit CVSS 10.0 Bricksforge WordPress Flaw Enabling Unauthenticated RCE</a> appeared first on <a href="https://thehackernews.com">The Hacker News</a>.</p>]]></description>
+      <content:encoded><![CDATA[<img src="https://blogger.googleusercontent.com/img/bricksforge-cover.jpg" /><p>Attackers have begun exploiting a maximum-severity vulnerability (CVE-2026-106733) in the Bricksforge WordPress plugin that makes it possible to achieve remote code execution without authentication.</p>]]></content:encoded>
+      <guid isPermaLink="false">tag:blogger.com,1999:blog-1234.post-99</guid>
+    </item>
+    <item>
+      <title>CyberXero Uses Claude Code in Campaign That Stole Over 628,000 Ukrainian Records</title>
+      <link>https://thehackernews.com/2026/10/cyberxero-uses-claude-code-in-campaign.html</link>
+      <feedburner:origLink>https://thehackernews.com/2026/10/cyberxero-uses-claude-code-in-campaign.html</feedburner:origLink>
+      <pubDate>Mon, 12 Oct 2026 12:56:12 +0530</pubDate>
+      <dc:creator>info@thehackernews.com (The Hacker News)</dc:creator>
+      <description><![CDATA[<p>A threat actor tracked as CyberXero used an AI coding agent to build tooling for a data theft campaign against Ukrainian organisations, exfiltrating more than 628,000 records.</p>]]></description>
+      <guid isPermaLink="false">tag:blogger.com,1999:blog-1234.post-98</guid>
+    </item>
+    <item>
+      <title>Researchers Publish Working Exploit for Pre-Auth AnyDesk Linux Flaw That Gives Root Access</title>
+      <link>https://thehackernews.com/2026/10/researchers-publish-working-exploit-for.html</link>
+      <pubDate>Fri, 09 Oct 2026 18:29:22 +0530</pubDate>
+      <dc:creator>info@thehackernews.com (The Hacker News)</dc:creator>
+      <description><![CDATA[<p>Security researchers released a proof-of-concept exploit for an authentication bypass in the AnyDesk Linux client that leads to root access.</p>]]></description>
+      <guid isPermaLink="false">tag:blogger.com,1999:blog-1234.post-97</guid>
+    </item>
+    <item>
+      <title>ThreatsDay: Ransomware Affiliate Betrayal, WhatsApp RAT, Exposed Hacker Tools and 12 More Stories</title>
+      <link>https://thehackernews.com/2026/10/threatsday-ransomware-affiliate.html</link>
+      <pubDate>Thu, 08 Oct 2026 23:28:02 +0530</pubDate>
+      <dc:creator>info@thehackernews.com (The Hacker News)</dc:creator>
+      <description><![CDATA[<p>A weekly roundup of ransomware, malware and cybercrime developments that slipped under the radar.</p>]]></description>
+      <guid isPermaLink="false">tag:blogger.com,1999:blog-1234.post-96</guid>
+    </item>
+  </channel>
+</rss>

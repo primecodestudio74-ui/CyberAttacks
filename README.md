@@ -78,6 +78,31 @@ HackAware transforms **learning into experience**.
 
 ---
 
+## 📰 Cyber News (dynamic cybersecurity news)
+
+HackAware ships with an editorial **Cyber News** section that aggregates real
+articles from trusted cybersecurity publishers and official advisories - no
+hardcoded or mock content.
+
+- **In the app:** Dashboard → *Intelligence* → **Cyber News** (`/dashboard?tab=news`)
+- **Public page:** `/news` (the news API is public, so no account is needed to read it)
+- **Backend:** `GET /api/news` (categories, keyword search, source filter, sorting, pagination, caching)
+- **Sources:** The Hacker News, BleepingComputer, Dark Reading, SecurityWeek,
+  Krebs on Security, Help Net Security, The Register, The Cyber Express (India),
+  CISA advisories and the CISA Known Exploited Vulnerabilities catalog
+
+```bash
+npm --prefix backend install && npm --prefix frontend install
+npm run dev                 # frontend :5173 · backend :5000
+# open http://localhost:5173/news
+npm --prefix backend run news:health   # check every live source (needs internet)
+```
+
+Full documentation - provider evaluation, licensing, API reference, deployment,
+testing and limitations - is in **[docs/CYBER_NEWS.md](docs/CYBER_NEWS.md)**.
+
+---
+
 ## 📁 Architecture Flow
 
 ```bash

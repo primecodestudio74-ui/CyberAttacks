@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Test fixture / offline demo feed.
+  Mirrors The Register's security Atom feed: <entry> elements, <link rel="alternate">,
+  no summary text at all (cards must render without a description).
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+  <title>www.theregister.com - Articles</title>
+  <link href="https://www.theregister.com/" rel="alternate" />
+  <updated>2026-10-12T10:27:00Z</updated>
+  <id>https://www.theregister.com/security/</id>
+  <entry>
+    <title>Imagine there's no Shiny Hunters - AI could make human hacking crews obsolete</title>
+    <link rel="alternate" type="text/html" href="https://www.theregister.com/security/2026/10/12/imagine-theres-no-shiny-hunters-ai-could-make-human-hacking-crews-obsolete/5302430" />
+    <id>https://www.theregister.com/a/5302430</id>
+    <published>2026-10-12T10:27:00Z</published>
+    <updated>2026-10-12T10:27:00Z</updated>
+    <author><name>The Register</name></author>
+    <category term="security" />
+  </entry>
+  <entry>
+    <title>Two characters open up a world of typosquatting opportunities in Chromium browsers</title>
+    <link rel="alternate" type="text/html" href="https://www.theregister.com/security/2026/10/10/two-characters-open-up-a-world-of-typosquatting-opportunities-in-chromium-browsers/5302383" />
+    <id>https://www.theregister.com/a/5302383</id>
+    <published>2026-10-10T10:15:00Z</published>
+    <updated>2026-10-10T10:15:00Z</updated>
+    <author><name>The Register</name></author>
+    <category term="security" />
+  </entry>
+  <entry>
+    <title>Shai-Hulud worm makes jump to AI infrastructure with Tensorlake compromise</title>
+    <link rel="alternate" type="text/html" href="https://www.theregister.com/security/2026/10/08/shai-hulud-worm-makes-jump-to-ai-infrastructure-with-tensorlake-compromise/5302054" />
+    <id>https://www.theregister.com/a/5302054</id>
+    <published>2026-10-08T16:54:48Z</published>
+    <updated>2026-10-08T16:54:48Z</updated>
+    <author><name>The Register</name></author>
+    <category term="security" />
+  </entry>
+</feed>

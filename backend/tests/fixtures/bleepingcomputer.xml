@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Test fixture / offline demo feed.
+  Mirrors the live BleepingComputer WordPress feed: no <description>, an
+  absolute <link>, author as plain text and a media:thumbnail image.
+  Items are real headlines/links captured from the live feed on 2026-10-12.
+-->
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>BleepingComputer</title>
+    <link>https://www.bleepingcomputer.com/</link>
+    <description>BleepingComputer - All Stories</description>
+    <lastBuildDate>Mon, 12 Oct 2026 10:31:13 GMT</lastBuildDate>
+    <item>
+      <title>Nippon Columbia malware incident exposes 8.6 million karaoke fan records</title>
+      <link>https://www.bleepingcomputer.com/news/security/nippon-columbia-malware-incident-exposes-86-million-karaoke-fan-records/</link>
+      <pubDate>Sun, 11 Oct 2026 10:23:46 -0400</pubDate>
+      <dc:creator>Bill Toulas</dc:creator>
+      <media:thumbnail url="https://www.bleepingcomputer.com/wp-content/uploads/2026/10/nippon-columbia.jpg" />
+      <content:encoded><![CDATA[<p>Japanese media company Nippon Columbia says a malware intrusion exposed the personal information of 8.6 million customers of its karaoke service.</p>]]></content:encoded>
+      <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/nippon-columbia-malware-incident-exposes-86-million-karaoke-fan-records/</guid>
+    </item>
+    <item>
+      <title>Max severity SonicWall SMA1000 flaw now exploited in attacks</title>
+      <link>https://www.bleepingcomputer.com/news/security/max-severity-sonicwall-sma1000-flaw-now-exploited-in-attacks/</link>
+      <pubDate>Fri, 09 Oct 2026 08:32:16 -0400</pubDate>
+      <dc:creator>Sergiu Gatlan</dc:creator>
+      <enclosure url="https://www.bleepingcomputer.com/wp-content/uploads/2026/10/sonicwall.jpg" type="image/jpeg" length="0" />
+      <content:encoded><![CDATA[<p>SonicWall is warning that attackers have started exploiting CVE-2026-102255, a maximum-severity pre-authentication SSRF flaw in the SMA1000 appliance series.</p>]]></content:encoded>
+      <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/max-severity-sonicwall-sma1000-flaw-now-exploited-in-attacks/</guid>
+    </item>
+    <item>
+      <title>Citrix warns admins to patch new NetScaler RCE flaw immediately</title>
+      <link>https://www.bleepingcomputer.com/news/security/citrix-warns-admins-to-patch-new-netscaler-rce-flaw-immediately/</link>
+      <pubDate>Fri, 09 Oct 2026 04:27:42 -0400</pubDate>
+      <dc:creator>Sergiu Gatlan</dc:creator>
+      <content:encoded><![CDATA[<p>Citrix is urging NetScaler admins to install a patch for a critical remote code execution vulnerability affecting SAML deployments.</p>]]></content:encoded>
+      <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/citrix-warns-admins-to-patch-new-netscaler-rce-flaw-immediately/</guid>
+    </item>
+    <item>
+      <title>How to keep AI agents within their permissions</title>
+      <link>https://www.bleepingcomputer.com/news/security/how-to-keep-ai-agents-within-their-permissions/</link>
+      <pubDate>Fri, 09 Oct 2026 10:01:11 -0400</pubDate>
+      <dc:creator>Sponsored by Token Security</dc:creator>
+      <description><![CDATA[A sponsored guide to governing AI agent permissions in the enterprise.]]></description>
+      <guid isPermaLink="true">https://www.bleepingcomputer.com/news/security/how-to-keep-ai-agents-within-their-permissions/</guid>
+    </item>
+  </channel>
+</rss>

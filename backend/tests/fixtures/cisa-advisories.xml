@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Test fixture / offline demo feed.
+  Mirrors the official CISA cybersecurity advisories feed: HTML body with a
+  "Summary" heading block, guideline/CSAF boilerplate at the top, and no image.
+-->
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>All CISA Advisories</title>
+    <link>https://www.cisa.gov/</link>
+    <description>CISA Cybersecurity Advisories</description>
+    <item>
+      <title>Satel Netco Design</title>
+      <link>https://www.cisa.gov/news-events/ics-advisories/icsa-26-281-03</link>
+      <pubDate>Mon, 12 Oct 2026 12:00:00 +0000</pubDate>
+      <dc:creator>cisa</dc:creator>
+      <category>ICS Advisory</category>
+      <description><![CDATA[
+        <p><a href="https://github.com/cisagov/CSAF/blob/develop/csaf_files/OT/white/2026/icsa-26-281-03.json"><strong>View CSAF</strong></a></p>
+        <h2>Summary</h2>
+        <p><strong>Successful exploitation of these vulnerabilities could allow an attacker to execute arbitrary scripts in a user's browser, consume excessive system resources and potentially execute arbitrary code.</strong></p>
+        <p>The following versions of Satel Netco Design are affected: Satel Netco Design.</p>
+        <h3>Background</h3>
+        <ul><li><strong>Critical Infrastructure Sectors: </strong>Communications</li></ul>
+        <h2>Vulnerabilities</h2>
+        <p>CVE-2026-105269, CVE-2026-104628, CVE-2026-105275</p>
+      ]]></description>
+    </item>
+    <item>
+      <title>Atlassian Releases Security Updates for Critical Vulnerabilities</title>
+      <link>https://www.cisa.gov/news-events/alerts/2026/10/06/atlassian-releases-security-updates</link>
+      <pubDate>Tue, 06 Oct 2026 09:30:00 +0000</pubDate>
+      <dc:creator>cisa</dc:creator>
+      <description><![CDATA[
+        <h2>Summary</h2>
+        <p>CISA encourages users and administrators to review Atlassian's security advisory and apply the necessary updates for CVE-2026-100112, a critical file access vulnerability.</p>
+      ]]></description>
+    </item>
+    <item>
+      <title>Guidance on Preventing and Responding to Ransomware Attacks</title>
+      <link>https://www.cisa.gov/news-events/news/stopransomware-guidance</link>
+      <pubDate>Wed, 01 Oct 2026 14:00:00 +0000</pubDate>
+      <dc:creator>cisa</dc:creator>
+      <description><![CDATA[<p>CISA and partner agencies published joint guidance covering ransomware prevention, response and recovery planning.</p>]]></description>
+    </item>
+  </channel>
+</rss>

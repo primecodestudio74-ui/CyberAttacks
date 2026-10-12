@@ -1,0 +1,44 @@
+{
+  "title": "CISA Catalog of Known Exploited Vulnerabilities",
+  "catalogVersion": "2026.10.12",
+  "dateReleased": "2026-10-12T09:00:00.000Z",
+  "count": 3,
+  "vulnerabilities": [
+    {
+      "cveID": "CVE-2026-102255",
+      "vendorProject": "SonicWall",
+      "product": "SMA1000",
+      "vulnerabilityName": "SonicWall SMA1000 Server-Side Request Forgery Vulnerability",
+      "dateAdded": "2026-10-11",
+      "shortDescription": "SonicWall SMA1000 contains a server-side request forgery vulnerability that allows a remote attacker to perform unauthorized operations.",
+      "requiredAction": "Apply mitigations per vendor instructions, or discontinue use of the product if mitigations are unavailable.",
+      "dueDate": "2026-10-25",
+      "knownRansomwareCampaignUse": "Unknown",
+      "notes": "https://psirt.global.sonicwall.com/vuln-detail/SNWLID-2026-0013"
+    },
+    {
+      "cveID": "CVE-2026-104628",
+      "vendorProject": "Satel",
+      "product": "Netco Design",
+      "vulnerabilityName": "Satel Netco Design Inefficient Regular Expression Complexity Vulnerability",
+      "dateAdded": "2026-10-10",
+      "shortDescription": "Satel Netco Design contains an inefficient regular expression complexity vulnerability that could allow an attacker to deny service.",
+      "requiredAction": "Apply mitigations per vendor instructions.",
+      "dueDate": "2026-10-24",
+      "knownRansomwareCampaignUse": "Known",
+      "notes": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-281-03"
+    },
+    {
+      "cveID": "CVE-2019-0001",
+      "vendorProject": "Legacy",
+      "product": "Old Product",
+      "vulnerabilityName": "Legacy Product Vulnerability From Years Ago",
+      "dateAdded": "2019-03-01",
+      "shortDescription": "This record is outside the recency window and must be filtered out by the adapter.",
+      "requiredAction": "Apply mitigations.",
+      "dueDate": "2019-03-20",
+      "knownRansomwareCampaignUse": "Unknown",
+      "notes": ""
+    }
+  ]
+}

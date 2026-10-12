@@ -75,3 +75,36 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }
+/* --- Cyber News additions ------------------------------------------------ */
+
+/* Horizontally scrollable category chips without a visible scrollbar
+   (the row scrolls, the page never overflows horizontally). */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Editorial serif for headlines, matching the news section's typography. */
+.font-serif {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Respect the user's motion preference: no smooth scrolling, no pulse/zoom. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
