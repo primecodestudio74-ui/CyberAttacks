@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Test fixture / offline demo feed.
+  Mirrors SecurityWeek's WordPress feed: real excerpt in <description>, a
+  [&#8230;] "read more" tail, and the "The post ... appeared first on ..."
+  boilerplate that the excerpt builder must strip. One item is a duplicate of a
+  The Hacker News story (different headline, same incident) to exercise fuzzy
+  de-duplication.
+-->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SecurityWeek</title>
+    <link>https://www.securityweek.com/</link>
+    <description>Cybersecurity News, Insights &amp; Analysis</description>
+    <atom:link href="https://www.securityweek.com/feed/" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ransomware Response Expert Arrested in ShinyHunters FBI Hack Probe</title>
+      <link>https://www.securityweek.com/ransomware-response-expert-arrested-in-shinyhunters-fbi-hack-probe/</link>
+      <dc:creator><![CDATA[Ravi Sharma]]></dc:creator>
+      <pubDate>Mon, 12 Oct 2026 10:32:05 +0000</pubDate>
+      <category><![CDATA[Cybercrime]]></category>
+      <category><![CDATA[Government]]></category>
+      <guid isPermaLink="false">https://www.securityweek.com/?p=49936</guid>
+      <description><![CDATA[<p>The suspect is believed to be Edward Dubrovsky, a Canadian cybersecurity executive who was visiting the United States for a conference.</p>
+<p>The post <a rel="nofollow" href="https://www.securityweek.com/ransomware-response-expert-arrested-in-shinyhunters-fbi-hack-probe/">Ransomware Response Expert Arrested in ShinyHunters FBI Hack Probe</a> appeared first on <a rel="nofollow" href="https://www.securityweek.com">SecurityWeek</a>.</p>]]></description>
+      <content:encoded><![CDATA[<p>The suspect is believed to be Edward Dubrovsky, a Canadian cybersecurity executive who was visiting the United States for a conference. </p><p><img class="alignnone" src="https://www.securityweek.com/wp-content/uploads/2026/10/shinyhunters.jpg" alt="" width="640" height="360" /></p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Critical SonicWall Vulnerability Exploited Days After Disclosure</title>
+      <link>https://www.securityweek.com/critical-sonicwall-vulnerability-exploited-days-after-disclosure/</link>
+      <dc:creator><![CDATA[Eduard Kovacs]]></dc:creator>
+      <pubDate>Mon, 12 Oct 2026 08:36:01 +0000</pubDate>
+      <guid isPermaLink="false">https://www.securityweek.com/?p=49933</guid>
+      <description><![CDATA[<p>CVE-2026-102255 is a pre-authenticated SSRF flaw that could allow attackers to perform unauthorized operations.</p>
+<p>The post <a rel="nofollow" href="https://www.securityweek.com/critical-sonicwall-vulnerability-exploited-days-after-disclosure/">Critical SonicWall Vulnerability Exploited Days After Disclosure</a> appeared first on <a rel="nofollow" href="https://www.securityweek.com">SecurityWeek</a>.</p>]]></description>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://www.securityweek.com/wp-content/uploads/2026/10/sonicwall-sw.jpg" medium="image" />
+    </item>
+    <item>
+      <title>Pre-Baked Firmware Malware Hits Budget Android Devices in 150+ Countries</title>
+      <link>https://www.securityweek.com/pre-baked-firmware-malware-hits-budget-android-devices-in-150-countries/</link>
+      <dc:creator><![CDATA[Ionut Arghire]]></dc:creator>
+      <pubDate>Fri, 09 Oct 2026 09:55:35 +0000</pubDate>
+      <guid isPermaLink="false">https://www.securityweek.com/?p=49905</guid>
+      <description><![CDATA[<p>Midnight Mimosa is the name given to a malware campaign primarily running preinstalled on low-cost Android devices.</p>]]></description>
+    </item>
+    <!-- Same syndicated story as The Hacker News published (identical headline,
+         different publisher URL): must be de-duplicated into one card. -->
+    <item>
+      <title>Researchers Publish Working Exploit for Pre-Auth AnyDesk Linux Flaw That Gives Root Access</title>
+      <link>https://www.securityweek.com/researchers-publish-working-exploit-for-pre-auth-anydesk-linux-flaw/</link>
+      <dc:creator><![CDATA[Eduard Kovacs]]></dc:creator>
+      <pubDate>Fri, 09 Oct 2026 19:05:00 +0000</pubDate>
+      <guid isPermaLink="false">https://www.securityweek.com/?p=49912</guid>
+      <description><![CDATA[<p>A working exploit for the pre-authentication AnyDesk Linux flaw has been published, allowing local root access.</p>]]></description>
+    </item>
+  </channel>
+</rss>

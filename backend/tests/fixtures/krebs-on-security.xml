@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Test fixture / offline demo feed.
+  Mirrors Krebs on Security's WordPress feed: full investigative body in
+  content:encoded (only the first image is used, and only a short excerpt is
+  ever shown), no <description> on some items.
+-->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Krebs on Security</title>
+    <link>https://krebsonsecurity.com</link>
+    <description>In-depth security news and investigation</description>
+    <item>
+      <title>FBI Arrests Executive at Ransomware Negotiation Firm</title>
+      <link>https://krebsonsecurity.com/2026/10/fbi-arrests-founder-of-ransomware-negotiation-firm/</link>
+      <dc:creator><![CDATA[BrianKrebs]]></dc:creator>
+      <pubDate>Sat, 10 Oct 2026 00:17:42 +0000</pubDate>
+      <category><![CDATA[Ransomware]]></category>
+      <guid isPermaLink="false">https://krebsonsecurity.com/?p=74440</guid>
+      <content:encoded><![CDATA[<p>Agents with the Federal Bureau of Investigation on Thursday arrested an executive at a Canadian cybersecurity firm in connection with an investigation into the ShinyHunters hacking group that recently relieved the FBI of sensitive data on thousands of agents, multiple sources tell KrebsOnSecurity.</p><p><img src="https://krebsonsecurity.com/wp-content/uploads/2026/10/dubrovsky-li.png" alt="LinkedIn profile" /></p><p>Federal court records show the defendant faces cyber extortion and conspiracy charges.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>ShinyHunters Extorted Boeing Spin-off Prior to Arrests</title>
+      <link>https://krebsonsecurity.com/2026/10/shinyhunters-extorted-boeing-spin-off-prior-to-arrests/</link>
+      <dc:creator><![CDATA[BrianKrebs]]></dc:creator>
+      <pubDate>Wed, 07 Oct 2026 13:48:45 +0000</pubDate>
+      <guid isPermaLink="false">https://krebsonsecurity.com/?p=74398</guid>
+      <content:encoded><![CDATA[<p>A teenager from Amman, Jordan suspected of leading the prolific data theft and extortion group ShinyHunters has been detained and is reportedly cooperating with the FBI to identify other members of the hacking gang.</p>]]></content:encoded>
+    </item>
+  </channel>
+</rss>

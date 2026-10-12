@@ -3,20 +3,32 @@ import {
   Shield, LogOut, LayoutDashboard, Lock, Mail,
   Database, Activity, Menu, ChevronLeft,
   ExternalLink, User, Terminal, Clock,
-  BrainCircuit, ArrowDown, Bot, BookOpen, Settings, Keyboard, Key
+  BrainCircuit, ArrowDown, Bot, BookOpen, Settings, Keyboard, Key, Newspaper
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Component Imports
 import OperatorProfile from './OperatorProfile';
 import LearningHub from '../components/Learning/LearningHub';
 import ChatbotPanel from '../components/Chatbot/ChatbotPanel';
+import CyberNews from './News/CyberNews';
+
+// Tabs that the dashboard can render. Keeping them in one list lets the
+// sidebar, the URL (?tab=...) and the content area stay in sync.
+const DASHBOARD_TABS = ['hub', 'prevention', 'news', 'learning', 'chatbot', 'profile', 'settings'];
+const NEWS_FILTER_KEYS = ['category', 'q', 'source', 'sort'];
 
 const CyberDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
   const [selectedAttack, setSelectedAttack] = useState(null);
-  const [activeTab, setActiveTab] = useState('hub');
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Deep links such as /dashboard?tab=news&category=data-breaches&q=ransomware
+  // open the matching tab with the matching filters applied.
+  const [activeTab, setActiveTab] = useState(() => {
+    const requested = searchParams.get('tab');
+    return DASHBOARD_TABS.includes(requested) ? requested : 'hub';
+  });
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
@@ -106,6 +118,17 @@ const CyberDashboard = () => {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+    setSearchParams(
+      (previous) => {
+        const next = new URLSearchParams(previous);
+        if (tab === 'hub') next.delete('tab');
+        else next.set('tab', tab);
+        // News filters only make sense inside the news tab.
+        if (tab !== 'news') NEWS_FILTER_KEYS.forEach((key) => next.delete(key));
+        return next;
+      },
+      { replace: false }
+    );
     if (window.innerWidth < 1024) setIsSidebarOpen(false);
   };
 
@@ -147,6 +170,14 @@ const CyberDashboard = () => {
             <div className="space-y-1">
               <SidebarLink icon={<LayoutDashboard size={18} />} label="Attack Hub" active={activeTab === 'hub'} onClick={() => handleTabChange('hub')} isOpen={isSidebarOpen} />
               <SidebarLink icon={<Shield size={18} />} label="Prevention" active={activeTab === 'prevention'} onClick={() => handleTabChange('prevention')} isOpen={isSidebarOpen} />
+            </div>
+          </div>
+
+          {/* INTELLIGENCE GROUP */}
+          <div>
+            <p className={`text-[9px] font-black text-slate-700 uppercase tracking-[0.3em] mb-4 px-4 ${!isSidebarOpen && 'hidden'}`}>Intelligence</p>
+            <div className="space-y-1">
+              <SidebarLink icon={<Newspaper size={18} />} label="Cyber News" active={activeTab === 'news'} onClick={() => handleTabChange('news')} isOpen={isSidebarOpen} />
             </div>
           </div>
 
@@ -304,6 +335,10 @@ const CyberDashboard = () => {
             </motion.div>
           ) : activeTab === 'chatbot' ? (
             <ChatbotPanel key="chatbot" />
+          ) : activeTab === 'news' ? (
+            <motion.div key="news" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
+              <CyberNews />
+            </motion.div>
           ) : (
             /* Placeholder for new sections */
             <motion.div key="other" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center h-[calc(100vh-80px)]">

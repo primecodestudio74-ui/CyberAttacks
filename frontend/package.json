@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:render": "node --test tests/*.test.mjs",
+    "news:regenerate-fixture": "node tests/regenerateFixture.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",

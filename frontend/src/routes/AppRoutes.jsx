@@ -5,6 +5,7 @@ import Login from '../pages/Auth/Login.jsx';
 import Signup from '../pages/Auth/Signup.jsx';
 
 import CyberDashboard from '../pages/CyberDashboard.jsx';
+import PublicNewsPage from '../pages/News/PublicNewsPage.jsx';
 import SqlInjection from '../pages/Attacks/SQLInejection.jsx';
 import BruteForce from '../pages/Attacks/BruteForce.jsx';
 import Phishing from '../pages/Attacks/Phishing.jsx';
@@ -29,6 +30,10 @@ export default function AppRoutes() {
         <Route path="/signin" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+
+        {/* Public Cyber News - the news API is public, so the page is too.
+            The authenticated dashboard exposes the same section as "Cyber News". */}
+        <Route path="/news" element={<PublicNewsPage />} />
 
         {/* Main Dashboard Hub */}
 
