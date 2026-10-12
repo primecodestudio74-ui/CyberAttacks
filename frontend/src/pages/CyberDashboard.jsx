@@ -290,46 +290,7 @@ const CyberDashboard = () => {
                 </motion.div>
               </section>
 
-              <section id="about-hackaware" className="py-24 px-6 lg:px-12 bg-slate-950/50 backdrop-blur-md border-y border-slate-800/40">
-                <div className="max-w-6xl mx-auto">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                    <div>
-                      <h2 className="text-2xl lg:text-3xl font-black text-white uppercase italic tracking-tight mb-6">Strategic Briefing</h2>
-                      <p className="text-slate-400 text-sm leading-loose mb-8">
-                        In an era of rising digital threats, <span className="text-cyan-500 font-bold">HackAware</span> helps make complex cyber attacks simple and easy to understand.
-                        It breaks down how different attacks work in a clear and practical way.
-                        By learning how hackers think and operate, users can better protect themselves and their systems.
-                        We believe that the best defense is not just tools, but knowledge and awareness of real-world threats.
-                      </p>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl">
-                          <Bot className="text-cyan-500 mb-3" size={20} />
-                          <h4 className="text-xs font-black text-white uppercase mb-2">Simulate</h4>
-                          <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-tight">Run live demonstrations of vectors.</p>
-                        </div>
-                        <div className="p-4 bg-slate-900/50 border border-slate-800 rounded-2xl">
-                          <BookOpen className="text-cyan-500 mb-3" size={20} />
-                          <h4 className="text-xs font-black text-white uppercase mb-2">Educate</h4>
-                          <p className="text-[10px] text-slate-500 leading-relaxed uppercase tracking-tight">Guidance for beginners and pros.</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="relative">
-                      <div className="absolute -inset-4 bg-cyan-500/10 blur-3xl rounded-full"></div>
-                      <div className="relative bg-[#080c17] border border-slate-800 p-8 rounded-[2rem] shadow-2xl">
-                        <Terminal size={32} className="text-cyan-500 mb-6" />
-                        <div className="space-y-4 font-mono text-[10px] lg:text-xs">
-                          <p className="text-emerald-500">$ system_init --mode=hackaware</p>
-                          <p className="text-slate-500">{'>'} Loading modules...</p>
-                          <p className="text-slate-300 italic">{'>'} "Awareness is the first layer of security."</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
 
               <section id="attack-section" className="py-24 px-6 lg:px-12 max-w-6xl mx-auto w-full">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
