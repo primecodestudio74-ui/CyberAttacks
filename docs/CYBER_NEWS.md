@@ -74,7 +74,10 @@ vulnerability/advisory content that a general news API cannot match.
 
 ```
 frontend/src/pages/News/CyberNews.jsx      editorial page (sections + feed + sidebar)
-frontend/src/components/News/*             cards, featured story, rail, sidebar, states
+frontend/src/components/News/*             cards, featured story, hero carousel, rail, sidebar, states
+frontend/src/components/News/CyberNewsHero.jsx  dashboard hero carousel (props only, no fetching)
+frontend/src/components/News/CyberNewsHero.css  carousel styles + auto-advance animation
+frontend/src/utils/newsHero.js             hero slide selection, index wrap, rotation rules
 frontend/src/hooks/useNews.js              data hook: debounce, abort/stale guard, paging
 frontend/src/services/newsService.js       client for /api/news (no key, no provider calls)
 
@@ -136,6 +139,64 @@ Ten user-facing sections are derived from the publisher's own title/description:
   says critical; `Exploited in the wild` only for CISA KEV entries; "Covered by
   multiple outlets" is computed from real duplicate detection. The sidebar states
   openly that no engagement metrics are available.
+
+---
+
+## 3b. Dashboard hero carousel
+
+The dashboard hub opens with a premium auto-sliding news banner
+(`frontend/src/components/News/CyberNewsHero.jsx`), directly below the sticky
+header and above the rest of the hub content. It is the same widget on every
+viewport - a wide rounded banner with the category badge, an editorial
+`LATEST CYBERSECURITY NEWS` label, the headline, the publisher excerpt, publisher
+and publication time, `Read Full Story`, `Explore Cyber News`, arrows,
+pagination dots, a `02 / 05` counter and an auto-advance progress line.
+
+- **No second integration.** The carousel receives the dashboard shell's single
+  `useNews` response as a prop (`<CyberNewsHero newsData={dashboardNews} />`). It
+  contains no `fetch`, no service import and no polling, so the hub, the floating
+  ticker and the Cyber News page all read the same cached `/api/news` payload.
+- **Slide selection** (`frontend/src/utils/newsHero.js`) keeps up to 5 stories:
+  absolute `http(s)` URLs only, canonical-URL and headline de-duplication,
+  sponsored posts only as a last resort, up to two slides per publisher while
+  other outlets are available, ordered by a documented editorial usefulness score
+  (has a thumbnail, has an excerpt, is recent) with the publisher's own timestamp
+  as the tie-breaker. No popularity, severity or "breaking news" is invented, and
+  stories that do not qualify are simply not shown.
+- **Timing.** `HERO_AUTOPLAY_INTERVAL_MS = 6000` (6 s) and
+  `HERO_TRANSITION_MS = 700` are the only timing values; the component passes
+  both to CSS as custom properties so the transition and the progress line stay
+  in lockstep with the timer. Rotation wraps from the last slide to the first.
+- **Interaction.** Arrows, dots, the counter, `ArrowLeft`/`ArrowRight` while the
+  widget has focus, and the pause button (WCAG 2.2.2) all reset the interval, so
+  a manual choice always gets a full 6 seconds. Rotation pauses on hover, on
+  keyboard focus inside the widget, while the browser tab is hidden, and when the
+  user pauses it. Rapid clicks step exactly one slide because every update uses a
+  functional index update with wrap-around normalisation.
+- **Reduced motion.** `prefers-reduced-motion: reduce` disables auto-advance
+  entirely (manual navigation remains) and the stylesheet removes the slide
+  transition and the progress animation.
+- **Images.** The visible slide loads its publisher thumbnail eagerly with
+  `fetchPriority="high"`; only the active slide and its two neighbours mount an
+  `<img>` (the shared `SafeImage` gained an opt-in `deferred` prop for the rest,
+  which keeps the reserved box without starting a download). Missing or blocked
+  images fall back to the HackAware branded artwork and to the labelled
+  `SafeImage` placeholder - never a stand-in photo.
+- **Accessibility.** `role="region"` + `aria-roledescription="carousel"`, one
+  labelled `role="group"` per slide (`aria-label="Story 2 of 5"`), labelled
+  arrows and dots with `aria-current` on the active dot, `aria-live="off"` (so
+  automatic changes are never announced), hidden slides removed from the tab
+  order, visible focus rings and a screen-reader-only note while loading.
+- **States.** A skeleton with the banner's exact footprint while the first
+  request is pending (no layout jump), the previous cached stories when a refresh
+  fails, and nothing at all - rather than invented headlines - when the API fails
+  or the newswire is empty. A single story renders without arrows, dots or
+  auto-cycling.
+- **Navigation.** `Read Full Story` (and the headline) opens the publisher's
+  original article in a new tab with `rel="noopener noreferrer"`; `Explore Cyber
+  News` routes to the existing `/dashboard?tab=news` section. The dashboard tab is
+  now read straight from `?tab=`, so that link, deep links and the back button all
+  resolve to the same view.
 
 ---
 
@@ -262,7 +323,7 @@ The default deployment is one origin: a static frontend + the Express API.
 
 ```bash
 npm --prefix backend test            # 48 tests: 32 unit + 16 end-to-end HTTP
-npm --prefix frontend run test:render # 8 render tests against a real API payload
+npm --prefix frontend run test:render # 38 tests: hero selection/rotation, render tests, ticker
 npm --prefix frontend run lint        # (pre-existing errors elsewhere in the app remain)
 npm --prefix frontend run build
 ```
@@ -279,7 +340,14 @@ npm --prefix frontend run build
 - **Frontend render tests** (`frontend/tests/newsRender.test.mjs`): renders the
   real components with a captured `/api/news` payload — real article data, links
   with `rel="noopener noreferrer"`, missing image/description/date fallbacks,
-  sidebar, keyboard-accessible categories and all empty/error/rate-limit states.
+  sidebar, keyboard-accessible categories, all empty/error/rate-limit states, and
+  the hero carousel (real headlines/links/images, controls and their labels,
+  off-screen slides hidden from tab order and assistive tech, deferred images,
+  skeleton, single-story and failure states).
+- **Hero logic tests** (`frontend/tests/newsHero.test.mjs`): slide eligibility and
+  ordering, URL validation, de-duplication, the sponsored and per-publisher rules,
+  index wrap-around, the image window and every rotation stop condition
+  (hover, focus, hidden tab, pause, reduced motion, single story).
 
 The sandbox used to build this feature has **no outbound access to publisher
 hosts** (only package registries), so live provider fetching was verified with

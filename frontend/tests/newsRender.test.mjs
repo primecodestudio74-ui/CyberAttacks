@@ -21,6 +21,11 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import * as esbuild from 'esbuild';
 
+import { HERO_AUTOPLAY_INTERVAL_MS, selectHeroSlides } from '../src/utils/newsHero.js';
+
+const escapeHtml = (value) =>
+  String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const outDir = path.join(root, 'node_modules', '.cache', 'hackaware-news-tests');
@@ -159,4 +164,140 @@ test('loading state renders skeletons that match the layout', () => {
   // One pulsing wrapper per skeleton: 1 featured + 2 article cards.
   assert.ok((html.match(/animate-pulse/g) || []).length >= 3, 'skeleton blocks are present');
   assert.equal((html.match(/aria-live="polite"/g) || []).length, 1, 'the loading grid is announced once');
+});
+
+/* -------------------------------------------------------------------------- *
+ * Cyber News hero carousel (profile: dashboard hub, above the main content)
+ * -------------------------------------------------------------------------- */
+
+test('hero carousel renders the API articles, in the selector order, with real links', () => {
+  const html = render(payload).hero;
+  const slides = selectHeroSlides(payload);
+
+  assert.ok(slides.length >= 3, 'the real payload yields a rotatable carousel');
+
+  for (const slide of slides) {
+    assert.ok(html.includes(escapeHtml(slide.title)), `missing headline: ${slide.title}`);
+  }
+
+  // The first slide is the one rendered as active, and it is a real article.
+  assert.ok(html.includes(`href="${escapeHtml(slides[0].url)}"`), 'the lead slide links to the publisher');
+  assert.ok(html.includes(escapeHtml(slides[0].source)), 'the lead slide names its publisher');
+  assert.ok(html.includes('Latest cybersecurity news'), 'the editorial label is present');
+  assert.ok(html.includes('Read Full Story'), 'the primary action is present');
+  assert.ok(/ago|Just now/.test(html), 'the publication time is human readable');
+  assert.ok(html.includes('target="_blank"'), 'external stories open in a new tab');
+  assert.ok(html.includes('rel="noopener noreferrer"'), 'external links are safe');
+  assert.ok(!html.includes('undefined'), 'no undefined values reach the DOM');
+  assert.ok(!html.includes('Invalid Date'), 'no invalid dates reach the DOM');
+});
+
+test('hero carousel wires its controls and never announces automatic changes', () => {
+  const html = render(payload).hero;
+  const slides = selectHeroSlides(payload);
+
+  assert.ok(html.includes('role="region"'));
+  assert.ok(html.includes('aria-roledescription="carousel"'), 'the widget identifies itself as a carousel');
+  assert.ok(html.includes('aria-label="Latest cybersecurity news"'));
+  assert.ok(html.includes('aria-live="off"'), 'auto-rotation must not spam a live region');
+
+  // Arrows
+  assert.ok(/aria-label="Show the previous story/.test(html));
+  assert.ok(/aria-label="Show the next story/.test(html));
+  assert.ok(html.includes('title="Previous story"') && html.includes('title="Next story"'));
+
+  // Dots + slide count
+  assert.equal((html.match(/cyber-news-hero__dot"/g) || []).length, slides.length, 'one dot per slide');
+  assert.equal((html.match(/aria-current="true"/g) || []).length, 1, 'exactly one dot is current');
+  assert.ok(html.includes(`${String(1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`), 'the slide counter is rendered');
+  assert.ok(html.includes('aria-label="Choose a story"'));
+
+  // Pause control for the 6 s auto-advance (WCAG 2.2.2) and the timer read-out.
+  assert.equal(HERO_AUTOPLAY_INTERVAL_MS, 6000);
+  assert.ok(html.includes('Pause the automatic story rotation'));
+  assert.ok(html.includes('--hero-interval-ms:6000ms'), 'the css progress bar uses the same interval');
+});
+
+test('hero carousel hides every off-screen slide from tab order and assistive tech', () => {
+  const html = render(payload).hero;
+  const slides = selectHeroSlides(payload);
+
+  assert.equal((html.match(/aria-hidden="true"/g) || []).length >= 2, true);
+  const hiddenSlides = (html.match(/role="group"[^>]*aria-hidden="true"/g) || []).length;
+  assert.equal(hiddenSlides, slides.length - 1, 'only the active slide is exposed');
+  assert.ok(html.includes('aria-label="Story 1 of '), 'the active slide is labelled');
+
+  // Links inside hidden slides must not be reachable by keyboard.
+  const inactive = html.split('role="group"').slice(1).filter((chunk) => chunk.startsWith(' aria-hidden="true"'));
+  for (const chunk of inactive) {
+    const anchors = chunk.match(/<a [^>]*>/g) || [];
+    assert.ok(anchors.length > 0, 'inactive slides still render their content');
+    for (const anchor of anchors) {
+      assert.ok(anchor.includes('tabindex="-1"'), `inactive slide link is still tabbable: ${anchor}`);
+    }
+  }
+});
+
+test('hero carousel defers the images of far slides and prioritises the visible one', () => {
+  const html = render(payload).hero;
+  const slides = selectHeroSlides(payload);
+
+  const visible = slides[0].imageUrl ? html.includes(`src="${escapeHtml(slides[0].imageUrl)}"`) : true;
+  assert.ok(visible, 'the visible slide mounts its publisher thumbnail');
+  assert.ok(/fetchpriority="high"/i.test(html), 'the visible hero image is the priority download');
+  assert.ok(html.includes('loading="eager"'));
+  assert.ok(!/fetchpriority="high"[^>]*fetchpriority="high"/i.test(html), 'only one image is high priority');
+
+  // A slide more than one step away must not start a download.
+  const htmlWithoutFavicons = html.replace(/<img[^>]*s2\/favicons[^>]*>/g, '');
+  const renderedSources = htmlWithoutFavicons.match(/src="https:\/\/[^"]+"/g) || [];
+  assert.ok(
+    renderedSources.length <= 3,
+    `expected at most the active slide plus its two neighbours to mount an image, got ${renderedSources.length}`
+  );
+  assert.ok(renderedSources.length >= 1, 'at least the active slide mounts an image');
+});
+
+test('hero carousel points its secondary action at the existing Cyber News section', () => {
+  const html = render(payload).hero;
+  assert.ok(html.includes('href="/dashboard?tab=news"'), 'Explore Cyber News reuses the dashboard news tab');
+  assert.ok(html.includes('Explore Cyber News'));
+});
+
+test('hero carousel shows a layout-matched skeleton while the first request is pending', () => {
+  const html = render(payload).heroLoading;
+  assert.ok(html.includes('role="status"'));
+  assert.ok(html.includes('aria-busy="true"'));
+  assert.ok(html.includes('Loading the latest cybersecurity news'));
+  assert.ok(html.includes('cyber-news-hero__skeleton-title'));
+  assert.ok(!/<h2/.test(html), 'no headline is invented while loading');
+  assert.ok(!/<img/.test(html), 'no image is requested while loading');
+});
+
+test('hero carousel hides itself on failure or empty news instead of inventing stories', () => {
+  assert.equal(render(payload).heroError, '', 'an API failure with nothing cached renders nothing');
+  assert.equal(render(payload).heroEmpty, '', 'an empty newswire renders nothing');
+});
+
+test('hero carousel drops the controls when only one story is available', () => {
+  const html = render(payload).heroSingle;
+  assert.ok(html.includes('cyber-news-hero__slide is-active'), 'the single story still gets a hero');
+  assert.ok(html.includes('Read Full Story'));
+  assert.ok(!html.includes('cyber-news-hero__nav'), 'no arrows for a single story');
+  assert.ok(!html.includes('cyber-news-hero__dot"'), 'no dots for a single story');
+  assert.ok(!html.includes('automatic story rotation'), 'nothing rotates when there is one story');
+  assert.ok(!html.includes('cyber-news-hero__progress'), 'no auto-advance bar');
+});
+
+test('hero carousel falls back to the branded placeholder when no thumbnail exists', () => {
+  const html = render(payload).heroWithoutImages;
+  assert.ok(html.includes('no image available'), 'a labelled placeholder replaces the picture');
+  assert.ok(!/src="(null|undefined|)"/.test(html), 'no empty image src is rendered');
+  assert.ok(html.includes('cyber-news-hero__media-base'), 'the CSS artwork stays behind every slide');
+  assert.ok(html.includes('Read Full Story'), 'the slide still works without a picture');
+
+  const images = html.match(/<img[^>]*>/g) || [];
+  for (const tag of images) {
+    assert.ok(tag.includes('s2/favicons'), `unexpected image element in a picture-less hero: ${tag}`);
+  }
 });

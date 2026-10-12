@@ -1,9 +1,11 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { MemoryRouter } from 'react-router-dom';
 
 // Real components, rendered outside the browser so the test suite can assert on
 // the actual markup they produce from a real /api/news payload.
 import ArticleCard, { CompactArticle } from '../src/components/News/ArticleCard';
+import CyberNewsHero from '../src/components/News/CyberNewsHero';
 import FeaturedStory from '../src/components/News/FeaturedStory';
 import NewsSidebar from '../src/components/News/NewsSidebar';
 import FloatingNewsTicker from '../src/components/News/FloatingNewsTicker';
@@ -19,10 +21,32 @@ import {
   StaleNotice,
 } from '../src/components/News/NewsStates';
 
+/** The hero renders router links, so it needs the app's router context. */
+const renderHero = (newsData) =>
+  renderToStaticMarkup(
+    <MemoryRouter>
+      <CyberNewsHero newsData={newsData} />
+    </MemoryRouter>
+  );
+
 /** Render every news component against the supplied API payload. */
 export const renderAll = (payload) => {
   const articles = payload.articles || [];
   const html = {
+    hero: renderHero(payload),
+    heroLoading: renderHero({ loading: true, articles: [], featured: null, error: null }),
+    heroError: renderHero({ loading: false, articles: [], featured: null, error: { message: 'news unavailable' } }),
+    heroEmpty: renderHero({ loading: false, articles: [], featured: null, error: null }),
+    heroSingle: renderHero({
+      loading: false,
+      featured: null,
+      articles: articles.slice(0, 1),
+    }),
+    heroWithoutImages: renderHero({
+      loading: false,
+      featured: null,
+      articles: articles.filter((article) => !article.imageUrl).slice(0, 3),
+    }),
     card: articles[0] ? renderToStaticMarkup(<ArticleCard article={articles[0]} />) : '',
     ticker: renderToStaticMarkup(<FloatingNewsTicker articles={articles} />),
     emptyTicker: renderToStaticMarkup(<FloatingNewsTicker articles={[]} />),
