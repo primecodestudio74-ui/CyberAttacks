@@ -9,6 +9,9 @@ import { ShieldAlert, ImageOff } from 'lucide-react';
  * - Falls back to a branded placeholder when the image is missing, blocked by
  *   the publisher (hotlink protection) or simply fails to load - the card
  *   layout never breaks and the broken-image icon never appears.
+ * - `deferred` holds the <img> back entirely (used by the hero carousel for
+ *   slides that are not on screen yet) while keeping the same reserved box, so
+ *   a slide far from the active one never starts a large download.
  */
 export default function SafeImage({
   src,
@@ -19,6 +22,7 @@ export default function SafeImage({
   imgClassName = '',
   priority = false,
   sizes,
+  deferred = false,
 }) {
   // Derived state: when the incoming src changes (list re-filter, refresh),
   // the load status resets during render instead of in an effect - React's
@@ -30,14 +34,20 @@ export default function SafeImage({
   const { status } = state;
   const setStatus = (next) => setState((previous) => ({ ...previous, status: next }));
 
-  const showImage = Boolean(src) && status !== 'error';
+  const hasSource = Boolean(src) && status !== 'error';
+  const showImage = hasSource && !deferred;
+  const isDeferred = hasSource && deferred;
 
   return (
     <div
       className={`relative overflow-hidden bg-slate-900/60 ${className}`}
       style={{ aspectRatio: ratio }}
     >
-      {showImage ? (
+      {isDeferred ? (
+        // Nothing is requested yet: keep the reserved box (and the hero's own
+        // branded backdrop) without claiming that no image exists.
+        <div className="absolute inset-0 animate-pulse bg-slate-800/40" aria-hidden="true" />
+      ) : showImage ? (
         <>
           <img
             src={src}

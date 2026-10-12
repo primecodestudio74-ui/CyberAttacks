@@ -13,6 +13,7 @@ import OperatorProfile from './OperatorProfile';
 import LearningHub from '../components/Learning/LearningHub';
 import ChatbotPanel from '../components/Chatbot/ChatbotPanel';
 import FloatingNewsTicker from '../components/News/FloatingNewsTicker.jsx';
+import CyberNewsHero from '../components/News/CyberNewsHero.jsx';
 import CyberNews from './News/CyberNews';
 import useNews from '../hooks/useNews.js';
 import { NEWS_CATEGORY_IDS } from '../utils/newsFormat.js';
@@ -26,12 +27,12 @@ const CyberDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
   const [selectedAttack, setSelectedAttack] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  // Deep links such as /dashboard?tab=news&category=data-breaches&q=ransomware
-  // open the matching tab with the matching filters applied.
-  const [activeTab, setActiveTab] = useState(() => {
-    const requested = searchParams.get('tab');
-    return DASHBOARD_TABS.includes(requested) ? requested : 'hub';
-  });
+  // The active tab is read straight from the URL, so deep links
+  // (/dashboard?tab=news&category=data-breaches&q=ransomware), sidebar clicks,
+  // the browser back button and in-app links into a tab - such as the news hero
+  // carousel's "Explore Cyber News" action - all resolve to the same view.
+  const requestedTab = searchParams.get('tab');
+  const activeTab = DASHBOARD_TABS.includes(requestedTab) ? requestedTab : 'hub';
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
@@ -133,7 +134,6 @@ const CyberDashboard = () => {
   };
 
   const handleTabChange = (tab) => {
-    setActiveTab(tab);
     setSearchParams(
       (previous) => {
         const next = new URLSearchParams(previous);
@@ -259,6 +259,12 @@ const CyberDashboard = () => {
         <AnimatePresence mode="wait">
           {activeTab === 'hub' ? (
             <motion.div key="hub" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col w-full">
+
+              {/* Premium auto-sliding Cyber News banner: directly below the dashboard
+                  header and above the rest of the hub. It reuses the single news
+                  query already running in this shell (the same response as the
+                  floating ticker), so mounting it adds no extra API request. */}
+              <CyberNewsHero newsData={dashboardNews} />
 
               <section className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-center text-center p-6 lg:p-12 relative">
                 <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="max-w-4xl z-10">

@@ -1,0 +1,682 @@
+/* ==========================================================================
+   CyberNewsHero - premium auto-sliding cybersecurity news banner.
+
+   Scoped entirely to .cyber-news-hero so the widget cannot leak styles into
+   the dashboard shell. Brand palette matches the rest of HackAware:
+   #020617 / #030712 surfaces, slate borders, cyan (#22d3ee) accents.
+   ========================================================================== */
+
+.cyber-news-hero {
+  --hero-interval-ms: 6000;
+  --hero-transition-ms: 700;
+  --hero-radius: 26px;
+  --hero-surface: #050b18;
+  --hero-border: rgba(30, 41, 59, 0.85);
+  --hero-accent: #22d3ee;
+  width: 100%;
+  max-width: calc(72rem + 2 * clamp(1rem, 3vw, 3rem));
+  margin-inline: auto;
+  padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1rem, 3vw, 3rem) 0;
+}
+
+.cyber-news-hero__frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--hero-border);
+  border-radius: var(--hero-radius);
+  background: var(--hero-surface);
+  box-shadow:
+    0 34px 70px -34px rgba(2, 6, 23, 0.95),
+    0 2px 10px -4px rgba(2, 6, 23, 0.8),
+    inset 0 1px 0 rgba(148, 163, 184, 0.06);
+  isolation: isolate;
+}
+
+/* A hairline of accent along the top edge - reads as part of HackAware, not a
+   dropped-in third-party widget. */
+.cyber-news-hero__frame::before {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  right: 12%;
+  left: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.55), transparent);
+  content: '';
+  pointer-events: none;
+}
+
+.cyber-news-hero__viewport {
+  overflow: hidden;
+}
+
+.cyber-news-hero__track {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transform: translate3d(0, 0, 0);
+  transition: transform var(--hero-transition-ms) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Slide
+   -------------------------------------------------------------------------- */
+
+.cyber-news-hero__slide {
+  position: relative;
+  display: flex;
+  flex: 0 0 100%;
+  min-width: 100%;
+  min-height: clamp(23rem, 36vw, 32rem);
+  align-items: flex-end;
+  visibility: hidden;
+  /* The slide stays painted while the track animates, then leaves the
+     accessibility/pointer tree once it is off screen. */
+  transition: visibility 0s linear var(--hero-transition-ms);
+}
+
+.cyber-news-hero__slide.is-active {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.cyber-news-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #030712;
+}
+
+/* SafeImage renders its own root element; make it fill the media box. */
+.cyber-news-hero__media > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Branded backdrop: always behind the photo, and the complete artwork when a
+   publisher supplies no image at all. */
+.cyber-news-hero__media-base {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 140% at 82% 18%, rgba(34, 211, 238, 0.16), transparent 58%),
+    radial-gradient(90% 120% at 8% 92%, rgba(8, 47, 73, 0.5), transparent 62%),
+    linear-gradient(135deg, #08101f 0%, #030712 62%, #020617 100%);
+}
+
+.cyber-news-hero__media-base::after {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  content: '';
+  mask-image: radial-gradient(110% 110% at 78% 30%, #000 12%, transparent 72%);
+  -webkit-mask-image: radial-gradient(110% 110% at 78% 30%, #000 12%, transparent 72%);
+}
+
+/* Legibility scrim: dark under the copy, lighter over the artwork. The stops
+   are tuned so body copy keeps at least a 4.5:1 contrast ratio even when a
+   publisher's photo is white right where the text ends. */
+.cyber-news-hero__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(3, 7, 18, 0.97) 0%, rgba(3, 7, 18, 0.95) 34%, rgba(3, 7, 18, 0.8) 60%, rgba(3, 7, 18, 0.44) 100%),
+    linear-gradient(0deg, rgba(2, 6, 23, 0.94) 0%, rgba(2, 6, 23, 0.55) 26%, rgba(2, 6, 23, 0) 62%);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Copy
+   -------------------------------------------------------------------------- */
+
+.cyber-news-hero__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  /* Copy stays inside the darkest part of the scrim on every breakpoint. */
+  width: min(44rem, 68%);
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: clamp(1.5rem, 2.6vw, 2.6rem) clamp(1.5rem, 3vw, 3.25rem) clamp(3.75rem, 5vw, 4.5rem);
+}
+
+.cyber-news-hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cyber-news-hero__badge {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.cyber-news-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: rgba(103, 232, 249, 0.85);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.cyber-news-hero__eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--hero-accent);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.9);
+  animation: cyber-news-hero-pulse 2.4s ease-in-out infinite;
+}
+
+.cyber-news-hero__headline {
+  margin: 0;
+  font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-size: clamp(1.5rem, 2.8vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.14;
+  text-wrap: balance;
+}
+
+.cyber-news-hero__headline-link {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: #ffffff;
+  text-decoration: none;
+  text-shadow: 0 2px 18px rgba(2, 6, 23, 0.65);
+  transition: color 200ms ease;
+}
+
+.cyber-news-hero__headline-link:is(:hover, :focus-visible) {
+  color: #a5f3fc;
+}
+
+.cyber-news-hero__excerpt {
+  display: -webkit-box;
+  overflow: hidden;
+  max-width: 38rem;
+  margin: 0;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: #b6c2d6;
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+.cyber-news-hero__excerpt--none {
+  color: #8b98b2;
+  font-style: italic;
+}
+
+.cyber-news-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  color: #a3aec4;
+  font-size: 11px;
+}
+
+.cyber-news-hero__meta time {
+  color: #a3aec4;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.cyber-news-hero__separator {
+  color: rgba(100, 116, 139, 0.7);
+}
+
+.cyber-news-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.4rem;
+}
+
+.cyber-news-hero__cta {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 0.75rem 1.35rem;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+
+.cyber-news-hero__cta--primary {
+  background: linear-gradient(135deg, #22d3ee 0%, #0891b2 100%);
+  box-shadow: 0 12px 30px -14px rgba(34, 211, 238, 0.85);
+  color: #02131c;
+}
+
+.cyber-news-hero__cta--primary:is(:hover, :focus-visible) {
+  background: linear-gradient(135deg, #67e8f9 0%, #06b6d4 100%);
+  box-shadow: 0 16px 34px -14px rgba(34, 211, 238, 0.95);
+  transform: translateY(-1px);
+}
+
+.cyber-news-hero__cta--ghost {
+  border-color: rgba(148, 163, 184, 0.32);
+  background: rgba(15, 23, 42, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #e2e8f0;
+}
+
+.cyber-news-hero__cta--ghost:is(:hover, :focus-visible) {
+  border-color: rgba(34, 211, 238, 0.55);
+  background: rgba(8, 47, 73, 0.55);
+  color: #cffafe;
+}
+
+.cyber-news-hero__cta[aria-disabled='true'] {
+  border-color: rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.45);
+  color: #7c8aa3;
+  cursor: not-allowed;
+}
+
+.cyber-news-hero__cta:focus-visible,
+.cyber-news-hero__nav:focus-visible,
+.cyber-news-hero__dot:focus-visible,
+.cyber-news-hero__toggle:focus-visible,
+.cyber-news-hero__headline-link:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.85);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Arrows, pagination and the auto-advance read-out
+   -------------------------------------------------------------------------- */
+
+.cyber-news-hero__nav {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 999px;
+  background: rgba(3, 7, 18, 0.62);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #e2e8f0;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: border-color 200ms ease, background-color 200ms ease, color 200ms ease, transform 200ms ease;
+}
+
+.cyber-news-hero__nav--prev {
+  left: clamp(0.6rem, 1.6vw, 1.1rem);
+}
+
+.cyber-news-hero__nav--next {
+  right: clamp(0.6rem, 1.6vw, 1.1rem);
+}
+
+.cyber-news-hero__nav:is(:hover, :focus-visible) {
+  border-color: rgba(34, 211, 238, 0.6);
+  background: rgba(8, 47, 73, 0.72);
+  color: #a5f3fc;
+}
+
+.cyber-news-hero__chrome {
+  position: absolute;
+  z-index: 3;
+  right: clamp(1.1rem, 3vw, 3.25rem);
+  bottom: clamp(0.9rem, 1.6vw, 1.35rem);
+  left: clamp(1.1rem, 3vw, 3.25rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cyber-news-hero__pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.cyber-news-hero__dots {
+  display: flex;
+  align-items: center;
+}
+
+.cyber-news-hero__dot {
+  display: grid;
+  /* Comfortable hit area without moving the visual dots apart. */
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cyber-news-hero__dot::before {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(203, 213, 225, 0.42);
+  content: '';
+  transition: width 260ms ease, background-color 260ms ease;
+}
+
+.cyber-news-hero__dot:is(:hover, :focus-visible)::before {
+  background: rgba(226, 232, 240, 0.85);
+}
+
+.cyber-news-hero__dot[aria-current='true']::before {
+  width: 22px;
+  background: linear-gradient(90deg, #22d3ee, #67e8f9);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+}
+
+.cyber-news-hero__counter {
+  color: #cbd5e1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+}
+
+.cyber-news-hero__toggle {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 999px;
+  background: rgba(3, 7, 18, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: border-color 200ms ease, color 200ms ease;
+}
+
+.cyber-news-hero__toggle:is(:hover, :focus-visible) {
+  border-color: rgba(34, 211, 238, 0.55);
+  color: #a5f3fc;
+}
+
+.cyber-news-hero__sample {
+  border: 1px dashed rgba(251, 191, 36, 0.45);
+  border-radius: 6px;
+  padding: 0.15rem 0.4rem;
+  color: rgba(253, 230, 138, 0.9);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Auto-advance progress: restarts with every timer cycle (and freezes while
+   rotation is paused). Decorative only - never announced. */
+.cyber-news-hero__progress {
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.85), rgba(103, 232, 249, 0.35));
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: cyber-news-hero-progress var(--hero-interval-ms) linear forwards;
+}
+
+.cyber-news-hero__progress.is-paused {
+  animation-play-state: paused;
+}
+
+/* --------------------------------------------------------------------------
+   Loading skeleton - same footprint as the real banner (no page jump)
+   -------------------------------------------------------------------------- */
+
+.cyber-news-hero__skeleton {
+  position: relative;
+  display: flex;
+  min-height: clamp(23rem, 36vw, 32rem);
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  padding: clamp(1.5rem, 2.6vw, 2.6rem) clamp(1.5rem, 3vw, 3.25rem) clamp(3.75rem, 5vw, 4.5rem);
+  background:
+    radial-gradient(120% 140% at 82% 18%, rgba(34, 211, 238, 0.08), transparent 58%),
+    linear-gradient(135deg, #08101f 0%, #030712 62%, #020617 100%);
+}
+
+.cyber-news-hero__skeleton > * {
+  animation: cyber-news-hero-shimmer 1.8s ease-in-out infinite;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.75);
+}
+
+.cyber-news-hero__skeleton-badge {
+  width: 8rem;
+  height: 1.15rem;
+}
+
+.cyber-news-hero__skeleton-eyebrow {
+  width: 12rem;
+  height: 0.7rem;
+  background: rgba(8, 47, 73, 0.8) !important;
+}
+
+.cyber-news-hero__skeleton-title {
+  width: min(34rem, 84%);
+  height: 2.2rem;
+}
+
+.cyber-news-hero__skeleton-title-sm {
+  width: min(26rem, 68%);
+  height: 2.2rem;
+}
+
+.cyber-news-hero__skeleton-line {
+  width: min(30rem, 78%);
+  height: 0.85rem;
+  background: rgba(30, 41, 59, 0.55) !important;
+}
+
+.cyber-news-hero__skeleton-line-sm {
+  width: min(22rem, 60%);
+  height: 0.85rem;
+  background: rgba(30, 41, 59, 0.45) !important;
+}
+
+.cyber-news-hero__skeleton-cta {
+  width: 12rem;
+  height: 2.75rem;
+  margin-top: 0.4rem;
+  background: rgba(8, 145, 178, 0.28) !important;
+}
+
+.cyber-news-hero__sr-only {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .cyber-news-hero__content {
+    width: min(40rem, 84%);
+  }
+
+  .cyber-news-hero__headline {
+    font-size: clamp(1.4rem, 3.4vw, 2rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .cyber-news-hero {
+    --hero-radius: 20px;
+  }
+
+  .cyber-news-hero__slide,
+  .cyber-news-hero__skeleton {
+    min-height: clamp(20rem, 62vw, 26rem);
+  }
+
+  /* Portrait viewports show less artwork, so the scrim goes vertical. */
+  .cyber-news-hero__scene {
+    background:
+      linear-gradient(180deg, rgba(3, 7, 18, 0.68) 0%, rgba(3, 7, 18, 0.82) 42%, rgba(2, 6, 23, 0.96) 100%),
+      linear-gradient(90deg, rgba(3, 7, 18, 0.85), rgba(3, 7, 18, 0.3));
+  }
+
+  .cyber-news-hero__content {
+    width: 100%;
+    gap: 0.7rem;
+    padding: clamp(1.25rem, 4vw, 1.75rem) clamp(1.15rem, 4vw, 1.75rem) clamp(3.5rem, 9vw, 4rem);
+  }
+
+  .cyber-news-hero__excerpt {
+    font-size: 13px;
+    -webkit-line-clamp: 2;
+  }
+
+  .cyber-news-hero__nav {
+    width: 36px;
+    height: 36px;
+  }
+
+  .cyber-news-hero__chrome {
+    right: clamp(1.15rem, 4vw, 1.75rem);
+    left: clamp(1.15rem, 4vw, 1.75rem);
+  }
+}
+
+@media (max-width: 560px) {
+  .cyber-news-hero__eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+  }
+
+  .cyber-news-hero__headline {
+    font-size: clamp(1.25rem, 5.6vw, 1.6rem);
+    -webkit-line-clamp: 3;
+  }
+
+  .cyber-news-hero__actions {
+    gap: 0.55rem;
+  }
+
+  .cyber-news-hero__cta {
+    flex: 1 1 100%;
+    justify-content: center;
+    padding-inline: 1rem;
+    letter-spacing: 0.12em;
+  }
+
+  .cyber-news-hero__dot {
+    width: 34px;
+    height: 34px;
+  }
+
+  .cyber-news-hero__counter {
+    display: none;
+  }
+
+  .cyber-news-hero__scene {
+    background: linear-gradient(180deg, rgba(3, 7, 18, 0.72) 0%, rgba(3, 7, 18, 0.88) 38%, rgba(2, 6, 23, 0.97) 100%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Animations
+   -------------------------------------------------------------------------- */
+
+@keyframes cyber-news-hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes cyber-news-hero-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes cyber-news-hero-shimmer {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Manual navigation still works; slides simply swap without animating. */
+  .cyber-news-hero__track {
+    transition: none;
+  }
+
+  .cyber-news-hero__slide {
+    transition: none;
+    visibility: visible;
+  }
+
+  .cyber-news-hero__progress {
+    display: none;
+  }
+
+  .cyber-news-hero__eyebrow-dot {
+    animation: none;
+  }
+}
