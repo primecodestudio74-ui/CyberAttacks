@@ -3,7 +3,8 @@ import {
   Shield, LogOut, LayoutDashboard, Lock, Mail,
   Database, Activity, Menu, ChevronLeft,
   ExternalLink, User, Terminal, Clock,
-  BrainCircuit, ArrowDown, Bot, BookOpen, Settings, Keyboard, Key, Newspaper
+  BrainCircuit, ArrowDown, Bot, BookOpen, Settings, Keyboard, Key, Newspaper,
+  ServerCrash
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -125,7 +126,16 @@ const CyberDashboard = () => {
       tag: 'SESSION_MGMT',
       path: '/dashboard/sessionhijacking',
       difficulty: 'Intermediate'
-    }
+    },
+    {
+  id: 'DOS_ATTACK',
+  title: 'DoS / DDoS Attack',
+  desc: 'Simulate HTTP, SYN and Slowloris floods against a mock server and learn how rate limiting, WAFs and timeouts keep services online.',
+  icon: <ServerCrash className="text-cyan-400" />,
+  tag: 'AVAILABILITY',
+  path: '/dashboard/DosAttack',
+  difficulty: 'Intermediate'
+}
   ];
 
   const scrollToSection = (id) => {

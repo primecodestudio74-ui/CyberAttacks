@@ -12,6 +12,7 @@ import Phishing from '../pages/Attacks/Phishing.jsx';
 import AIPoisoningLab from '../pages/Attacks/AiPoisoningLab.jsx';
 import Keylogger from '../pages/Attacks/Keylogger.jsx';
 import SessionHijacking from '../pages/Attacks/SessionHijacking.jsx';
+import DosAttack from '../pages/Attacks/DosAttack.jsx';
 
 // Secure Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -102,6 +103,13 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route 
+        path = "/dashboard/DosAttack"
+        element={
+           <ProtectedRoute>
+              <DosAttack />
+            </ProtectedRoute>
+        }/>
 
         {/* Global Redirect to Dashboard for undefined paths */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
