@@ -4,7 +4,7 @@ import {
   Database, Activity, Menu, ChevronLeft,
   ExternalLink, User, Terminal, Clock,
   BrainCircuit, ArrowDown, Bot, BookOpen, Settings, Keyboard, Key, Newspaper,
-  ServerCrash, Network, Globe, Code2
+  ServerCrash, Code2
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -73,24 +73,6 @@ const CyberDashboard = () => {
   const operatorName = localStorage.getItem('operator_name') || 'Aniket';
 
   const attacks = [
-    {
-      id: 'MITM',
-      title: 'Man-in-the-Middle (MITM)',
-      desc: 'Explore fictional café Wi-Fi, HTTP exposure, and the protection of validated HTTPS.',
-      icon: <Network className="text-amber-400" />,
-      tag: 'TRANSPORT_TRUST',
-      path: '/dashboard/mitm',
-      difficulty: 'Beginner'
-    },
-    {
-      id: 'DNS_SPOOFING',
-      title: 'DNS Spoofing / Pharming',
-      desc: 'Spot a poisoned DNS answer and compare DNSSEC, DoH, and certificate verification.',
-      icon: <Globe className="text-emerald-400" />,
-      tag: 'DNS_INTEGRITY',
-      path: '/dashboard/dns-spoofing',
-      difficulty: 'Intermediate'
-    },
     {
       id: 'SQL_INJECTION',
       title: 'SQL Injection',
