@@ -4,7 +4,7 @@ import {
   Database, Activity, Menu, ChevronLeft,
   ExternalLink, User, Terminal, Clock,
   BrainCircuit, ArrowDown, Bot, BookOpen, Settings, Keyboard, Key, Newspaper,
-  ServerCrash, Network, Globe
+  ServerCrash, Network, Globe, Code2
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -99,6 +99,15 @@ const CyberDashboard = () => {
       tag: 'DATABASE_SEC',
       path: '/dashboard/sql-injection',
       difficulty: 'Intermediate'
+    },
+    {
+      id: 'XSS',
+      title: 'Cross-Site Scripting (XSS)',
+      desc: 'Follow a fictional comment into a visitor’s browser, then see how safe text rendering changes the outcome.',
+      icon: <Code2 className="text-violet-400" />,
+      tag: 'BROWSER_SECURITY',
+      path: '/dashboard/xss',
+      difficulty: 'Beginner'
     },
     {
       id: 'PHISHING',

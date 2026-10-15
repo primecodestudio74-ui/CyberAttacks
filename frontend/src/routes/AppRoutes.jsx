@@ -15,6 +15,7 @@ import SessionHijacking from '../pages/Attacks/SessionHijacking.jsx';
 import DosAttack from '../pages/Attacks/DosAttack.jsx';
 import MitmAttack from '../pages/Attacks/MitmAttack.jsx';
 import DnsSpoofing from '../pages/Attacks/DnsSpoofing.jsx';
+import XSSAttack from '../pages/Attacks/XSSAttack.jsx';
 
 // Secure Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -120,6 +121,11 @@ export default function AppRoutes() {
         <Route
           path="/dashboard/dns-spoofing"
           element={<ProtectedRoute><DnsSpoofing /></ProtectedRoute>}
+        />
+
+        <Route
+          path="/dashboard/xss"
+          element={<ProtectedRoute><XSSAttack /></ProtectedRoute>}
         />
 
         {/* Global Redirect to Dashboard for undefined paths */}
