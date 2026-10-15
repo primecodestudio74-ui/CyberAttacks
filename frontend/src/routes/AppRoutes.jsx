@@ -13,6 +13,8 @@ import AIPoisoningLab from '../pages/Attacks/AiPoisoningLab.jsx';
 import Keylogger from '../pages/Attacks/Keylogger.jsx';
 import SessionHijacking from '../pages/Attacks/SessionHijacking.jsx';
 import DosAttack from '../pages/Attacks/DosAttack.jsx';
+import MitmAttack from '../pages/Attacks/MitmAttack.jsx';
+import DnsSpoofing from '../pages/Attacks/DnsSpoofing.jsx';
 
 // Secure Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -110,6 +112,15 @@ export default function AppRoutes() {
               <DosAttack />
             </ProtectedRoute>
         }/>
+
+        <Route
+          path="/dashboard/mitm"
+          element={<ProtectedRoute><MitmAttack /></ProtectedRoute>}
+        />
+        <Route
+          path="/dashboard/dns-spoofing"
+          element={<ProtectedRoute><DnsSpoofing /></ProtectedRoute>}
+        />
 
         {/* Global Redirect to Dashboard for undefined paths */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
