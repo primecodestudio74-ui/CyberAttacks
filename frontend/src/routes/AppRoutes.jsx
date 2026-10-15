@@ -13,8 +13,6 @@ import AIPoisoningLab from '../pages/Attacks/AiPoisoningLab.jsx';
 import Keylogger from '../pages/Attacks/Keylogger.jsx';
 import SessionHijacking from '../pages/Attacks/SessionHijacking.jsx';
 import DosAttack from '../pages/Attacks/DosAttack.jsx';
-import MitmAttack from '../pages/Attacks/MitmAttack.jsx';
-import DnsSpoofing from '../pages/Attacks/DnsSpoofing.jsx';
 import XSSAttack from '../pages/Attacks/XSSAttack.jsx';
 
 // Secure Route Wrapper
@@ -114,14 +112,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
         }/>
 
-        <Route
-          path="/dashboard/mitm"
-          element={<ProtectedRoute><MitmAttack /></ProtectedRoute>}
-        />
-        <Route
-          path="/dashboard/dns-spoofing"
-          element={<ProtectedRoute><DnsSpoofing /></ProtectedRoute>}
-        />
 
         <Route
           path="/dashboard/xss"
