@@ -4,7 +4,7 @@ import {
   Database, Activity, Menu, ChevronLeft,
   ExternalLink, User, Terminal, Clock,
   BrainCircuit, ArrowDown, Bot, BookOpen, Settings, Keyboard, Key, Newspaper,
-  ServerCrash
+  ServerCrash, Network, Globe
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -73,6 +73,24 @@ const CyberDashboard = () => {
   const operatorName = localStorage.getItem('operator_name') || 'Aniket';
 
   const attacks = [
+    {
+      id: 'MITM',
+      title: 'Man-in-the-Middle (MITM)',
+      desc: 'Explore fictional café Wi-Fi, HTTP exposure, and the protection of validated HTTPS.',
+      icon: <Network className="text-amber-400" />,
+      tag: 'TRANSPORT_TRUST',
+      path: '/dashboard/mitm',
+      difficulty: 'Beginner'
+    },
+    {
+      id: 'DNS_SPOOFING',
+      title: 'DNS Spoofing / Pharming',
+      desc: 'Spot a poisoned DNS answer and compare DNSSEC, DoH, and certificate verification.',
+      icon: <Globe className="text-emerald-400" />,
+      tag: 'DNS_INTEGRITY',
+      path: '/dashboard/dns-spoofing',
+      difficulty: 'Intermediate'
+    },
     {
       id: 'SQL_INJECTION',
       title: 'SQL Injection',
@@ -389,7 +407,7 @@ const SidebarLink = ({ icon, label, active, onClick, isOpen }) => (
 );
 
 const AttackCard = ({ atk, index, onClick }) => (
-  <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }} whileHover={{ y: -5, borderColor: 'rgba(34, 211, 238, 0.4)' }} onClick={onClick} className="group relative bg-[#030712]/40 backdrop-blur-sm border border-slate-800/50 p-8 rounded-[2rem] cursor-pointer overflow-hidden transition-all duration-300">
+  <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }} whileHover={{ y: -5, borderColor: 'rgba(34, 211, 238, 0.4)' }} onClick={onClick} role="button" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onClick(); } }} className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300 group relative bg-[#030712]/40 backdrop-blur-sm border border-slate-800/50 p-8 rounded-[2rem] cursor-pointer overflow-hidden transition-all duration-300">
     <div className="relative z-10 flex flex-col gap-6">
       <div className="flex justify-between items-start">
         <div className="w-12 h-12 bg-slate-950 border border-slate-800 group-hover:border-cyan-500/30 rounded-xl flex items-center justify-center transition-colors">
