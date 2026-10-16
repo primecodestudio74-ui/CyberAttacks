@@ -4,7 +4,7 @@ import {
   Database, Menu, ChevronLeft,
   ExternalLink, User, Clock,
   BrainCircuit, Bot, BookOpen, Settings, Keyboard, Key, Newspaper,
-  ServerCrash, Code2, Radar, SquareStack, ArrowLeftRight, Star, Search, Trophy, Flame, Lightbulb, Target,
+  ServerCrash, Code2, Radar, SquareStack, ArrowLeftRight, Star, Search, Trophy, Flame, Lightbulb, Target, Library,
   CheckCircle2, RotateCcw, Zap, ShieldCheck, X
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 // Component Imports
 import OperatorProfile from './OperatorProfile';
 import LearningHub from '../components/Learning/LearningHub';
+import ResourcesHub from '../components/Resources/ResourcesHub';
 import ChatbotPanel from '../components/Chatbot/ChatbotPanel';
 import FloatingNewsTicker from '../components/News/FloatingNewsTicker.jsx';
 import CyberNewsHero from '../components/News/CyberNewsHero.jsx';
@@ -22,7 +23,7 @@ import { NEWS_CATEGORY_IDS } from '../utils/newsFormat.js';
 
 // Tabs the dashboard can render. The sidebar, the URL (?tab=...) and the
 // content area all stay in sync through this list.
-const DASHBOARD_TABS = ['hub', 'prevention', 'news', 'learning', 'chatbot', 'profile', 'settings'];
+const DASHBOARD_TABS = ['hub', 'prevention', 'news', 'learning', 'chatbot', 'resources', 'profile', 'settings'];
 const NEWS_FILTER_KEYS = ['category', 'q', 'source', 'sort'];
 const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
@@ -159,6 +160,7 @@ const QUICK_ACTIONS = [
   { label: 'Start Learning', tab: 'learning', icon: BookOpen, color: 'text-emerald-400' },
   { label: 'Ask the ChatBot', tab: 'chatbot', icon: Bot, color: 'text-cyan-400' },
   { label: 'Read News', tab: 'news', icon: Newspaper, color: 'text-orange-400' },
+  { label: 'Resources', tab: 'resources', icon: Library, color: 'text-violet-400' },
   { label: 'Stay Safe Guide', tab: 'prevention', icon: ShieldCheck, color: 'text-fuchsia-400' },
 ];
 
@@ -336,6 +338,9 @@ const CyberDashboard = () => {
             <SidebarLink icon={<BookOpen size={18} />} label="Learning" active={activeTab === 'learning'} onClick={() => handleTabChange('learning')} isOpen={isSidebarOpen} />
             <SidebarLink icon={<Bot size={18} />} label="ChatBot" active={activeTab === 'chatbot'} onClick={() => handleTabChange('chatbot')} isOpen={isSidebarOpen} />
           </NavGroup>
+          <NavGroup label="Explore" isOpen={isSidebarOpen}>
+            <SidebarLink icon={<Library size={18} />} label="Resources" active={activeTab === 'resources'} onClick={() => handleTabChange('resources')} isOpen={isSidebarOpen} />
+          </NavGroup>
           <NavGroup label="Account" isOpen={isSidebarOpen}>
             <SidebarLink icon={<User size={18} />} label="Profile" active={activeTab === 'profile'} onClick={() => handleTabChange('profile')} isOpen={isSidebarOpen} />
             <SidebarLink icon={<Settings size={18} />} label="Settings" active={activeTab === 'settings'} onClick={() => handleTabChange('settings')} isOpen={isSidebarOpen} />
@@ -430,7 +435,7 @@ const CyberDashboard = () => {
 
               {/* 3. Quick links */}
               <section className="px-6 lg:px-12 mt-10 max-w-6xl mx-auto w-full">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                   {QUICK_ACTIONS.map(({ label, tab, icon: Icon, color }) => (
                     <button key={tab} onClick={() => handleTabChange(tab)} className="group flex items-center gap-3 p-4 bg-[#030712]/50 backdrop-blur-sm border border-slate-800/50 hover:border-cyan-500/40 rounded-2xl transition-all text-left">
                       <div className="w-10 h-10 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0"><Icon size={18} className={color} /></div>
@@ -538,6 +543,11 @@ const CyberDashboard = () => {
 
           ) : activeTab === 'chatbot' ? (
             <ChatbotPanel key="chatbot" />
+
+          ) : activeTab === 'resources' ? (
+            <motion.div key="resources" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
+              <ResourcesHub />
+            </motion.div>
 
           ) : activeTab === 'news' ? (
             <motion.div key="news" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
