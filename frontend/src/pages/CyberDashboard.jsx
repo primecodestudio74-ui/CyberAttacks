@@ -5,7 +5,7 @@ import {
   ExternalLink, User, Clock,
   BrainCircuit, Bot, BookOpen, Settings, Keyboard, Key, Newspaper,
   ServerCrash, Code2, Radar, SquareStack, ArrowLeftRight, Star, Search, Trophy, Flame, Lightbulb, Target,
-  CheckCircle2, RotateCcw, Zap, ShieldCheck, X
+  CheckCircle2, RotateCcw, Zap, ShieldCheck, X, Library
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,12 +17,13 @@ import ChatbotPanel from '../components/Chatbot/ChatbotPanel';
 import FloatingNewsTicker from '../components/News/FloatingNewsTicker.jsx';
 import CyberNewsHero from '../components/News/CyberNewsHero.jsx';
 import CyberNews from './News/CyberNews';
+import ResourcesHub from '../components/Resources/ResourcesHub.jsx';
 import useNews from '../hooks/useNews.js';
 import { NEWS_CATEGORY_IDS } from '../utils/newsFormat.js';
 
 // Tabs the dashboard can render. The sidebar, the URL (?tab=...) and the
 // content area all stay in sync through this list.
-const DASHBOARD_TABS = ['hub', 'prevention', 'news', 'learning', 'chatbot', 'profile', 'settings'];
+const DASHBOARD_TABS = ['hub', 'prevention', 'news', 'learning', 'resources', 'chatbot', 'profile', 'settings'];
 const NEWS_FILTER_KEYS = ['category', 'q', 'source', 'sort'];
 const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
@@ -334,6 +335,7 @@ const CyberDashboard = () => {
           </NavGroup>
           <NavGroup label="Learn" isOpen={isSidebarOpen}>
             <SidebarLink icon={<BookOpen size={18} />} label="Learning" active={activeTab === 'learning'} onClick={() => handleTabChange('learning')} isOpen={isSidebarOpen} />
+            <SidebarLink icon={<Library size={18} />} label="Resources" active={activeTab === 'resources'} onClick={() => handleTabChange('resources')} isOpen={isSidebarOpen} />
             <SidebarLink icon={<Bot size={18} />} label="ChatBot" active={activeTab === 'chatbot'} onClick={() => handleTabChange('chatbot')} isOpen={isSidebarOpen} />
           </NavGroup>
           <NavGroup label="Account" isOpen={isSidebarOpen}>
@@ -534,6 +536,11 @@ const CyberDashboard = () => {
           ) : activeTab === 'learning' ? (
             <motion.div key="learning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
               <LearningHub onLaunchLab={(path) => navigate(path)} />
+            </motion.div>
+
+          ) : activeTab === 'resources' ? (
+            <motion.div key="resources" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full">
+              <ResourcesHub />
             </motion.div>
 
           ) : activeTab === 'chatbot' ? (
