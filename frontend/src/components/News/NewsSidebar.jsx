@@ -26,12 +26,23 @@ const Section = ({ title, icon, note, children, action }) => (
  * (c) stories independently covered by more than one outlet - signals we can
  * actually observe.
  */
-export default function NewsSidebar({ advisories = [], recent = [], widelyCovered = [], sources = [], trustedSources = [] }) {
+export default function NewsSidebar({
+  advisories = [],
+  recent = [],
+  widelyCovered = [],
+  sources = [],
+  trustedSources = [],
+  layout = 'sidebar',
+}) {
   const healthySources = sources.filter((source) => source.status !== 'error');
   const failedSources = sources.filter((source) => source.status === 'error');
+  // Magazine layout: no squeezed third column — the same sections become a
+  // strip below the feed (2-up on tablets, 3/4-up on wide screens). The
+  // default stacked sidebar is unchanged for other surfaces/tests.
+  const isStrip = layout === 'strip';
 
   return (
-    <div className="space-y-4">
+    <div className={isStrip ? 'grid gap-6 md:grid-cols-2 xl:grid-cols-3' : 'space-y-4'}>
       <Section
         title="Latest Advisories"
         icon={<ShieldCheck size={12} />}
@@ -145,7 +156,7 @@ export default function NewsSidebar({ advisories = [], recent = [], widelyCovere
         )}
       </Section>
 
-      <p className="px-1 text-[10px] leading-relaxed text-slate-600">
+      <p className={`px-1 text-[10px] leading-relaxed text-slate-600 ${isStrip ? 'md:col-span-2 xl:col-span-3' : ''}`}>
         HackAware displays only headlines, short excerpts and links supplied by each publisher's public feed. Full articles
         remain on the publisher's site - we never copy or re-host their content.
       </p>
