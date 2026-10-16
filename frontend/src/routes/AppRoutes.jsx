@@ -19,8 +19,9 @@ import Keylogger from "../pages/Attacks/Keylogger.jsx";
 import SessionHijacking from "../pages/Attacks/SessionHijacking.jsx";
 import DosAttack from "../pages/Attacks/DosAttack.jsx";
 import XSSAttack from "../pages/Attacks/XSSAttack.jsx";
-import MitmAttack from "../pages/Attacks/MitmAttack.jsx";
+import MitmAttack from "../pages/Attacks/MITMAttack.jsx";
 import ClickJacking from "../pages/Attacks/ClickJacking.jsx";
+import CSRFAttack from "../pages/Attacks/CSRFAttack.jsx";
 
 // Secure Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -141,6 +142,14 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute>
               <ClickJacking />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/csrf"
+          element={
+            <ProtectedRoute>
+              <CSRFAttack />
             </ProtectedRoute>
           }
         />
