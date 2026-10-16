@@ -20,14 +20,16 @@ export function ArticleSkeleton() {
 
 export function FeaturedSkeleton() {
   return (
-    <div className="grid overflow-hidden rounded-2xl border border-slate-800/60 bg-[#070c17]/50 lg:grid-cols-5 motion-safe:animate-pulse">
-      <div className="bg-slate-800/40 lg:col-span-3" style={{ aspectRatio: '16 / 9' }} />
-      <div className="space-y-3 p-6 lg:col-span-2">
-        <div className="h-3 w-20 rounded bg-slate-800/70" />
-        <div className="h-5 w-full rounded bg-slate-800/60" />
-        <div className="h-5 w-5/6 rounded bg-slate-800/60" />
-        <div className="h-3 w-full rounded bg-slate-800/40" />
-        <div className="h-3 w-4/5 rounded bg-slate-800/40" />
+    <div
+      className="relative flex min-h-[380px] items-end overflow-hidden rounded-3xl border border-slate-800/70 bg-[#070c17]/50 motion-safe:animate-pulse sm:min-h-[420px] lg:min-h-[460px]"
+      style={{ aspectRatio: '16 / 9' }}
+    >
+      <div className="w-full space-y-3 p-6 sm:p-8 lg:p-10">
+        <div className="h-3 w-24 rounded bg-slate-800/70" />
+        <div className="h-6 w-full max-w-xl rounded bg-slate-800/60" />
+        <div className="h-6 w-5/6 max-w-lg rounded bg-slate-800/60" />
+        <div className="h-3 w-full max-w-md rounded bg-slate-800/40" />
+        <div className="h-3 w-4/5 max-w-sm rounded bg-slate-800/40" />
       </div>
     </div>
   );

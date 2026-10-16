@@ -19,7 +19,7 @@ export default function CategoryRail({ categories = [], activeCategory, onChange
 
   if (variant === 'chips') {
     return (
-      <nav aria-label="News categories" className="lg:hidden">
+      <nav aria-label="News categories">
         <ul className="scrollbar-none -mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-1">
           {items.map((category) => {
             const isActive = category.id === activeCategory;

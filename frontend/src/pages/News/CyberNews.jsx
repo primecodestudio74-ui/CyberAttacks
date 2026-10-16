@@ -25,11 +25,31 @@ const PAGE_SIZE = 12;
  *  notices, filter chips) cannot re-render every card. */
 const FeedGrid = React.memo(function FeedGrid({ articles }) {
   return (
-    <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {articles.map((article, index) => (
         <ArticleCard key={article.id} article={article} priority={index < 3} />
       ))}
     </div>
+  );
+});
+
+/** Bento row under the hero: the first tile is wide, the rest are standard. */
+const BentoGrid = React.memo(function BentoGrid({ articles }) {
+  if (!articles.length) return null;
+  return (
+    <section aria-label="More top stories">
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {articles.map((article, index) => (
+          <ArticleCard
+            key={article.id}
+            article={article}
+            priority={index < 2}
+            variant={index === 0 ? 'large' : 'standard'}
+            className={index === 0 ? 'md:col-span-2' : ''}
+          />
+        ))}
+      </div>
+    </section>
   );
 });
 
@@ -164,8 +184,27 @@ export default function CyberNews({ newsData } = {}) {
   const showError = (Boolean(error) && articles.length === 0) || providersDown;
   const showRateLimit = showError && error?.code === 'RATE_LIMITED';
 
+  // Magazine layout (Layout C): hero -> bento -> grid. The featured story is
+  // part of the paged article list, so it (and the bento picks) are removed
+  // from the grid below — no story appears twice on the page.
+  const showFeatured = Boolean(featured) && !urlQuery;
+  const bentoArticles = useMemo(() => {
+    if (!showFeatured) return [];
+    return articles.filter((article) => article.id !== featured.id).slice(0, 3);
+  }, [articles, featured, showFeatured]);
+  const bentoIds = useMemo(() => new Set(bentoArticles.map((article) => article.id)), [bentoArticles]);
+  const gridArticles = useMemo(() => {
+    if (!showFeatured) return articles;
+    return articles.filter((article) => article.id !== featured.id && !bentoIds.has(article.id));
+  }, [articles, featured, showFeatured, bentoIds]);
+  const hasNotices = Boolean(
+    meta?.sampleData ||
+      ((meta?.stale || meta?.degraded || meta?.unavailable) && articles.length > 0) ||
+      (error && articles.length > 0 && !meta?.stale)
+  );
+
   return (
-    <div className="mx-auto w-full max-w-[1440px] px-4 py-6 lg:px-8">
+    <div className="mx-auto w-full max-w-[1280px] px-4 py-8 sm:px-6 lg:px-8">
       <NewsHeader
         searchValue={searchInput}
         onSearchChange={(value) => setDraftQuery(value)}
@@ -185,8 +224,9 @@ export default function CyberNews({ newsData } = {}) {
         resultSummary={resultSummary}
       />
 
-      <div className="mt-5 space-y-3">
-        {meta?.sampleData && <SampleDataNotice />}
+      {hasNotices && (
+        <div className="mt-6 space-y-3">
+          {meta?.sampleData && <SampleDataNotice />}
         {(meta?.stale || meta?.degraded || meta?.unavailable) && articles.length > 0 && (
           <StaleNotice
             lastUpdated={lastUpdated}
@@ -195,23 +235,19 @@ export default function CyberNews({ newsData } = {}) {
             refreshing={refreshing}
           />
         )}
-        {error && articles.length > 0 && !meta?.stale && (
-          <div role="status" className="rounded-xl border border-amber-500/30 bg-amber-500/[0.07] px-4 py-3 text-[12px] text-amber-200">
-            {error.message} Showing the stories already loaded.
-          </div>
-        )}
-      </div>
+          {error && articles.length > 0 && !meta?.stale && (
+            <div role="status" className="rounded-xl border border-amber-500/30 bg-amber-500/[0.07] px-4 py-3 text-[12px] text-amber-200">
+              {error.message} Showing the stories already loaded.
+            </div>
+          )}
+        </div>
+      )}
 
-      <div className="mt-5">
+      <div className="mt-6">
         <CategoryRail categories={categories} activeCategory={category} onChange={(id) => updateParams({ category: id })} variant="chips" />
       </div>
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[220px_minmax(0,1fr)_330px]">
-        <div className="hidden lg:block">
-          <CategoryRail categories={categories} activeCategory={category} onChange={(id) => updateParams({ category: id })} variant="rail" />
-        </div>
-
-        <div ref={feedRef} className="min-w-0 scroll-mt-24 space-y-8">
+      <div ref={feedRef} className="mt-8 min-w-0 scroll-mt-24">
           {hasActiveFilters && (
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-800/60 bg-slate-900/30 px-4 py-3">
               <div className="flex flex-wrap items-center gap-2">
@@ -264,32 +300,38 @@ export default function CyberNews({ newsData } = {}) {
           ) : showError ? (
             <ErrorState message={error?.message} onRetry={retry} retrying={loading} />
           ) : loading && articles.length === 0 ? (
-            <>
+            <div className="space-y-6">
               <FeaturedSkeleton />
               <NewsGridSkeleton count={6} />
-            </>
+            </div>
           ) : isEmpty ? (
             <EmptyState query={urlQuery} categoryLabel={category !== 'all-news' ? activeCategoryLabel : ''} onReset={resetFilters} />
           ) : (
             <>
-              {featured && !urlQuery && <FeaturedStory article={featured} />}
+              {showFeatured && <FeaturedStory article={featured} />}
 
-              <section aria-labelledby="latest-heading" className="space-y-5">
-                <div className="flex flex-wrap items-end justify-between gap-3 border-b border-slate-800/60 pb-3">
+              {bentoArticles.length > 0 && (
+                <div className="mt-6">
+                  <BentoGrid articles={bentoArticles} />
+                </div>
+              )}
+
+              <section aria-labelledby="latest-heading" className="mt-10 space-y-6">
+                <div className="flex flex-wrap items-end justify-between gap-3 border-b border-slate-800/70 pb-4">
                   <div>
-                    <h2 id="latest-heading" className="font-serif text-xl text-white">
+                    <h2 id="latest-heading" className="font-serif text-[22px] text-white">
                       Latest News
                     </h2>
-                    <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-600">
+                    <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">
                       {category !== 'all-news' ? activeCategoryLabel : 'All sections'} · {sort === 'oldest' ? 'oldest first' : 'newest first'}
                     </p>
                   </div>
-                  <span className="text-[10px] text-slate-600">
+                  <span className="text-[11px] text-slate-500">
                     {pagination?.total ?? articles.length} stories in the current newswire
                   </span>
                 </div>
 
-                <FeedGrid articles={articles} />
+                <FeedGrid articles={gridArticles} />
 
                 <div className="flex flex-col items-center gap-3 pt-2">
                   {hasMore ? (
@@ -323,16 +365,31 @@ export default function CyberNews({ newsData } = {}) {
           )}
         </div>
 
-        <aside aria-label="News sidebar" className="min-w-0 lg:col-span-2 xl:col-span-1">
+      {/* Magazine layout: advisories / recent / sources are a full-width
+          strip below the feed, never a squeezed third column. Hidden while
+          the first load is pending or when there is nothing to show. */}
+      {!loading && !isEmpty && !showError && (
+        <section aria-labelledby="desk-heading" className="mt-12 min-w-0">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-slate-800/70 pb-4">
+            <div>
+              <h2 id="desk-heading" className="font-serif text-[22px] text-white">
+                More from the desk
+              </h2>
+              <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">
+                Advisories · Recent stories · Trusted sources
+              </p>
+            </div>
+          </div>
           <NewsSidebar
+            layout="strip"
             advisories={sections?.advisories || []}
             recent={sections?.recent || []}
             widelyCovered={sections?.widelyCovered || []}
             sources={sections?.sources || []}
             trustedSources={sections?.trustedSources || []}
           />
-        </aside>
-      </div>
+        </section>
+      )}
     </div>
   );
 }
