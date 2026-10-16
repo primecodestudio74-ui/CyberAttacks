@@ -403,7 +403,7 @@ const CyberDashboard = () => {
               <section id="about-hackaware" className="px-6 lg:px-12 pt-12 max-w-6xl mx-auto w-full">
                 <p className="text-[10px] text-cyan-600 font-bold uppercase tracking-[0.3em] mb-2">{greeting}, {operatorName}</p>
                 <h2 className="text-3xl lg:text-5xl font-black text-white tracking-tighter uppercase italic leading-none">
-                  What is HACK<span className="text-cyan-500">AWARE</span>?
+                  What is HACK<span className="text-cyan-500">AWARE </span>?
                 </h2>
                 <p className="text-slate-400 text-sm lg:text-base leading-relaxed mt-5 max-w-3xl">
                   HackAware is a safe place to learn how cyber attacks really work, and how to protect yourself from them.
