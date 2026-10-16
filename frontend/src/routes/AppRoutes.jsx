@@ -19,7 +19,7 @@ import Keylogger from "../pages/Attacks/Keylogger.jsx";
 import SessionHijacking from "../pages/Attacks/SessionHijacking.jsx";
 import DosAttack from "../pages/Attacks/DosAttack.jsx";
 import XSSAttack from "../pages/Attacks/XSSAttack.jsx";
-import MitmAttack from "../pages/Attacks/MITMAttack.jsx";
+import MitmAttack from "../pages/Attacks/MitmAttack.jsx";
 import ClickJacking from "../pages/Attacks/ClickJacking.jsx";
 
 // Secure Route Wrapper
