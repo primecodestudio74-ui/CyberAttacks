@@ -27,6 +27,7 @@ export default function useChatbot() {
   const [isSending, setIsSending] = useState(false);
   const [suggestions, setSuggestions] = useState(FALLBACK_SUGGESTED_PROMPTS);
   const [lastFailedMessage, setLastFailedMessage] = useState(null);
+  const [authError, setAuthError] = useState(null);
   const lastFailedMessageRef = useRef(null);
 
   // Persist conversation locally so it survives tab switches / reloads.
@@ -46,8 +47,12 @@ export default function useChatbot() {
           setSuggestions(data.suggestions);
         }
       })
-      .catch(() => {
-        // keep FALLBACK_SUGGESTED_PROMPTS
+      .catch((err) => {
+        // If auth error during suggestions fetch, set auth error
+        if (err?.isAuthError || err?.status === 401) {
+          setAuthError(err.message);
+        }
+        // keep FALLBACK_SUGGESTED_PROMPTS otherwise
       });
   }, []);
 
@@ -66,22 +71,51 @@ export default function useChatbot() {
       const historyForApi = buildHistoryPayload(messages);
 
       lastFailedMessageRef.current = null;
+      setAuthError(null);
       setMessages((prev) => [...prev, userMessage]);
       setIsSending(true);
 
       try {
         const data = await sendChatMessage(trimmed, historyForApi);
         setLastFailedMessage(null);
+        
+        // Show notice if response came from fallback
+        let content = data.reply;
+        if (data.notice && data.source === 'local-fallback') {
+          // Optionally prepend a subtle notice - but keep main content clean
+          // We'll show notice in console only, not in chat bubble
+          console.info('[chatbot]', data.notice, 'source:', data.source);
+        }
+
         setMessages((curr) => [
           ...curr,
           {
             id: nextId(),
             role: 'assistant',
-            content: data.reply,
+            content,
             timestamp: Date.now(),
+            source: data.source,
           },
         ]);
       } catch (err) {
+        // Handle auth errors separately
+        if (err?.isAuthError || err?.status === 401) {
+          setAuthError(err.message || 'Session expired. Please login again.');
+          setMessages((curr) => [
+            ...curr,
+            {
+              id: nextId(),
+              role: 'assistant',
+              content: `🔒 **Session expired**\n\n${err.message || 'Please login again to continue chatting.'}\n\nYour chat history is saved locally and will be restored after login.`,
+              timestamp: Date.now(),
+              isError: true,
+              isAuthError: true,
+            },
+          ]);
+          setIsSending(false);
+          return;
+        }
+
         lastFailedMessageRef.current = trimmed;
         setLastFailedMessage(trimmed);
         setMessages((curr) => [
@@ -118,6 +152,7 @@ export default function useChatbot() {
     setMessages([welcome]);
     lastFailedMessageRef.current = null;
     setLastFailedMessage(null);
+    setAuthError(null);
     try {
       localStorage.removeItem(CHAT_HISTORY_STORAGE_KEY);
     } catch {
@@ -133,5 +168,6 @@ export default function useChatbot() {
     retryLastMessage,
     clearChat,
     canRetry: Boolean(lastFailedMessage),
+    authError,
   };
 }

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldAlert, Trash2 } from 'lucide-react';
+import { ShieldAlert, Trash2, AlertCircle, LogIn } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import useChatbot from '../../hooks/useChatbot';
 import ChatBubble from './ChatBubble';
 import TypingIndicator from './TypingIndicator';
@@ -8,9 +9,10 @@ import SuggestedPrompts from './SuggestedPrompts';
 import ChatInput from './ChatInput';
 
 const ChatbotPanel = () => {
-  const { messages, isSending, suggestions, sendMessage, retryLastMessage, clearChat, canRetry } =
+  const { messages, isSending, suggestions, sendMessage, retryLastMessage, clearChat, canRetry, authError } =
     useChatbot();
   const scrollRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
@@ -46,6 +48,27 @@ const ChatbotPanel = () => {
         </button>
       </div>
 
+      {/* Auth error banner */}
+      {authError && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-4 p-4 rounded-xl border border-amber-500/30 bg-amber-950/20 flex items-start gap-3"
+        >
+          <AlertCircle size={18} className="text-amber-400 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-[11px] font-black text-amber-300 uppercase tracking-widest">Session Expired</p>
+            <p className="text-[12px] text-amber-200/80 mt-1 leading-relaxed">{authError}</p>
+            <button
+              onClick={() => navigate('/')}
+              className="mt-3 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-300 hover:bg-amber-500/30 transition-colors text-[10px] font-black uppercase tracking-widest"
+            >
+              <LogIn size={12} /> Login Again
+            </button>
+          </div>
+        </motion.div>
+      )}
+
       {/* Messages */}
       <div ref={scrollRef} className="custom-scrollbar flex-1 min-h-0 overflow-y-auto rounded-2xl border border-slate-800/60 bg-[#030712]/40 backdrop-blur-sm p-4 sm:p-6 space-y-5 scroll-smooth">
         <AnimatePresence initial={false}>
@@ -61,9 +84,12 @@ const ChatbotPanel = () => {
         {showSuggestions && (
           <SuggestedPrompts prompts={suggestions} onSelect={sendMessage} disabled={isSending} />
         )}
-        <ChatInput onSend={sendMessage} disabled={isSending} />
+        <ChatInput onSend={sendMessage} disabled={isSending || Boolean(authError)} />
         <p className="text-center text-[9px] font-bold text-slate-700 uppercase tracking-[0.2em]">
           Enter to send &middot; Shift + Enter for new line &middot; Scoped to Cyber Security topics
+          {messages.some(m => m.source === 'local-fallback') && (
+            <span className="ml-2 text-amber-600">· Offline mode active</span>
+          )}
         </p>
       </div>
     </motion.div>
