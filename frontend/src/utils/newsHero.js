@@ -21,7 +21,7 @@
 import { parseTimestamp } from './newsFormat.js';
 
 /** Maximum number of hero slides. Fewer suitable stories simply means fewer slides. */
-export const HERO_SLIDE_LIMIT = 5;
+export const HERO_SLIDE_LIMIT = 6;
 
 /** Automatic advance interval, in milliseconds. Change it here and nowhere else. */
 export const HERO_AUTOPLAY_INTERVAL_MS = 6000;
