@@ -1,23 +1,31 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
-import Login from '../pages/Auth/Login.jsx';
-import Signup from '../pages/Auth/Signup.jsx';
+import Login from "../pages/Auth/Login.jsx";
+import Signup from "../pages/Auth/Signup.jsx";
 
-import CyberDashboard from '../pages/CyberDashboard.jsx';
-import PublicNewsPage from '../pages/News/PublicNewsPage.jsx';
-import SqlInjection from '../pages/Attacks/SQLInejection.jsx';
-import BruteForce from '../pages/Attacks/BruteForce.jsx';
-import Phishing from '../pages/Attacks/Phishing.jsx';
-import AIPoisoningLab from '../pages/Attacks/AiPoisoningLab.jsx';
-import Keylogger from '../pages/Attacks/Keylogger.jsx';
-import SessionHijacking from '../pages/Attacks/SessionHijacking.jsx';
-import DosAttack from '../pages/Attacks/DosAttack.jsx';
-import XSSAttack from '../pages/Attacks/XSSAttack.jsx';
+import CyberDashboard from "../pages/CyberDashboard.jsx";
+import PublicNewsPage from "../pages/News/PublicNewsPage.jsx";
+import SqlInjection from "../pages/Attacks/SQLInejection.jsx";
+import BruteForce from "../pages/Attacks/BruteForce.jsx";
+import Phishing from "../pages/Attacks/Phishing.jsx";
+import AIPoisoningLab from "../pages/Attacks/AiPoisoningLab.jsx";
+import Keylogger from "../pages/Attacks/Keylogger.jsx";
+import SessionHijacking from "../pages/Attacks/SessionHijacking.jsx";
+import DosAttack from "../pages/Attacks/DosAttack.jsx";
+import XSSAttack from "../pages/Attacks/XSSAttack.jsx";
+import MitmAttack from "../pages/Attacks/MITMAttack.jsx";
+import ClickJacking from "../pages/Attacks/ClickJacking.jsx";
 
 // Secure Route Wrapper
 const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('operator_token') || localStorage.getItem('token');
+  const token =
+    localStorage.getItem("operator_token") || localStorage.getItem("token");
   if (!token) return <Navigate to="/" replace />;
   return children;
 };
@@ -38,7 +46,6 @@ export default function AppRoutes() {
         <Route path="/news" element={<PublicNewsPage />} />
 
         {/* Main Dashboard Hub */}
-
 
         <Route
           path="/dashboard"
@@ -104,24 +111,42 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        <Route 
-        path = "/dashboard/DosAttack"
-        element={
-           <ProtectedRoute>
+        <Route
+          path="/dashboard/DosAttack"
+          element={
+            <ProtectedRoute>
               <DosAttack />
             </ProtectedRoute>
-        }/>
-
+          }
+        />
 
         <Route
           path="/dashboard/xss"
-          element={<ProtectedRoute><XSSAttack /></ProtectedRoute>}
+          element={
+            <ProtectedRoute>
+              <XSSAttack />
+            </ProtectedRoute>
+          }
         />
-
+        <Route
+          path="/dashboard/MitmAttack"
+          element={
+            <ProtectedRoute>
+              <MitmAttack />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/ClickJacking"
+          element={
+            <ProtectedRoute>
+              <ClickJacking />
+            </ProtectedRoute>
+          }
+        />
         {/* Global Redirect to Dashboard for undefined paths */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
   );
 }
-
