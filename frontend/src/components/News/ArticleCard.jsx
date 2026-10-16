@@ -17,7 +17,7 @@ export const SourceLine = ({ article, className = '' }) => {
   })();
 
   return (
-    <span className={`inline-flex items-center gap-2 min-w-0 ${className}`}>
+    <span className={`flex items-center gap-2 min-w-0 ${className}`}>
       <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-700 bg-slate-900 text-[8px] font-black uppercase text-cyan-400">
         {host ? (
           <img
@@ -37,7 +37,7 @@ export const SourceLine = ({ article, className = '' }) => {
           initialsOf(article.source)
         )}
       </span>
-      <span className="truncate text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{article.source}</span>
+      <span className="min-w-0 truncate text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{article.source}</span>
     </span>
   );
 };
@@ -95,7 +95,7 @@ function ArticleCard({ article, priority = false }) {
   const hasDescription = Boolean(article.description);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-800/60 bg-[#070c17]/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-500/40 hover:bg-[#0a111f]/80 focus-within:border-cyan-500/50 focus-within:ring-1 focus-within:ring-cyan-500/30">
+    <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-slate-800/60 bg-[#070c17]/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-500/40 hover:bg-[#0a111f]/80 focus-within:border-cyan-500/50 focus-within:ring-1 focus-within:ring-cyan-500/30">
       <a
         href={article.url}
         target="_blank"

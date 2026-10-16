@@ -99,30 +99,31 @@ const Phishing = () => {
     <div className="min-h-screen bg-[#020617] text-slate-300 font-sans p-4 md:p-8 selection:bg-cyan-500/30">
       <div className="max-w-7xl mx-auto">
         <header className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-800 backdrop-blur-xl">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 min-[420px]:gap-4 min-w-0">
             <button
               onClick={() => navigate('/dashboard')}
-              className="group flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-cyan-500 rounded-xl transition-all duration-300"
+              aria-label="Back to dashboard"
+              className="group flex items-center gap-2 px-3 min-[420px]:px-4 py-2 bg-slate-800 hover:bg-cyan-500 rounded-xl transition-all duration-300 shrink-0"
             >
               <ChevronLeft className="text-cyan-400 group-hover:text-black transition-colors" size={18} />
-              <span className="text-[10px] font-black text-slate-300 group-hover:text-black uppercase">Dashboard</span>
+              <span className="text-[10px] font-black text-slate-300 group-hover:text-black uppercase hidden min-[420px]:inline">Dashboard</span>
             </button>
             <div className="h-8 w-[1px] bg-slate-700 mx-2 hidden md:block" />
-            <div>
-              <h1 className="text-lg font-black text-white uppercase italic tracking-tighter flex items-center gap-2">
-                <Zap size={16} className="text-cyan-500" />
-                Vector Lab <span className="text-cyan-500/50 ml-1">/ Phishing</span>
+            <div className="min-w-0">
+              <h1 className="text-lg font-black text-white uppercase italic tracking-tighter flex items-center gap-2 min-w-0">
+                <Zap size={16} className="text-cyan-500 shrink-0" />
+                <span className="truncate">Vector Lab <span className="text-cyan-500/50 ml-1">/ Phishing</span></span>
               </h1>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-black/40 p-1.5 rounded-xl border border-slate-800">
+          <div className="flex items-center gap-1 sm:gap-2 bg-black/40 p-1.5 rounded-xl border border-slate-800 max-w-full overflow-x-auto scrollbar-none">
             {["Configuration", "Simulation", "Hardening"].map((label, i) => (
-              <div key={i} className="flex items-center">
+              <div key={i} className="flex items-center shrink-0">
                 <button
                   disabled={i > step && !auditResult}
                   onClick={() => setStep(i)}
-                  className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase transition-all ${
+                  className={`px-2.5 min-[420px]:px-4 py-2 rounded-lg text-[10px] font-black uppercase transition-all ${
                     step === i
                       ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/20'
                       : 'text-slate-500 hover:text-slate-300'
@@ -130,7 +131,7 @@ const Phishing = () => {
                 >
                   {label}
                 </button>
-                {i < 2 && <ArrowRight size={12} className="mx-1 text-slate-700" />}
+                {i < 2 && <ArrowRight size={12} className="mx-1 text-slate-700 hidden min-[420px]:block" />}
               </div>
             ))}
           </div>
@@ -268,7 +269,7 @@ const Phishing = () => {
                   )}
                 </div>
 
-                <div className="lg:col-span-8 bg-black/60 border border-slate-800 rounded-[2.5rem] p-8 font-mono text-[11px] h-[550px] flex flex-col shadow-2xl relative overflow-hidden">
+                <div className="lg:col-span-8 bg-black/60 border border-slate-800 rounded-[2.5rem] p-5 sm:p-8 font-mono text-[11px] h-[440px] sm:h-[550px] lg:h-[550px] flex flex-col shadow-2xl relative overflow-hidden">
                   <div className="flex justify-between items-center border-b border-slate-800/50 pb-4 mb-6">
                     <span className="text-[10px] text-slate-500 font-black tracking-widest uppercase flex items-center gap-2">
                       <Terminal size={14} className="text-cyan-500" /> Forensic_Log

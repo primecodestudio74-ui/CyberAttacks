@@ -131,7 +131,8 @@ const CyberDashboard = () => {
     else setIsAuthorized(true);
   }, [navigate]);
 
-  // Shortcuts: "[" opens/closes the sidebar, "/" jumps to search, Esc closes the popup.
+  // Shortcuts: "[" opens/closes the sidebar, "/" jumps to search, Esc closes the popup
+  // and the mobile menu.
   useEffect(() => {
     const onKey = (e) => {
       const tag = (e.target?.tagName || '').toLowerCase();
@@ -141,7 +142,10 @@ const CyberDashboard = () => {
         e.preventDefault();
         document.getElementById('attack-search')?.focus();
       }
-      if (e.key === 'Escape') setSelectedAttack(null);
+      if (e.key === 'Escape') {
+        setSelectedAttack(null);
+        setIsSidebarOpen(false);
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -196,8 +200,12 @@ const CyberDashboard = () => {
 
   if (!isAuthorized) return null;
 
+  // While the overlay sidebar is open on phones/tablets, stop the content
+  // behind it from scrolling (the menu itself scrolls internally).
+  const lockMainScroll = isSidebarOpen;
+
   return (
-    <div className="flex h-screen bg-[#020617] text-slate-400 font-sans overflow-hidden selection:bg-cyan-500/30 relative">
+    <div className="flex h-dvh bg-[#020617] text-slate-400 font-sans overflow-hidden selection:bg-cyan-500/30 relative">
 
       {showVideo && (
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -225,7 +233,7 @@ const CyberDashboard = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} title="Open or close menu  ( [ )" className={`p-2.5 hover:bg-slate-800/60 rounded-xl transition-all text-slate-500 hover:text-cyan-400 flex items-center justify-center ${!isSidebarOpen && 'mx-auto'}`}>
+          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} title="Open or close menu  ( [ )" aria-label="Open or close menu" aria-expanded={isSidebarOpen} className={`p-2.5 hover:bg-slate-800/60 rounded-xl transition-all text-slate-500 hover:text-cyan-400 flex items-center justify-center ${!isSidebarOpen && 'mx-auto'}`}>
             {isSidebarOpen ? <ChevronLeft size={18} /> : <Menu size={20} />}
           </button>
         </div>
@@ -267,11 +275,11 @@ const CyberDashboard = () => {
         </div>
       </aside>
 
-      <main className="custom-scrollbar flex-1 flex flex-col overflow-y-auto bg-transparent scroll-smooth relative z-10">
+      <main className={`custom-scrollbar flex-1 flex flex-col bg-transparent scroll-smooth relative z-10 ${lockMainScroll ? 'max-lg:overflow-hidden lg:overflow-y-auto' : 'overflow-y-auto'}`}>
         <header className="h-18 py-3 flex items-center justify-between px-4 lg:px-8 border-b border-slate-800/30 bg-[#020617]/40 backdrop-blur-xl sticky top-0 z-20 shrink-0">
           <div className="flex items-center gap-4">
             {!isSidebarOpen && (
-              <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden p-2 text-slate-400 hover:text-cyan-400">
+              <button onClick={() => setIsSidebarOpen(true)} aria-label="Open menu" className="lg:hidden p-2 -ml-2 text-slate-400 hover:text-cyan-400">
                 <Menu size={20} />
               </button>
             )}
@@ -479,9 +487,9 @@ const CyberDashboard = () => {
       {/* --- POPUP --- */}
       <AnimatePresence>
         {selectedAttack && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedAttack(null)} className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-[#020617]/95 backdrop-blur-md">
-            <motion.div onClick={(e) => e.stopPropagation()} initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }} className="w-full max-w-md bg-[#080c17] border border-slate-800 rounded-[2rem] overflow-hidden shadow-2xl">
-              <div className="p-10 text-center relative">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedAttack(null)} className="fixed inset-0 z-[200] flex items-center justify-center p-4 overflow-y-auto bg-[#020617]/95 backdrop-blur-md">
+            <motion.div onClick={(e) => e.stopPropagation()} initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }} className="w-full max-w-md my-auto bg-[#080c17] border border-slate-800 rounded-[2rem] overflow-hidden shadow-2xl">
+              <div className="p-6 sm:p-10 text-center relative">
                 <div className="w-16 h-16 bg-slate-950 border border-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6">
                   {React.cloneElement(selectedAttack.icon, { size: 28 })}
                 </div>
@@ -503,7 +511,7 @@ const CyberDashboard = () => {
 
       <FloatingNewsTicker
         articles={dashboardNews.articles}
-        avoidBottomWidget={activeTab === 'learning'}
+        avoidBottomWidget={activeTab === 'learning' || activeTab === 'chatbot'}
       />
     </div>
   );

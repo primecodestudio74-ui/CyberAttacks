@@ -93,12 +93,12 @@ const AiPoisoningLab = () => {
 
         {/* STEP NAVIGATION */}
         <div className="mb-8 flex justify-center">
-          <div className="flex bg-slate-900/40 p-1 rounded-xl border border-slate-800 backdrop-blur-md">
+          <div className="flex bg-slate-900/40 p-1 rounded-xl border border-slate-800 backdrop-blur-md max-w-full overflow-x-auto scrollbar-none">
             {["1. Dataset", "2. Attack", "3. Defense"].map((label, i) => (
               <button
                 key={i}
                 onClick={() => setStep(i)}
-                className={`px-6 py-2 rounded-lg text-[10px] font-black uppercase transition-all ${step === i ? 'text-purple-400 bg-purple-500/10' : 'text-slate-600'}`}
+                className={`px-3.5 shrink-0 sm:px-6 py-2 rounded-lg text-[10px] font-black uppercase transition-all ${step === i ? 'text-purple-400 bg-purple-500/10' : 'text-slate-600'}`}
               >
                 {label}
               </button>

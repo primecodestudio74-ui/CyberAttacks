@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* Extra-small breakpoint used by the dashboard header and lab headers.
+   Tailwind 4 only ships sm..2xl by default, so `xs:` variants silently
+   never applied before this was defined. 360px keeps the operator name and
+   small labels visible on standard phones while hiding them on tiny ones. */
+@theme {
+  --breakpoint-xs: 22.5rem;
+}
+
 @layer base {
   :root {
     --bg: #0a0f1c;
@@ -48,6 +56,21 @@ html {
 body {
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+/* Visible keyboard focus for every interactive element. Tailwind's preflight
+   removes outlines, so without this keyboard navigation is invisible. Cyan
+   matches the existing accent used across the app. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Long unbroken strings (URLs, tokens, payloads) must never push layouts
+   wide. Applied selectively, this keeps terminals and logs readable. */
+.break-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 /* Custom scrollbar matching your theme */
 .custom-scrollbar::-webkit-scrollbar {
