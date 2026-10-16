@@ -215,6 +215,7 @@ const CyberDashboard = () => {
     element?.scrollIntoView({ behavior: "smooth" });
   };
 
+
   const handleTabChange = (tab) => {
     setSearchParams(
       (previous) => {
@@ -231,6 +232,10 @@ const CyberDashboard = () => {
   };
 
   if (!isAuthorized) return null;
+
+  // While the overlay sidebar is open on phones/tablets, stop the content
+  // behind it from scrolling (the menu itself scrolls internally).
+  const lockMainScroll = isSidebarOpen;
 
   return (
     <div className="flex h-screen bg-[#020617] text-slate-400 font-sans overflow-hidden selection:bg-cyan-500/30 relative">

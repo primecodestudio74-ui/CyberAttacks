@@ -143,7 +143,7 @@ const SQLInejection = () => {
 
         {/* LAB NAVIGATION STEPS */}
         <div className="mb-8 flex justify-center overflow-x-auto pb-2">
-          <div className="flex bg-slate-900/40 p-1 rounded-xl border border-slate-800 backdrop-blur-md min-w-max">
+          <div className="flex bg-slate-900/40 p-1 rounded-xl border border-slate-800 backdrop-blur-md max-w-full overflow-x-auto scrollbar-none min-w-max">
             {["1. Schema", "2. Attack", "3. Defense"].map((label, i) => {
               const isLocked = i > 0 && mockData.length === 0;
               return (
@@ -151,7 +151,7 @@ const SQLInejection = () => {
                   key={i}
                   onClick={() => !isLocked && setStep(i)}
                   disabled={isLocked}
-                  className={`px-4 md:px-6 py-2 rounded-lg text-[10px] font-black uppercase transition-all 
+                  className={`px-3.5 shrink-0 sm:px-6 py-2 rounded-lg text-[10px] font-black uppercase transition-all
                     ${step === i ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-600'}
                     ${isLocked ? 'opacity-30 cursor-not-allowed' : 'hover:text-slate-300'}`}
                 >

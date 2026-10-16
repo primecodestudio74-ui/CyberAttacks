@@ -29,10 +29,10 @@ export default function PublicNewsPage() {
             </span>
           </Link>
 
-          <nav className="flex items-center gap-4" aria-label="Site">
+          <nav className="flex items-center gap-3 sm:gap-4" aria-label="Site">
             <Link
               to="/news"
-              className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-400"
+              className="hidden text-[10px] font-black uppercase tracking-[0.2em] text-cyan-400 sm:inline"
               aria-current="page"
             >
               Cyber News

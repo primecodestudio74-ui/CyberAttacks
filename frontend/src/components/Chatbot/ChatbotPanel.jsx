@@ -23,7 +23,7 @@ const ChatbotPanel = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex flex-col h-[calc(100vh-80px)] max-w-4xl mx-auto w-full px-4 lg:px-0 py-6"
+      className="flex flex-col flex-1 min-h-0 max-w-4xl mx-auto w-full px-4 lg:px-0 py-4 sm:py-6"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4 px-2">
@@ -47,7 +47,7 @@ const ChatbotPanel = () => {
       </div>
 
       {/* Messages */}
-      <div ref={scrollRef} className="custom-scrollbar flex-1 overflow-y-auto rounded-2xl border border-slate-800/60 bg-[#030712]/40 backdrop-blur-sm p-4 sm:p-6 space-y-5 scroll-smooth">
+      <div ref={scrollRef} className="custom-scrollbar flex-1 min-h-0 overflow-y-auto rounded-2xl border border-slate-800/60 bg-[#030712]/40 backdrop-blur-sm p-4 sm:p-6 space-y-5 scroll-smooth">
         <AnimatePresence initial={false}>
           {messages.map((message) => (
             <ChatBubble key={message.id} message={message} onRetry={message.isError && canRetry ? retryLastMessage : undefined} />

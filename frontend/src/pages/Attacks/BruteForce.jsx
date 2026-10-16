@@ -127,7 +127,7 @@ if (!match) {
 
         {/* STEP NAVIGATION */}
         <div className="mb-8 flex justify-center">
-          <div className="flex bg-slate-900/40 p-1 rounded-xl border border-slate-800 backdrop-blur-md">
+          <div className="flex bg-slate-900/40 p-1 rounded-xl border border-slate-800 backdrop-blur-md max-w-full overflow-x-auto scrollbar-none">
             {["1. Identity", "2. Exploit", "3. Defense"].map((label, i) => {
               const isLocked = i > 0 && mockDB.length === 0;
               return (
@@ -135,7 +135,7 @@ if (!match) {
                   key={i}
                   onClick={() => !isLocked && setStep(i)}
                   disabled={isLocked}
-                  className={`px-6 py-2 rounded-lg text-[10px] font-black uppercase transition-all 
+                  className={`px-3.5 shrink-0 sm:px-6 py-2 rounded-lg text-[10px] font-black uppercase transition-all 
                     ${step === i ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-600'}
                     ${isLocked ? 'opacity-30 cursor-not-allowed' : 'hover:text-slate-300'}`}
                 >

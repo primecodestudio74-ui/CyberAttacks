@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 const StatusItem = ({ icon: Icon, label, value, color }) => (
-  <div className="flex items-center gap-2 whitespace-nowrap">
+  <div className="flex shrink-0 items-center gap-2 whitespace-nowrap">
     <div
       className={`
         flex h-8 w-8 items-center justify-center rounded-lg border
@@ -69,13 +69,18 @@ const StatusBar = () => {
         max-w-7xl
         items-center
         justify-between
-        px-6
-        py-4
+        gap-3
+        sm:gap-6
+        px-4
+        sm:px-6
+        py-3
+        sm:py-4
+        min-w-0
         "
       >
         {/* Left */}
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 sm:gap-6 min-w-0">
 
           <StatusItem
             icon={ShieldCheck}
@@ -84,19 +89,23 @@ const StatusBar = () => {
             color="border-green-500/20 bg-green-500/10 text-green-400"
           />
 
-          <StatusItem
-            icon={Lock}
-            label="Encryption"
-            value="AES-256"
-            color="border-cyan-500/20 bg-cyan-500/10 text-cyan-400"
-          />
+          <div className="hidden min-[480px]:block">
+            <StatusItem
+              icon={Lock}
+              label="Encryption"
+              value="AES-256"
+              color="border-cyan-500/20 bg-cyan-500/10 text-cyan-400"
+            />
+          </div>
 
-          <StatusItem
-            icon={Activity}
-            label="Threat Feed"
-            value="Live"
-            color="border-yellow-500/20 bg-yellow-500/10 text-yellow-400"
-          />
+          <div className="hidden min-[400px]:block">
+            <StatusItem
+              icon={Activity}
+              label="Threat Feed"
+              value="Live"
+              color="border-yellow-500/20 bg-yellow-500/10 text-yellow-400"
+            />
+          </div>
 
         </div>
 
@@ -114,14 +123,16 @@ const StatusBar = () => {
 
         {/* Right */}
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 sm:gap-6 min-w-0">
 
-          <StatusItem
-            icon={Server}
-            label="Edge Node"
-            value="Mumbai-01"
-            color="border-blue-500/20 bg-blue-500/10 text-blue-400"
-          />
+          <div className="hidden md:block">
+            <StatusItem
+              icon={Server}
+              label="Edge Node"
+              value="Mumbai-01"
+              color="border-blue-500/20 bg-blue-500/10 text-blue-400"
+            />
+          </div>
 
           <StatusItem
             icon={Clock}

@@ -119,6 +119,7 @@
   transition: color 140ms ease, background-color 140ms ease, border-color 140ms ease;
 }
 
+
 .floating-news-ticker__control:hover:not(:disabled) {
   border-color: rgba(71, 85, 105, 0.72);
   background: rgba(30, 41, 59, 0.68);
@@ -150,6 +151,7 @@
   min-width: 0;
   align-items: center;
   gap: 8px;
+  padding-block: 6px;
   color: #f1f5f9;
   font-size: 12px;
   font-weight: 650;
@@ -319,5 +321,18 @@
   .floating-news-ticker__launcher {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Touch devices: enlarge the compact controls to comfortable tap targets. */
+@media (pointer: coarse) {
+  .floating-news-ticker__control {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  .floating-news-ticker__controls {
+    gap: 6px;
   }
 }

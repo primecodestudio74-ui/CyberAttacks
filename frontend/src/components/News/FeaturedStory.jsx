@@ -31,7 +31,7 @@ export default function FeaturedStory({ article }) {
           href={article.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="lg:col-span-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500/60"
+          className="min-w-0 lg:col-span-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500/60"
           aria-label={`${article.title} — read the full story on ${article.source} (opens in a new tab)`}
         >
           <SafeImage
@@ -45,7 +45,7 @@ export default function FeaturedStory({ article }) {
           />
         </a>
 
-        <div className="flex flex-col gap-4 p-5 lg:col-span-2 lg:p-7">
+        <div className="flex min-w-0 flex-col gap-4 p-5 lg:col-span-2 lg:p-7">
           <div className="flex flex-wrap items-center gap-2">
             <span className={`rounded border px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] ${categoryTone(article.category)}`}>
               {categoryLabel(article.category, article.categoryLabel)}
@@ -60,7 +60,7 @@ export default function FeaturedStory({ article }) {
           )}
 
           {article.cveIds?.length > 0 && (
-            <p className="font-mono text-[11px] text-cyan-600">{article.cveIds.join(' · ')}</p>
+            <p className="break-all font-mono text-[11px] text-cyan-600">{article.cveIds.join(' · ')}</p>
           )}
 
           <div className="mt-auto space-y-3 pt-4">

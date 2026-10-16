@@ -139,6 +139,8 @@ export default function LearningHub() {
   const topicRefs = useRef({});
   const welcomeSectionRef = useRef(null);
   const cardsContainerRef = useRef(null);
+  const rootRef = useRef(null);
+  const scrollContainerRef = useRef(null);
 
   // Synchronize dynamic background styles & configurations directly into document root
   useEffect(() => {
@@ -146,25 +148,53 @@ export default function LearningHub() {
     localStorage.setItem('cyberlearn-theme', theme);
   }, [theme]);
 
-  // Robust, window-relative scroll height calculator
+  // The hub usually renders inside the dashboard shell, where the scrolling
+  // element is the dashboard <main> — not the window. Resolve the real
+  // scroll container once, then track it (falling back to the window when
+  // the hub is used standalone).
   useEffect(() => {
+    const resolveScrollContainer = () => {
+      let node = rootRef.current?.parentElement;
+      while (node && node !== document.body) {
+        const style = window.getComputedStyle(node);
+        if (/(auto|scroll|overlay)/.test(style.overflowY + ' ' + style.overflow)) return node;
+        node = node.parentElement;
+      }
+      return window;
+    };
+    const container = resolveScrollContainer();
+    scrollContainerRef.current = container;
+
     const calculateScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-      
+      const scrollTop = container === window
+        ? window.scrollY || document.documentElement.scrollTop
+        : container.scrollTop;
+      const scrollRange = container === window
+        ? document.documentElement.scrollHeight - document.documentElement.clientHeight
+        : container.scrollHeight - container.clientHeight;
+      const progress = scrollRange > 0 ? (scrollTop / scrollRange) * 100 : 0;
+
       setScrollProgress(progress);
       setShowScrollTop(scrollTop > 450);
     };
 
     calculateScroll(); // initial trigger
-    window.addEventListener('scroll', calculateScroll, { passive: true });
-    return () => window.removeEventListener('scroll', calculateScroll);
+    const target = container === window ? window : container;
+    target.addEventListener('scroll', calculateScroll, { passive: true });
+    // The dashboard mounts the tab asynchronously; re-measure once settled.
+    const raf = requestAnimationFrame(calculateScroll);
+    return () => {
+      target.removeEventListener('scroll', calculateScroll);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
-  // GSAP Entrance Animations
+  // GSAP Entrance Animations (skipped entirely when the user prefers
+  // reduced motion - content renders in place with no movement)
   useEffect(() => {
-    gsap.fromTo(welcomeSectionRef.current, 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    gsap.fromTo(welcomeSectionRef.current,
       { opacity: 0, y: 35 },
       { opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: 0.15 }
     );
@@ -204,14 +234,23 @@ export default function LearningHub() {
   const handleSidebarAnchorClick = (e, targetId) => {
     e.preventDefault();
     const element = document.getElementById(targetId);
+    const container = scrollContainerRef.current;
     if (element) {
-      const offset = 90;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: elementPosition - offset,
-        behavior: 'smooth'
-      });
+      const offset = 140; // dashboard header (72px) + hub header (64px)
+      if (container && container !== window) {
+        const elementTop = element.getBoundingClientRect().top - container.getBoundingClientRect().top;
+        container.scrollTo({ top: container.scrollTop + elementTop - offset, behavior: 'smooth' });
+      } else {
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+      }
     }
+  };
+
+  const scrollToTop = () => {
+    const container = scrollContainerRef.current;
+    if (container && container !== window) container.scrollTo({ top: 0, behavior: 'smooth' });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const levelColors = {
@@ -223,7 +262,7 @@ export default function LearningHub() {
   };
 
   return (
-    <div className={`min-h-screen text-[color:var(--text)] transition-colors duration-300 ${
+    <div ref={rootRef} className={`flex flex-col min-h-full text-[color:var(--text)] transition-colors duration-300 ${
       theme === 'dark' ? 'bg-[#0b0f19]' : 'bg-[#fafafa]'
     }`}>
       
@@ -240,27 +279,27 @@ export default function LearningHub() {
         />
       </div>
 
-      <header className={`sticky top-0 z-[100] h-16 flex items-center justify-between px-6 border-b transition-colors duration-300 ${
-        theme === 'dark' 
-          ? 'bg-[#0e1424] border-[#1e293b]' 
+      <header className={`sticky top-[72px] z-40 h-16 flex items-center justify-between gap-3 px-3 sm:px-6 border-b transition-colors duration-300 ${
+        theme === 'dark'
+          ? 'bg-[#0e1424] border-[#1e293b]'
           : 'bg-white border-[#e2e8f0] shadow-sm'
       }`}>
-        <div className="brand flex items-center gap-3 font-extrabold text-lg sm:text-xl tracking-tight">
-          <span className={`w-3 h-3 rounded-[3px] ${theme === 'dark' ? 'bg-cyan-500 shadow-[0_0_12px_#22d3ee]' : 'bg-cyan-700 shadow-[0_0_12px_rgba(14,116,144,0.4)]'} rotate-45 animate-pulse`} />
-          <span className={theme === 'dark' ? 'text-white' : 'text-slate-900'}>HackAware Learning</span>
-          <span className="text-xs text-slate-500 font-medium uppercase tracking-[2px] ml-2 border-l pl-3 border-slate-700 hidden sm:inline-block">
+        <div className="brand flex items-center gap-2 sm:gap-3 font-extrabold text-base sm:text-xl tracking-tight min-w-0">
+          <span className={`w-3 h-3 rounded-[3px] shrink-0 ${theme === 'dark' ? 'bg-cyan-500 shadow-[0_0_12px_#22d3ee]' : 'bg-cyan-700 shadow-[0_0_12px_rgba(14,116,144,0.4)]'} rotate-45 animate-pulse`} />
+          <span className={`truncate ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>HackAware Learning</span>
+          <span className="text-xs text-slate-500 font-medium uppercase tracking-[2px] ml-2 border-l pl-3 border-slate-700 hidden md:inline-block">
             Cyber Security Fundamentals
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <input 
-              type="text" 
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          <div className="relative min-w-0">
+            <input
+              type="text"
               placeholder="Search concepts..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className={`w-48 sm:w-60 text-sm py-2 px-3 pl-4 rounded-lg outline-none border transition-all ${
+              className={`w-32 min-[420px]:w-44 sm:w-60 text-sm py-2 px-3 pl-4 rounded-lg outline-none border transition-all ${
                 theme === 'dark'
                   ? 'bg-[#161f33] border-[#223049] text-slate-200 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500'
                   : 'bg-[#f1f5f9] border-[#cbd5e1] text-slate-800 focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600'
@@ -268,9 +307,10 @@ export default function LearningHub() {
             />
           </div>
 
-          <button 
+          <button
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            className={`w-9 h-9 rounded-lg border flex items-center justify-center cursor-pointer transition-all duration-200 active:scale-95 text-lg ${
+            aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
+            className={`w-9 h-9 shrink-0 rounded-lg border flex items-center justify-center cursor-pointer transition-all duration-200 active:scale-95 text-lg ${
               theme === 'dark'
                 ? 'bg-[#161f33] border-[#223049] hover:text-cyan-400'
                 : 'bg-white border-[#cbd5e1] hover:text-cyan-600 hover:shadow-sm'
@@ -281,11 +321,34 @@ export default function LearningHub() {
         </div>
       </header>
 
+      {/* Mobile quick-jump rail: module chips scroll to each section (the full
+          sidebar nav is md:block; this keeps navigation reachable on phones). */}
+      <nav
+        aria-label="Learning modules"
+        className={`scrollbar-none flex gap-2 overflow-x-auto md:hidden px-4 py-2.5 border-b ${theme === 'dark' ? 'bg-[#0e1424] border-[#1e293b]' : 'bg-white border-[#e2e8f0]'}`}
+      >
+        {DATA.map((mod) => (
+          <a
+            key={mod.id}
+            href={`#${mod.id}`}
+            onClick={(e) => handleSidebarAnchorClick(e, mod.id)}
+            className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold transition-colors ${
+              theme === 'dark'
+                ? 'border-[#223049] bg-[#161f33] text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300'
+                : 'border-[#cbd5e1] bg-slate-50 text-slate-600 hover:border-cyan-600/50 hover:text-cyan-700'
+            }`}
+          >
+            <span className={`h-1.5 w-1.5 rounded-full ${levelColors[mod.lvl]}`} />
+            {mod.title}
+          </a>
+        ))}
+      </nav>
+
       <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] max-w-[1400px] mx-auto px-4 md:px-6 gap-6">
         
         {/* Navigation Sidebar Drawer with hidden scrollbar */}
-        <aside 
-          className="sticky top-16 h-[calc(100vh-64px)] overflow-y-auto pt-6 pb-16 hidden md:block select-none"
+        <aside
+          className="sticky top-[136px] h-[calc(100dvh-136px)] overflow-y-auto pt-6 pb-16 hidden md:block select-none"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           <style>{`
@@ -389,7 +452,7 @@ export default function LearningHub() {
               if (filteredTopics.length === 0) return null;
 
               return (
-                <section key={mod.id} id={mod.id} className="scroll-mt-24">
+                <section key={mod.id} id={mod.id} className="scroll-mt-40">
                   <div className="flex items-center gap-3.5 mb-2">
                     <span className={`text-xs font-mono border py-1 px-3.5 rounded-full uppercase tracking-wider font-semibold ${
                       theme === 'dark' ? 'bg-[#111827] border-slate-800 text-slate-300' : 'bg-slate-100 border-slate-300 text-slate-600'
@@ -409,7 +472,7 @@ export default function LearningHub() {
                           key={ti} 
                           id={topicId}
                           ref={el => topicRefs.current[topicId] = el}
-                          className={`topic-article-card border rounded-2xl p-6 sm:p-7 scroll-mt-24 transition-all duration-300 relative overflow-hidden group ${
+                          className={`topic-article-card border rounded-2xl p-6 sm:p-7 scroll-mt-40 transition-all duration-300 relative overflow-hidden group ${
                             isActive
                               ? `ring-1 ${theme === 'dark' ? 'ring-cyan-500 border-cyan-500/30' : 'ring-cyan-600 border-cyan-600/30'}`
                               : theme === 'dark' ? 'bg-[#0f172a] border-slate-800 hover:border-slate-700' : 'bg-white border-[#cbd5e1] hover:border-slate-400 hover:shadow-sm'
@@ -473,7 +536,7 @@ export default function LearningHub() {
       </div>
 
       <button 
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onClick={scrollToTop}
         className={`fixed bottom-8 right-8 w-14 h-14 rounded-full ${theme === 'dark' ? 'bg-cyan-400 hover:bg-cyan-500 shadow-[0_0_15px_rgba(34,211,238,0.4)]' : 'bg-cyan-600 hover:bg-cyan-700 shadow-[0_0_15px_rgba(8,145,178,0.3)]'} text-slate-950 flex items-center justify-center font-black text-2xl hover:-translate-y-1 cursor-pointer transition-all duration-300 z-[99] ${
           showScrollTop ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-90 pointer-events-none'
         }`}

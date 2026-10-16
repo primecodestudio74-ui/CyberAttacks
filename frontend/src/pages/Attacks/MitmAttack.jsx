@@ -275,7 +275,7 @@ const MitmAttack = () => {
 
         {/* STEP NAVIGATION */}
         <div className="mb-8 flex justify-center">
-          <div className="flex bg-slate-900/40 p-1 rounded-xl border border-slate-800 backdrop-blur-md">
+          <div className="flex bg-slate-900/40 p-1 rounded-xl border border-slate-800 backdrop-blur-md max-w-full overflow-x-auto scrollbar-none">
             {['1. Setup', '2. Intercept', '3. Defense'].map((label, i) => {
               const isLocked = i > 0 && !deployed;
               return (
@@ -283,7 +283,7 @@ const MitmAttack = () => {
                   key={i}
                   onClick={() => !isLocked && !isAttacking && setStep(i)}
                   disabled={isLocked}
-                  className={`px-6 py-2 rounded-lg text-[10px] font-black uppercase transition-all
+                  className={`px-3.5 shrink-0 sm:px-6 py-2 rounded-lg text-[10px] font-black uppercase transition-all
                     ${step === i ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-600'}
                     ${isLocked ? 'opacity-30 cursor-not-allowed' : 'hover:text-slate-300'}`}
                 >
@@ -316,7 +316,7 @@ const MitmAttack = () => {
                       className="w-full bg-black/50 border border-slate-800 p-4 rounded-xl text-xs outline-none focus:border-cyan-500 transition-all"
                     />
 
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-1 min-[420px]:grid-cols-3 gap-2">
                       {networkPresets.map((n) => (
                         <button type="button"
                           key={n.id}
@@ -529,10 +529,10 @@ const MitmAttack = () => {
                       <div
                         key={i}
                         className={
-                          line.includes('CRIT') || line.includes('INTERCEPT') ? 'text-red-400 font-bold' :
+                          `break-all ${line.includes('CRIT') || line.includes('INTERCEPT') ? 'text-red-400 font-bold' :
                           line.includes('BLOCK') || line.includes('RESULT') && line.includes('stayed') ? 'text-emerald-400 font-bold' :
                           line.includes('WARN') ? 'text-amber-400' :
-                          'text-slate-500'
+                          'text-slate-500'}`
                         }
                       >
                         {line}
