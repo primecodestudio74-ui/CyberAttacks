@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldAlert, User, RotateCcw } from 'lucide-react';
+import { ShieldAlert, User, RotateCcw, WifiOff } from 'lucide-react';
 import MarkdownRenderer from './MarkdownRenderer';
 
 const formatTime = (timestamp) =>
@@ -46,6 +46,11 @@ const ChatBubble = ({ message, onRetry }) => {
           <span className="text-[10px] font-mono text-slate-600 uppercase tracking-wider">
             {formatTime(message.timestamp)}
           </span>
+          {message.source === 'local-fallback' && (
+            <span className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest text-amber-600/80">
+              <WifiOff size={10} /> Offline
+            </span>
+          )}
           {message.isError && onRetry && (
             <button
               onClick={onRetry}

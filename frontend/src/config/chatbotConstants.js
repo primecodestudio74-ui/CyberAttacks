@@ -18,5 +18,11 @@ export const FALLBACK_SUGGESTED_PROMPTS = [
 export const WELCOME_MESSAGE = {
   role: 'assistant',
   content:
-    "Hey, I'm **Ask Me** — Your Cyber Security assistant.\n\nAsk me about ethical hacking, networking, malware, secure coding, cloud security, or anything else in the cyber security space. Try one of the prompts below to get started...",
+    "Hey, I'm **Ask Me** — Your Cyber Security assistant.\n\nAsk me about ethical hacking, networking, malware, secure coding, cloud security, or anything else in the cyber security space. Try one of the prompts below to get started...\n\n> 🛡️ I work even in offline mode for common topics!",
 };
+
+export const OFFLINE_NOTICE =
+  'Currently in offline mode - answers from local knowledge base.';
+
+export const SESSION_EXPIRED_MESSAGE =
+  'Your session has expired. Please login again to continue.';
