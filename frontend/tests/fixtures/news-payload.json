@@ -1,0 +1,944 @@
+{
+  "success": true,
+  "articles": [
+    {
+      "id": "news_85924fe1c086a83e",
+      "title": "Satel Netco Design",
+      "description": "Successful exploitation of these vulnerabilities could allow an attacker to execute arbitrary scripts in a user's browser, consume excessive system resources and potentially execute arbitrary code. The following versions of Satel Netco Design are affected…",
+      "imageUrl": null,
+      "source": "CISA Cybersecurity Advisories",
+      "sourceId": "cisa-advisories",
+      "sourceHomepage": "https://www.cisa.gov/news-events/cybersecurity-advisories",
+      "author": "cisa",
+      "publishedAt": "2026-10-12T12:00:00.000Z",
+      "url": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-281-03",
+      "category": "government-advisories",
+      "categoryLabel": "Government & Security Advisories",
+      "categories": [
+        "government-advisories",
+        "cyber-attacks",
+        "vulnerabilities-cves",
+        "hacking-exploits"
+      ],
+      "cveIds": [],
+      "tags": [
+        "Advisory"
+      ],
+      "isAdvisory": true,
+      "dateLabel": null
+    },
+    {
+      "id": "news_a68f4837098ded4d",
+      "title": "Ransomware Response Expert Arrested in ShinyHunters FBI Hack Probe",
+      "description": "The suspect is believed to be Edward Dubrovsky, a Canadian cybersecurity executive who was visiting the United States for a conference.",
+      "imageUrl": "https://www.securityweek.com/wp-content/uploads/2026/10/shinyhunters.jpg",
+      "source": "SecurityWeek",
+      "sourceId": "securityweek",
+      "sourceHomepage": "https://www.securityweek.com/",
+      "author": "Ravi Sharma",
+      "publishedAt": "2026-10-12T10:32:05.000Z",
+      "url": "https://www.securityweek.com/ransomware-response-expert-arrested-in-shinyhunters-fbi-hack-probe/",
+      "category": "cyber-attacks",
+      "categoryLabel": "Cyber Attacks",
+      "categories": [
+        "cyber-attacks",
+        "cybercrime-scams"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_3216041008562313",
+      "title": "Imagine there's no Shiny Hunters - AI could make human hacking crews obsolete",
+      "description": null,
+      "imageUrl": null,
+      "source": "The Register (Security)",
+      "sourceId": "the-register-security",
+      "sourceHomepage": "https://www.theregister.com/security/",
+      "author": "The Register",
+      "publishedAt": "2026-10-12T10:27:00.000Z",
+      "url": "https://www.theregister.com/security/2026/10/12/imagine-theres-no-shiny-hunters-ai-could-make-human-hacking-crews-obsolete/5302430",
+      "category": "ai-security",
+      "categoryLabel": "AI Security",
+      "categories": [
+        "ai-security",
+        "hacking-exploits"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_815b7a94646fc6cb",
+      "title": "Attackers Exploit CVSS 10.0 Bricksforge WordPress Flaw Enabling Unauthenticated RCE",
+      "description": "Attackers have begun exploiting a maximum-severity vulnerability in the Bricksforge WordPress plugin that makes it possible to achieve remote code execution without authentication.",
+      "imageUrl": "https://blogger.googleusercontent.com/img/bricksforge-cover.jpg",
+      "source": "The Hacker News",
+      "sourceId": "the-hacker-news",
+      "sourceHomepage": "https://thehackernews.com/",
+      "author": "The Hacker News",
+      "publishedAt": "2026-10-12T09:02:14.000Z",
+      "url": "https://thehackernews.com/2026/10/attackers-exploit-cvss-100-bricksforge.html",
+      "category": "vulnerabilities-cves",
+      "categoryLabel": "Vulnerabilities & CVEs",
+      "categories": [
+        "vulnerabilities-cves",
+        "cyber-attacks",
+        "hacking-exploits"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_23db42ba139f6303",
+      "title": "Critical SonicWall Vulnerability Exploited Days After Disclosure",
+      "description": "CVE-2026-102255 is a pre-authenticated SSRF flaw that could allow attackers to perform unauthorized operations.",
+      "imageUrl": "https://www.securityweek.com/wp-content/uploads/2026/10/sonicwall-sw.jpg",
+      "source": "SecurityWeek",
+      "sourceId": "securityweek",
+      "sourceHomepage": "https://www.securityweek.com/",
+      "author": "Eduard Kovacs",
+      "publishedAt": "2026-10-12T08:36:01.000Z",
+      "url": "https://www.securityweek.com/critical-sonicwall-vulnerability-exploited-days-after-disclosure/",
+      "category": "vulnerabilities-cves",
+      "categoryLabel": "Vulnerabilities & CVEs",
+      "categories": [
+        "vulnerabilities-cves",
+        "cyber-attacks",
+        "hacking-exploits"
+      ],
+      "cveIds": [
+        "CVE-2026-102255"
+      ],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_8d69b6d1e867a3c8",
+      "title": "Kerala Police Signs MoU With Cyble to Use Threat Intelligence in Cybercrime Probes",
+      "description": "A new Kerala Police MoU will bring threat intelligence into cybercrime investigations in the state. Cyble has signed a three-year agreement covering intelligence support, investigative assistance and capacity building.",
+      "imageUrl": "https://thecyberexpress.com/wp-content/uploads/Kerala-Police-Signs-MoU-With-Cyble.webp",
+      "source": "The Cyber Express",
+      "sourceId": "the-cyber-express",
+      "sourceHomepage": "https://thecyberexpress.com/",
+      "author": "News Desk",
+      "publishedAt": "2026-10-12T08:34:09.000Z",
+      "url": "https://thecyberexpress.com/kerala-police-mou-with-cyble/",
+      "category": "cybercrime-scams",
+      "categoryLabel": "Cybercrime & Scams",
+      "categories": [
+        "cybercrime-scams",
+        "india-cyber"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_d261b6b9e669cf36",
+      "title": "CyberXero Uses Claude Code in Campaign That Stole Over 628,000 Ukrainian Records",
+      "description": "A threat actor tracked as CyberXero used an AI coding agent to build tooling for a data theft campaign against Ukrainian organisations, exfiltrating more than 628,000 records.",
+      "imageUrl": null,
+      "source": "The Hacker News",
+      "sourceId": "the-hacker-news",
+      "sourceHomepage": "https://thehackernews.com/",
+      "author": "The Hacker News",
+      "publishedAt": "2026-10-12T07:26:12.000Z",
+      "url": "https://thehackernews.com/2026/10/cyberxero-uses-claude-code-in-campaign.html",
+      "category": "data-breaches",
+      "categoryLabel": "Data Breaches",
+      "categories": [
+        "data-breaches",
+        "ai-security",
+        "cyber-attacks"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_e97a81b14ccb0794",
+      "title": "Nippon Columbia malware incident exposes 8.6 million karaoke fan records",
+      "description": "Japanese media company Nippon Columbia says a malware intrusion exposed the personal information of 8.6 million customers of its karaoke service.",
+      "imageUrl": "https://www.bleepingcomputer.com/wp-content/uploads/2026/10/nippon-columbia.jpg",
+      "source": "BleepingComputer",
+      "sourceId": "bleepingcomputer",
+      "sourceHomepage": "https://www.bleepingcomputer.com/",
+      "author": "Bill Toulas",
+      "publishedAt": "2026-10-11T14:23:46.000Z",
+      "url": "https://www.bleepingcomputer.com/news/security/nippon-columbia-malware-incident-exposes-86-million-karaoke-fan-records/",
+      "category": "data-breaches",
+      "categoryLabel": "Data Breaches",
+      "categories": [
+        "data-breaches",
+        "cyber-attacks"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_b097021ae1e9cbe6",
+      "title": "CERT-In Flags High Severity Flaws in Popular VPN Clients Used Across India",
+      "description": "The Indian computer emergency response team published an advisory covering high severity vulnerabilities in widely deployed VPN clients, urging users to patch immediately.",
+      "imageUrl": null,
+      "source": "The Cyber Express",
+      "sourceId": "the-cyber-express",
+      "sourceHomepage": "https://thecyberexpress.com/",
+      "author": "Security Desk",
+      "publishedAt": "2026-10-11T11:20:00.000Z",
+      "url": "https://thecyberexpress.com/cert-in-vpn-client-vulnerabilities-advisory/",
+      "category": "vulnerabilities-cves",
+      "categoryLabel": "Vulnerabilities & CVEs",
+      "categories": [
+        "vulnerabilities-cves",
+        "government-advisories",
+        "india-cyber"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_da67e1b79c4a2c85",
+      "title": "Kubernetes misconfiguration exposes internal dashboards to the public internet",
+      "description": "A cloud security survey found that a large share of Kubernetes clusters run containers with over-permissive identity and access settings, leaving enterprise dashboards reachable from the internet.",
+      "imageUrl": null,
+      "source": "Help Net Security",
+      "sourceId": "help-net-security",
+      "sourceHomepage": "https://www.helpnetsecurity.com/",
+      "author": "Staff Writer",
+      "publishedAt": "2026-10-11T06:00:00.000Z",
+      "url": "https://www.helpnetsecurity.com/2026/10/11/kubernetes-dashboards-exposed/",
+      "category": "cloud-enterprise-security",
+      "categoryLabel": "Cloud & Enterprise Security",
+      "categories": [
+        "cloud-enterprise-security"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_98dac58c7e7df41e",
+      "title": "SonicWall SMA1000 Server-Side Request Forgery Vulnerability (CVE-2026-102255)",
+      "description": "SonicWall SMA1000 contains a server-side request forgery vulnerability that allows a remote attacker to perform unauthorized operations. Affected: SonicWall SMA1000.",
+      "imageUrl": null,
+      "source": "CISA Known Exploited Vulnerabilities",
+      "sourceId": "cisa-kev",
+      "sourceHomepage": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "author": "CISA Known Exploited Vulnerabilities",
+      "publishedAt": "2026-10-11T00:00:00.000Z",
+      "url": "https://www.cve.org/CVERecord?id=CVE-2026-102255",
+      "category": "vulnerabilities-cves",
+      "categoryLabel": "Vulnerabilities & CVEs",
+      "categories": [
+        "vulnerabilities-cves",
+        "government-advisories",
+        "cyber-attacks",
+        "cloud-enterprise-security"
+      ],
+      "cveIds": [
+        "CVE-2026-102255"
+      ],
+      "tags": [
+        "Advisory",
+        "Exploited in the wild"
+      ],
+      "isAdvisory": true,
+      "dateLabel": "Added to CISA KEV"
+    },
+    {
+      "id": "news_5dd2a3464ad5154b",
+      "title": "UPI Phishing Scams Surge as Fraudsters Target Small Merchants in Maharashtra",
+      "description": "Fraudsters are impersonating payment providers to harvest credentials from small merchants, with a rise in reported cases across Maharashtra.",
+      "imageUrl": "https://thecyberexpress.com/wp-content/uploads/upi-phishing-scam.webp",
+      "source": "The Cyber Express",
+      "sourceId": "the-cyber-express",
+      "sourceHomepage": "https://thecyberexpress.com/",
+      "author": "News Desk",
+      "publishedAt": "2026-10-10T09:05:00.000Z",
+      "url": "https://thecyberexpress.com/upi-phishing-scams-merchants/",
+      "category": "cybercrime-scams",
+      "categoryLabel": "Cybercrime & Scams",
+      "categories": [
+        "cybercrime-scams",
+        "india-cyber"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_14272a507c33a92b",
+      "title": "FBI Arrests Executive at Ransomware Negotiation Firm",
+      "description": "Agents with the Federal Bureau of Investigation on Thursday arrested an executive at a Canadian cybersecurity firm in connection with an investigation into the ShinyHunters hacking group that recently relieved the FBI of sensitive data on thousands of agents…",
+      "imageUrl": "https://krebsonsecurity.com/wp-content/uploads/2026/10/dubrovsky-li.png",
+      "source": "Krebs on Security",
+      "sourceId": "krebs-on-security",
+      "sourceHomepage": "https://krebsonsecurity.com/",
+      "author": "BrianKrebs",
+      "publishedAt": "2026-10-10T00:17:42.000Z",
+      "url": "https://krebsonsecurity.com/2026/10/fbi-arrests-founder-of-ransomware-negotiation-firm/",
+      "category": "cybercrime-scams",
+      "categoryLabel": "Cybercrime & Scams",
+      "categories": [
+        "cybercrime-scams",
+        "cyber-attacks",
+        "government-advisories",
+        "hacking-exploits"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "dateLabel": null
+    },
+    {
+      "id": "news_af4903bfce4fc201",
+      "title": "Satel Netco Design Inefficient Regular Expression Complexity Vulnerability (CVE-2026-104628)",
+      "description": "Satel Netco Design contains an inefficient regular expression complexity vulnerability that could allow an attacker to deny service. Affected: Satel Netco Design. CISA reports known use in ransomware campaigns.",
+      "imageUrl": null,
+      "source": "CISA Known Exploited Vulnerabilities",
+      "sourceId": "cisa-kev",
+      "sourceHomepage": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "author": "CISA Known Exploited Vulnerabilities",
+      "publishedAt": "2026-10-10T00:00:00.000Z",
+      "url": "https://www.cve.org/CVERecord?id=CVE-2026-104628",
+      "category": "vulnerabilities-cves",
+      "categoryLabel": "Vulnerabilities & CVEs",
+      "categories": [
+        "vulnerabilities-cves",
+        "government-advisories",
+        "cyber-attacks",
+        "cloud-enterprise-security"
+      ],
+      "cveIds": [
+        "CVE-2026-104628"
+      ],
+      "tags": [
+        "Advisory",
+        "Exploited in the wild"
+      ],
+      "isAdvisory": true,
+      "dateLabel": "Added to CISA KEV"
+    }
+  ],
+  "featured": {
+    "id": "news_a68f4837098ded4d",
+    "title": "Ransomware Response Expert Arrested in ShinyHunters FBI Hack Probe",
+    "description": "The suspect is believed to be Edward Dubrovsky, a Canadian cybersecurity executive who was visiting the United States for a conference.",
+    "imageUrl": "https://www.securityweek.com/wp-content/uploads/2026/10/shinyhunters.jpg",
+    "source": "SecurityWeek",
+    "sourceId": "securityweek",
+    "sourceHomepage": "https://www.securityweek.com/",
+    "author": "Ravi Sharma",
+    "publishedAt": "2026-10-12T10:32:05.000Z",
+    "url": "https://www.securityweek.com/ransomware-response-expert-arrested-in-shinyhunters-fbi-hack-probe/",
+    "category": "cyber-attacks",
+    "categoryLabel": "Cyber Attacks",
+    "categories": [
+      "cyber-attacks",
+      "cybercrime-scams"
+    ],
+    "cveIds": [],
+    "tags": [],
+    "isAdvisory": false,
+    "dateLabel": null
+  },
+  "sections": {
+    "featured": {
+      "id": "news_a68f4837098ded4d",
+      "title": "Ransomware Response Expert Arrested in ShinyHunters FBI Hack Probe",
+      "description": "The suspect is believed to be Edward Dubrovsky, a Canadian cybersecurity executive who was visiting the United States for a conference.",
+      "imageUrl": "https://www.securityweek.com/wp-content/uploads/2026/10/shinyhunters.jpg",
+      "source": "SecurityWeek",
+      "sourceId": "securityweek",
+      "sourceHomepage": "https://www.securityweek.com/",
+      "sourceGroup": "publisher",
+      "author": "Ravi Sharma",
+      "publishedAt": "2026-10-12T10:32:05.000Z",
+      "url": "https://www.securityweek.com/ransomware-response-expert-arrested-in-shinyhunters-fbi-hack-probe/",
+      "canonicalUrl": "https://securityweek.com/ransomware-response-expert-arrested-in-shinyhunters-fbi-hack-probe",
+      "category": "cyber-attacks",
+      "categoryLabel": "Cyber Attacks",
+      "categories": [
+        "cyber-attacks",
+        "cybercrime-scams"
+      ],
+      "cveIds": [],
+      "tags": [],
+      "isAdvisory": false,
+      "sponsored": false,
+      "dateLabel": null,
+      "fetchedAt": "2026-10-12T11:11:33.015Z"
+    },
+    "recent": [
+      {
+        "id": "news_85924fe1c086a83e",
+        "title": "Satel Netco Design",
+        "description": "Successful exploitation of these vulnerabilities could allow an attacker to execute arbitrary scripts in a user's browser, consume excessive system resources and potentially execute arbitrary code. The following versions of Satel Netco Design are affected…",
+        "imageUrl": null,
+        "source": "CISA Cybersecurity Advisories",
+        "sourceId": "cisa-advisories",
+        "sourceHomepage": "https://www.cisa.gov/news-events/cybersecurity-advisories",
+        "sourceGroup": "advisory",
+        "author": "cisa",
+        "publishedAt": "2026-10-12T12:00:00.000Z",
+        "url": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-281-03",
+        "canonicalUrl": "https://cisa.gov/news-events/ics-advisories/icsa-26-281-03",
+        "category": "government-advisories",
+        "categoryLabel": "Government & Security Advisories",
+        "categories": [
+          "government-advisories",
+          "cyber-attacks",
+          "vulnerabilities-cves",
+          "hacking-exploits"
+        ],
+        "cveIds": [],
+        "tags": [
+          "Advisory"
+        ],
+        "isAdvisory": true,
+        "sponsored": false,
+        "dateLabel": null,
+        "fetchedAt": "2026-10-12T11:11:33.015Z"
+      },
+      {
+        "id": "news_3216041008562313",
+        "title": "Imagine there's no Shiny Hunters - AI could make human hacking crews obsolete",
+        "description": null,
+        "imageUrl": null,
+        "source": "The Register (Security)",
+        "sourceId": "the-register-security",
+        "sourceHomepage": "https://www.theregister.com/security/",
+        "sourceGroup": "publisher",
+        "author": "The Register",
+        "publishedAt": "2026-10-12T10:27:00.000Z",
+        "url": "https://www.theregister.com/security/2026/10/12/imagine-theres-no-shiny-hunters-ai-could-make-human-hacking-crews-obsolete/5302430",
+        "canonicalUrl": "https://theregister.com/security/2026/10/12/imagine-theres-no-shiny-hunters-ai-could-make-human-hacking-crews-obsolete/5302430",
+        "category": "ai-security",
+        "categoryLabel": "AI Security",
+        "categories": [
+          "ai-security",
+          "hacking-exploits"
+        ],
+        "cveIds": [],
+        "tags": [],
+        "isAdvisory": false,
+        "sponsored": false,
+        "dateLabel": null,
+        "fetchedAt": "2026-10-12T11:11:33.015Z"
+      },
+      {
+        "id": "news_815b7a94646fc6cb",
+        "title": "Attackers Exploit CVSS 10.0 Bricksforge WordPress Flaw Enabling Unauthenticated RCE",
+        "description": "Attackers have begun exploiting a maximum-severity vulnerability in the Bricksforge WordPress plugin that makes it possible to achieve remote code execution without authentication.",
+        "imageUrl": "https://blogger.googleusercontent.com/img/bricksforge-cover.jpg",
+        "source": "The Hacker News",
+        "sourceId": "the-hacker-news",
+        "sourceHomepage": "https://thehackernews.com/",
+        "sourceGroup": "publisher",
+        "author": "The Hacker News",
+        "publishedAt": "2026-10-12T09:02:14.000Z",
+        "url": "https://thehackernews.com/2026/10/attackers-exploit-cvss-100-bricksforge.html",
+        "canonicalUrl": "https://thehackernews.com/2026/10/attackers-exploit-cvss-100-bricksforge.html",
+        "category": "vulnerabilities-cves",
+        "categoryLabel": "Vulnerabilities & CVEs",
+        "categories": [
+          "vulnerabilities-cves",
+          "cyber-attacks",
+          "hacking-exploits"
+        ],
+        "cveIds": [],
+        "tags": [],
+        "isAdvisory": false,
+        "sponsored": false,
+        "dateLabel": null,
+        "fetchedAt": "2026-10-12T11:11:33.015Z"
+      },
+      {
+        "id": "news_23db42ba139f6303",
+        "title": "Critical SonicWall Vulnerability Exploited Days After Disclosure",
+        "description": "CVE-2026-102255 is a pre-authenticated SSRF flaw that could allow attackers to perform unauthorized operations.",
+        "imageUrl": "https://www.securityweek.com/wp-content/uploads/2026/10/sonicwall-sw.jpg",
+        "source": "SecurityWeek",
+        "sourceId": "securityweek",
+        "sourceHomepage": "https://www.securityweek.com/",
+        "sourceGroup": "publisher",
+        "author": "Eduard Kovacs",
+        "publishedAt": "2026-10-12T08:36:01.000Z",
+        "url": "https://www.securityweek.com/critical-sonicwall-vulnerability-exploited-days-after-disclosure/",
+        "canonicalUrl": "https://securityweek.com/critical-sonicwall-vulnerability-exploited-days-after-disclosure",
+        "category": "vulnerabilities-cves",
+        "categoryLabel": "Vulnerabilities & CVEs",
+        "categories": [
+          "vulnerabilities-cves",
+          "cyber-attacks",
+          "hacking-exploits"
+        ],
+        "cveIds": [
+          "CVE-2026-102255"
+        ],
+        "tags": [],
+        "isAdvisory": false,
+        "sponsored": false,
+        "dateLabel": null,
+        "fetchedAt": "2026-10-12T11:11:33.015Z"
+      },
+      {
+        "id": "news_8d69b6d1e867a3c8",
+        "title": "Kerala Police Signs MoU With Cyble to Use Threat Intelligence in Cybercrime Probes",
+        "description": "A new Kerala Police MoU will bring threat intelligence into cybercrime investigations in the state. Cyble has signed a three-year agreement covering intelligence support, investigative assistance and capacity building.",
+        "imageUrl": "https://thecyberexpress.com/wp-content/uploads/Kerala-Police-Signs-MoU-With-Cyble.webp",
+        "source": "The Cyber Express",
+        "sourceId": "the-cyber-express",
+        "sourceHomepage": "https://thecyberexpress.com/",
+        "sourceGroup": "publisher",
+        "author": "News Desk",
+        "publishedAt": "2026-10-12T08:34:09.000Z",
+        "url": "https://thecyberexpress.com/kerala-police-mou-with-cyble/",
+        "canonicalUrl": "https://thecyberexpress.com/kerala-police-mou-with-cyble",
+        "category": "cybercrime-scams",
+        "categoryLabel": "Cybercrime & Scams",
+        "categories": [
+          "cybercrime-scams",
+          "india-cyber"
+        ],
+        "cveIds": [],
+        "tags": [],
+        "isAdvisory": false,
+        "sponsored": false,
+        "dateLabel": null,
+        "fetchedAt": "2026-10-12T11:11:33.015Z"
+      }
+    ],
+    "advisories": [
+      {
+        "id": "news_85924fe1c086a83e",
+        "title": "Satel Netco Design",
+        "description": "Successful exploitation of these vulnerabilities could allow an attacker to execute arbitrary scripts in a user's browser, consume excessive system resources and potentially execute arbitrary code. The following versions of Satel Netco Design are affected…",
+        "imageUrl": null,
+        "source": "CISA Cybersecurity Advisories",
+        "sourceId": "cisa-advisories",
+        "sourceHomepage": "https://www.cisa.gov/news-events/cybersecurity-advisories",
+        "sourceGroup": "advisory",
+        "author": "cisa",
+        "publishedAt": "2026-10-12T12:00:00.000Z",
+        "url": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-281-03",
+        "canonicalUrl": "https://cisa.gov/news-events/ics-advisories/icsa-26-281-03",
+        "category": "government-advisories",
+        "categoryLabel": "Government & Security Advisories",
+        "categories": [
+          "government-advisories",
+          "cyber-attacks",
+          "vulnerabilities-cves",
+          "hacking-exploits"
+        ],
+        "cveIds": [],
+        "tags": [
+          "Advisory"
+        ],
+        "isAdvisory": true,
+        "sponsored": false,
+        "dateLabel": null,
+        "fetchedAt": "2026-10-12T11:11:33.015Z"
+      },
+      {
+        "id": "news_98dac58c7e7df41e",
+        "title": "SonicWall SMA1000 Server-Side Request Forgery Vulnerability (CVE-2026-102255)",
+        "description": "SonicWall SMA1000 contains a server-side request forgery vulnerability that allows a remote attacker to perform unauthorized operations. Affected: SonicWall SMA1000.",
+        "imageUrl": null,
+        "source": "CISA Known Exploited Vulnerabilities",
+        "sourceId": "cisa-kev",
+        "sourceHomepage": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+        "sourceGroup": "advisory",
+        "author": "CISA Known Exploited Vulnerabilities",
+        "publishedAt": "2026-10-11T00:00:00.000Z",
+        "url": "https://www.cve.org/CVERecord?id=CVE-2026-102255",
+        "canonicalUrl": "https://cve.org/CVERecord?id=CVE-2026-102255",
+        "category": "vulnerabilities-cves",
+        "categoryLabel": "Vulnerabilities & CVEs",
+        "categories": [
+          "vulnerabilities-cves",
+          "government-advisories",
+          "cyber-attacks",
+          "cloud-enterprise-security"
+        ],
+        "cveIds": [
+          "CVE-2026-102255"
+        ],
+        "tags": [
+          "Advisory",
+          "Exploited in the wild"
+        ],
+        "isAdvisory": true,
+        "sponsored": false,
+        "dateLabel": "Added to CISA KEV",
+        "fetchedAt": "2026-10-12T11:11:33.015Z"
+      },
+      {
+        "id": "news_af4903bfce4fc201",
+        "title": "Satel Netco Design Inefficient Regular Expression Complexity Vulnerability (CVE-2026-104628)",
+        "description": "Satel Netco Design contains an inefficient regular expression complexity vulnerability that could allow an attacker to deny service. Affected: Satel Netco Design. CISA reports known use in ransomware campaigns.",
+        "imageUrl": null,
+        "source": "CISA Known Exploited Vulnerabilities",
+        "sourceId": "cisa-kev",
+        "sourceHomepage": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+        "sourceGroup": "advisory",
+        "author": "CISA Known Exploited Vulnerabilities",
+        "publishedAt": "2026-10-10T00:00:00.000Z",
+        "url": "https://www.cve.org/CVERecord?id=CVE-2026-104628",
+        "canonicalUrl": "https://cve.org/CVERecord?id=CVE-2026-104628",
+        "category": "vulnerabilities-cves",
+        "categoryLabel": "Vulnerabilities & CVEs",
+        "categories": [
+          "vulnerabilities-cves",
+          "government-advisories",
+          "cyber-attacks",
+          "cloud-enterprise-security"
+        ],
+        "cveIds": [
+          "CVE-2026-104628"
+        ],
+        "tags": [
+          "Advisory",
+          "Exploited in the wild"
+        ],
+        "isAdvisory": true,
+        "sponsored": false,
+        "dateLabel": "Added to CISA KEV",
+        "fetchedAt": "2026-10-12T11:11:33.015Z"
+      },
+      {
+        "id": "news_888e22c279f4cb2e",
+        "title": "Atlassian Releases Security Updates for Critical Vulnerabilities",
+        "description": "CISA encourages users and administrators to review Atlassian's security advisory and apply the necessary updates for CVE-2026-100112, a critical file access vulnerability.",
+        "imageUrl": null,
+        "source": "CISA Cybersecurity Advisories",
+        "sourceId": "cisa-advisories",
+        "sourceHomepage": "https://www.cisa.gov/news-events/cybersecurity-advisories",
+        "sourceGroup": "advisory",
+        "author": "cisa",
+        "publishedAt": "2026-10-06T09:30:00.000Z",
+        "url": "https://www.cisa.gov/news-events/alerts/2026/10/06/atlassian-releases-security-updates",
+        "canonicalUrl": "https://cisa.gov/news-events/alerts/2026/10/06/atlassian-releases-security-updates",
+        "category": "government-advisories",
+        "categoryLabel": "Government & Security Advisories",
+        "categories": [
+          "government-advisories",
+          "vulnerabilities-cves"
+        ],
+        "cveIds": [
+          "CVE-2026-100112"
+        ],
+        "tags": [
+          "Advisory",
+          "Critical"
+        ],
+        "isAdvisory": true,
+        "sponsored": false,
+        "dateLabel": null,
+        "fetchedAt": "2026-10-12T11:11:33.015Z"
+      },
+      {
+        "id": "news_a8c7d885ca6e8682",
+        "title": "Guidance on Preventing and Responding to Ransomware Attacks",
+        "description": "CISA and partner agencies published joint guidance covering ransomware prevention, response and recovery planning.",
+        "imageUrl": null,
+        "source": "CISA Cybersecurity Advisories",
+        "sourceId": "cisa-advisories",
+        "sourceHomepage": "https://www.cisa.gov/news-events/cybersecurity-advisories",
+        "sourceGroup": "advisory",
+        "author": "cisa",
+        "publishedAt": "2026-10-01T14:00:00.000Z",
+        "url": "https://www.cisa.gov/news-events/news/stopransomware-guidance",
+        "canonicalUrl": "https://cisa.gov/news-events/news/stopransomware-guidance",
+        "category": "government-advisories",
+        "categoryLabel": "Government & Security Advisories",
+        "categories": [
+          "government-advisories",
+          "cyber-attacks"
+        ],
+        "cveIds": [],
+        "tags": [
+          "Advisory"
+        ],
+        "isAdvisory": true,
+        "sponsored": false,
+        "dateLabel": null,
+        "fetchedAt": "2026-10-12T11:11:33.015Z"
+      }
+    ],
+    "widelyCovered": [
+      {
+        "id": "news_a67398b3aeb50f81",
+        "title": "Researchers Publish Working Exploit for Pre-Auth AnyDesk Linux Flaw That Gives Root Access",
+        "description": "A working exploit for the pre-authentication AnyDesk Linux flaw has been published, allowing local root access.",
+        "imageUrl": null,
+        "source": "SecurityWeek",
+        "sourceId": "securityweek",
+        "sourceHomepage": "https://www.securityweek.com/",
+        "sourceGroup": "publisher",
+        "author": "Eduard Kovacs",
+        "publishedAt": "2026-10-09T19:05:00.000Z",
+        "url": "https://www.securityweek.com/researchers-publish-working-exploit-for-pre-auth-anydesk-linux-flaw/",
+        "canonicalUrl": "https://securityweek.com/researchers-publish-working-exploit-for-pre-auth-anydesk-linux-flaw",
+        "category": "vulnerabilities-cves",
+        "categoryLabel": "Vulnerabilities & CVEs",
+        "categories": [
+          "vulnerabilities-cves",
+          "hacking-exploits"
+        ],
+        "cveIds": [],
+        "tags": [],
+        "isAdvisory": false,
+        "sponsored": false,
+        "dateLabel": null,
+        "fetchedAt": "2026-10-12T11:11:33.015Z",
+        "alsoCoveredBy": [
+          "The Hacker News"
+        ]
+      }
+    ],
+    "categories": [
+      {
+        "id": "all-news",
+        "label": "All News",
+        "description": "Every story in the current newswire.",
+        "count": 24
+      },
+      {
+        "id": "cyber-attacks",
+        "label": "Cyber Attacks",
+        "description": "Ransomware, malware campaigns, DDoS attacks and attack incidents.",
+        "count": 15
+      },
+      {
+        "id": "data-breaches",
+        "label": "Data Breaches",
+        "description": "Data leaks, exposed databases, account exposure and organisational breaches.",
+        "count": 4
+      },
+      {
+        "id": "hacking-exploits",
+        "label": "Hacking & Exploits",
+        "description": "Vulnerability exploitation, zero-days and security research.",
+        "count": 10
+      },
+      {
+        "id": "ai-security",
+        "label": "AI Security",
+        "description": "AI vulnerabilities, AI-powered attacks and AI security developments.",
+        "count": 2
+      },
+      {
+        "id": "cybercrime-scams",
+        "label": "Cybercrime & Scams",
+        "description": "Phishing, online fraud, identity theft and digital scams.",
+        "count": 6
+      },
+      {
+        "id": "vulnerabilities-cves",
+        "label": "Vulnerabilities & CVEs",
+        "description": "Newly disclosed vulnerabilities, advisories and security patches.",
+        "count": 10
+      },
+      {
+        "id": "india-cyber",
+        "label": "India Cyber News",
+        "description": "Indian cybersecurity incidents, advisories and government developments.",
+        "count": 3
+      },
+      {
+        "id": "government-advisories",
+        "label": "Government & Security Advisories",
+        "description": "Official cybersecurity alerts, recommendations and policy developments.",
+        "count": 7
+      },
+      {
+        "id": "cloud-enterprise-security",
+        "label": "Cloud & Enterprise Security",
+        "description": "Cloud security, enterprise vulnerabilities and infrastructure incidents.",
+        "count": 4
+      }
+    ],
+    "sources": [
+      {
+        "id": "the-hacker-news",
+        "name": "The Hacker News",
+        "group": "publisher",
+        "homepage": "https://thehackernews.com/",
+        "articleCount": 0,
+        "status": "ok",
+        "lastCheckedAt": "2026-10-12T11:11:32.935Z"
+      },
+      {
+        "id": "bleepingcomputer",
+        "name": "BleepingComputer",
+        "group": "publisher",
+        "homepage": "https://www.bleepingcomputer.com/",
+        "articleCount": 0,
+        "status": "ok",
+        "lastCheckedAt": "2026-10-12T11:11:32.967Z"
+      },
+      {
+        "id": "dark-reading",
+        "name": "Dark Reading",
+        "group": "publisher",
+        "homepage": "https://www.darkreading.com/",
+        "articleCount": 0,
+        "status": "ok",
+        "lastCheckedAt": "2026-10-12T11:11:32.968Z"
+      },
+      {
+        "id": "securityweek",
+        "name": "SecurityWeek",
+        "group": "publisher",
+        "homepage": "https://www.securityweek.com/",
+        "articleCount": 0,
+        "status": "ok",
+        "lastCheckedAt": "2026-10-12T11:11:32.968Z"
+      },
+      {
+        "id": "the-register-security",
+        "name": "The Register (Security)",
+        "group": "publisher",
+        "homepage": "https://www.theregister.com/security/",
+        "articleCount": 0,
+        "status": "ok",
+        "lastCheckedAt": "2026-10-12T11:11:32.969Z"
+      },
+      {
+        "id": "the-cyber-express",
+        "name": "The Cyber Express",
+        "group": "publisher",
+        "homepage": "https://thecyberexpress.com/",
+        "articleCount": 0,
+        "status": "ok",
+        "lastCheckedAt": "2026-10-12T11:11:32.997Z"
+      },
+      {
+        "id": "krebs-on-security",
+        "name": "Krebs on Security",
+        "group": "publisher",
+        "homepage": "https://krebsonsecurity.com/",
+        "articleCount": 0,
+        "status": "ok",
+        "lastCheckedAt": "2026-10-12T11:11:33.000Z"
+      },
+      {
+        "id": "help-net-security",
+        "name": "Help Net Security",
+        "group": "publisher",
+        "homepage": "https://www.helpnetsecurity.com/",
+        "articleCount": 0,
+        "status": "ok",
+        "lastCheckedAt": "2026-10-12T11:11:33.001Z"
+      },
+      {
+        "id": "cisa-advisories",
+        "name": "CISA Cybersecurity Advisories",
+        "group": "advisory",
+        "homepage": "https://www.cisa.gov/news-events/cybersecurity-advisories",
+        "articleCount": 0,
+        "status": "ok",
+        "lastCheckedAt": "2026-10-12T11:11:33.003Z"
+      },
+      {
+        "id": "cisa-kev",
+        "name": "CISA Known Exploited Vulnerabilities",
+        "group": "advisory",
+        "homepage": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+        "articleCount": 0,
+        "status": "ok",
+        "lastCheckedAt": "2026-10-12T11:11:33.006Z"
+      }
+    ],
+    "trustedSources": [
+      {
+        "name": "CISA",
+        "url": "https://www.cisa.gov/news-events/cybersecurity-advisories",
+        "note": "US official advisories"
+      },
+      {
+        "name": "The Hacker News",
+        "url": "https://thehackernews.com/",
+        "note": "Threat & attack coverage"
+      },
+      {
+        "name": "BleepingComputer",
+        "url": "https://www.bleepingcomputer.com/",
+        "note": "Security news & analysis"
+      },
+      {
+        "name": "Krebs on Security",
+        "url": "https://krebsonsecurity.com/",
+        "note": "Investigative reporting"
+      },
+      {
+        "name": "Dark Reading",
+        "url": "https://www.darkreading.com/",
+        "note": "Enterprise security"
+      },
+      {
+        "name": "SecurityWeek",
+        "url": "https://www.securityweek.com/",
+        "note": "Industry news"
+      },
+      {
+        "name": "Help Net Security",
+        "url": "https://www.helpnetsecurity.com/",
+        "note": "Enterprise & research"
+      },
+      {
+        "name": "The Register",
+        "url": "https://www.theregister.com/security/",
+        "note": "Security desk"
+      },
+      {
+        "name": "The Cyber Express",
+        "url": "https://thecyberexpress.com/",
+        "note": "India & global cyber news"
+      }
+    ]
+  },
+  "pagination": {
+    "page": 1,
+    "limit": 14,
+    "total": 24,
+    "totalPages": 2,
+    "hasMore": true
+  },
+  "filters": {
+    "category": "all-news",
+    "q": "",
+    "source": "",
+    "sort": "newest"
+  },
+  "lastUpdated": "2026-10-12T11:11:33.034Z",
+  "meta": {
+    "cacheAgeSeconds": 13,
+    "cacheTtlSeconds": 600,
+    "stale": false,
+    "degraded": false,
+    "unavailable": false,
+    "degradedSources": [],
+    "sourceCount": 10,
+    "lastError": null,
+    "sampleData": true,
+    "popularityAvailable": false,
+    "refreshIntervalSeconds": 600
+  }
+}

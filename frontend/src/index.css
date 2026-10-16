@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg: #0a0f1c;
+    --surface: #0f1729;
+    --surface-2: #131d33;
+    --border: #1e2942;
+    --text: #e6ecf5;
+    --text-dim: #8896b3;
+    --text-faint: #5a6789;
+    --accent: #22d3ee;
+    --accent-2: #34d399;
+    --accent-soft: rgba(34, 211, 238, 0.12);
+    --danger: #f87171;
+    --warn: #fbbf24;
+    --code-bg: #0d1526;
+  }
+
+  html[data-theme="light"] {
+    --bg: #f6f8fc;
+    --surface: #ffffff;
+    --surface-2: #eef2f9;
+    --border: #e2e8f4;
+    --text: #1b2436;
+    --text-dim: #5c6784;
+    --text-faint: #93a0bd;
+    --accent: #0891b2;
+    --accent-2: #059669;
+    --accent-soft: rgba(8, 145, 178, 0.08);
+    --code-bg: #eef2f9;
+  }
+}
+
+/* Base custom resets matching your HTML stylesheet */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+/*  USE THIS TO FORCE GLOBAL SCROLL ABILITY */
+html {
+  scroll-behavior: smooth;
+  height: auto;
+  overflow-y: auto;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+/* Custom scrollbar matching your theme */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+}
+/* Custom scrollbar matching your theme */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+/* --- Cyber News additions ------------------------------------------------ */
+
+/* Horizontally scrollable category chips without a visible scrollbar
+   (the row scrolls, the page never overflows horizontally). */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Editorial serif for headlines, matching the news section's typography. */
+.font-serif {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Respect the user's motion preference: no smooth scrolling, no pulse/zoom. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

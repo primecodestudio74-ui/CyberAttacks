@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Test fixture / offline demo feed.
+  Mirrors Help Net Security's WordPress feed: real excerpt followed by the
+  "[More &#8594;]" link, plus the "The post ... appeared first on ..." tail.
+  Includes one non-security-topic item to prove the relevance gate drops it.
+-->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Help Net Security</title>
+    <link>https://www.helpnetsecurity.com/</link>
+    <description>Daily information security news with a focus on enterprise security.</description>
+    <item>
+      <title>Hidden implant in Ledger hardware wallets linked to $93M theft</title>
+      <link>https://www.helpnetsecurity.com/2026/10/12/ledger-wallets-compromised-via-hardware-implant/</link>
+      <dc:creator><![CDATA[Zeljka Zorz]]></dc:creator>
+      <pubDate>Mon, 12 Oct 2026 09:46:53 +0000</pubDate>
+      <description><![CDATA[<p>Three days after customers in Southeast Asia began reporting drained wallets, Ledger says the damage is limited to devices sold through a regional reseller. On-chain researchers put suspected losses at more than $93 million.</p> <p> <a href="https://www.helpnetsecurity.com/2026/10/12/ledger-wallets-compromised-via-hardware-implant/">More &#8594;</a></p>
+<p>The post <a href="https://www.helpnetsecurity.com/2026/10/12/ledger-wallets-compromised-via-hardware-implant/">Hidden implant in Ledger hardware wallets linked to $93M theft</a> appeared first on <a href="https://www.helpnetsecurity.com/">Help Net Security</a>.</p>]]></description>
+      <content:encoded><![CDATA[<p>Three days after customers in Southeast Asia began reporting drained wallets.</p><p><img src="https://img.helpnetsecurity.com/wp-content/uploads/2026/10/ledger-wallet.jpg" alt="Ledger hardware wallet" /></p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Let's Encrypt TLS certificate lifetimes to drop from 90 to 64 days starting February 2027</title>
+      <link>https://www.helpnetsecurity.com/2026/10/12/lets-encrypt-64-day-certificate-lifetime/</link>
+      <dc:creator><![CDATA[Zeljka Zorz]]></dc:creator>
+      <pubDate>Mon, 12 Oct 2026 07:23:11 +0000</pubDate>
+      <description><![CDATA[<p>Websites that rely on Let's Encrypt will soon have to renew their TLS certificates more often. Starting February 10, 2027, the certificate authority will issue certificates valid for 64 days by default, down from 90 days.</p> <p> <a href="https://www.helpnetsecurity.com/2026/10/12/lets-encrypt-64-day-certificate-lifetime/">More &#8594;</a></p>]]></description>
+    </item>
+    <item>
+      <title>Kubernetes misconfiguration exposes internal dashboards to the public internet</title>
+      <link>https://www.helpnetsecurity.com/2026/10/11/kubernetes-dashboards-exposed/</link>
+      <dc:creator><![CDATA[Staff Writer]]></dc:creator>
+      <pubDate>Sun, 11 Oct 2026 06:00:00 +0000</pubDate>
+      <description><![CDATA[<p>A cloud security survey found that a large share of Kubernetes clusters run containers with over-permissive identity and access settings, leaving enterprise dashboards reachable from the internet.</p>]]></description>
+    </item>
+  </channel>
+</rss>

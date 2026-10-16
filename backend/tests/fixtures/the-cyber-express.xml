@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Test fixture / offline demo feed.
+  Mirrors The Cyber Express (India-focused cybersecurity news) feed: WordPress
+  description + the first <img> of content:encoded used as the thumbnail, plus
+  India-specific stories so the "India Cyber News" category has real coverage.
+-->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>The Cyber Express</title>
+    <link>https://thecyberexpress.com</link>
+    <description>Trending Cybersecurity News, Updates, Magazine and More.</description>
+    <item>
+      <title>Kerala Police Signs MoU With Cyble to Use Threat Intelligence in Cybercrime Probes</title>
+      <link>https://thecyberexpress.com/kerala-police-mou-with-cyble/</link>
+      <dc:creator><![CDATA[News Desk]]></dc:creator>
+      <pubDate>Mon, 12 Oct 2026 08:34:09 +0000</pubDate>
+      <description><![CDATA[<p>A new Kerala Police MoU will bring threat intelligence into cybercrime investigations in the state. Cyble has signed a three-year agreement covering intelligence support, investigative assistance and capacity building.</p>]]></description>
+      <content:encoded><![CDATA[<p>A new Kerala Police MoU will bring threat intelligence into cybercrime investigations in the state.</p><p><img src="https://thecyberexpress.com/wp-content/uploads/Kerala-Police-Signs-MoU-With-Cyble.webp" alt="Kerala Police Signs MoU With Cyble" width="600" height="338" /></p>]]></content:encoded>
+      <guid isPermaLink="false">https://thecyberexpress.com/?p=114712</guid>
+    </item>
+    <item>
+      <title>CERT-In Flags High Severity Flaws in Popular VPN Clients Used Across India</title>
+      <link>https://thecyberexpress.com/cert-in-vpn-client-vulnerabilities-advisory/</link>
+      <dc:creator><![CDATA[Security Desk]]></dc:creator>
+      <pubDate>Sun, 11 Oct 2026 11:20:00 +0000</pubDate>
+      <description><![CDATA[<p>The Indian computer emergency response team published an advisory covering high severity vulnerabilities in widely deployed VPN clients, urging users to patch immediately.</p>]]></description>
+      <guid isPermaLink="false">https://thecyberexpress.com/?p=114690</guid>
+    </item>
+    <item>
+      <title>UPI Phishing Scams Surge as Fraudsters Target Small Merchants in Maharashtra</title>
+      <link>https://thecyberexpress.com/upi-phishing-scams-merchants/</link>
+      <dc:creator><![CDATA[News Desk]]></dc:creator>
+      <pubDate>Sat, 10 Oct 2026 09:05:00 +0000</pubDate>
+      <description><![CDATA[<p>Fraudsters are impersonating payment providers to harvest credentials from small merchants, with a rise in reported cases across Maharashtra.</p>]]></description>
+      <content:encoded><![CDATA[<p>Fraudsters are impersonating payment providers.</p><p><img src="https://thecyberexpress.com/wp-content/uploads/upi-phishing-scam.webp" alt="UPI phishing" /></p>]]></content:encoded>
+      <guid isPermaLink="false">https://www.thecyberexpress.com/?p=114651</guid>
+    </item>
+  </channel>
+</rss>

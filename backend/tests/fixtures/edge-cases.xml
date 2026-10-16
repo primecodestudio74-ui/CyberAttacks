@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Hostile-input fixture used by backend/tests/news.test.js.
+
+  Every item here is deliberately broken, malformed or unsafe. The pipeline must
+  drop or clean each one without throwing, without leaking markup, and without
+  ever producing a javascript:/data:/private-network URL.
+-->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Edge Case Wire</title>
+    <link>https://example-edges.test/</link>
+    <description>Security news</description>
+
+    <item>
+      <title>Ransomware gang leaks stolen hospital records &amp; patient data</title>
+      <link>https://example-edges.test/ransomware-hospital-leak</link>
+      <pubDate>Sun, 11 Oct 2026 08:00:00 +0000</pubDate>
+      <dc:creator>Test Reporter</dc:creator>
+      <description><![CDATA[
+        <p>Attackers published stolen hospital records after a ransomware attack.</p>
+        <script>alert('xss')</script>
+        <img src="x" onerror="alert(1)" />
+        <p>Stolen data included patient records and internal documents.</p>
+      ]]></description>
+    </item>
+
+    <item>
+      <title>Phishing kit abuses JavaScript: URLs to hide credential harvesting pages</title>
+      <link>javascript:alert(document.domain)</link>
+      <pubDate>Sun, 11 Oct 2026 07:00:00 +0000</pubDate>
+      <description><![CDATA[A phishing campaign uses javascript: URLs as a redirect chain.]]></description>
+    </item>
+
+    <item>
+      <title>Data breach exposes customer email addresses at retail chain</title>
+      <link>//example-edges.test/breach-retail-relative</link>
+      <pubDate>Not a real date</pubDate>
+      <media:content url="data:image/svg+xml;base64,PHN2Zy8+" medium="image" />
+      <description><![CDATA[An exposed database leaked customer email addresses and phone numbers.]]></description>
+    </item>
+
+    <item>
+      <title>Unpatched VPN appliance flaw exploited to deploy a web shell</title>
+      <link>https://example-edges.test/vpn-appliance-flaw?utm_source=twitter&amp;utm_medium=social&amp;fbclid=abc123</link>
+      <pubDate>Sat, 10 Oct 2026 06:00:00 +0000</pubDate>
+      <media:content url="http://169.254.169.254/latest/meta-data/iam/security-credentials/" medium="image" />
+      <description><![CDATA[Attackers exploited an unpatched VPN appliance flaw to deploy a web shell and move laterally.]]></description>
+    </item>
+
+    <item>
+      <title>Unpatched VPN appliance flaw exploited to deploy a web shell</title>
+      <link>https://example-edges.test/vpn-appliance-flaw?ref=newsletter</link>
+      <pubDate>Sat, 10 Oct 2026 06:00:00 +0000</pubDate>
+      <media:content url="https://cdn.example-edges.test/vpn-shell.png" medium="image" />
+      <description><![CDATA[Duplicate of the previous item with different tracking parameters only.]]></description>
+    </item>
+
+    <item>
+      <title>Zero-day in enterprise backup software exploited in the wild</title>
+      <link>https://example-edges.test/backup-zero-day</link>
+      <pubDate>Sat, 10 Oct 2026 05:00:00 +0000</pubDate>
+      <media:content url="https://cdn.example-edges.test/diagram.svg" type="image/svg+xml" />
+      <description><![CDATA[A zero-day in enterprise backup software is being exploited and the vendor released an emergency patch (CVE-2026-999001). &#160; <script>window.location='https://evil.test'</script> &lt;b&gt;not markup&lt;/b&gt;]]></description>
+    </item>
+
+    <item>
+      <title>Local sports team wins regional championship final</title>
+      <link>https://example-edges.test/sports-championship</link>
+      <pubDate>Sat, 10 Oct 2026 04:00:00 +0000</pubDate>
+      <description><![CDATA[A match report from the weekend, with the winning goal in extra time.]]></description>
+    </item>
+
+    <item>
+      <title>Breaking: CISO appointed at fintech company</title>
+      <link>https://example-edges.test/ciso-appointment</link>
+      <pubDate>Fri, 09 Oct 2026 04:00:00 +0000</pubDate>
+      <description><![CDATA[Corporate appointment announcement.]]></description>
+    </item>
+
+    <item>
+      <title>Cloud misconfiguration exposes billions of records, researchers say</title>
+      <link>https://example-edges.test/cloud-misconfiguration</link>
+      <pubDate>Fri, 09 Oct 2026 03:00:00 +0000</pubDate>
+      <description><![CDATA[<p>Researchers found an exposed S3 bucket that leaked data for an unknown period of time.]></description>
+    </item>
+
+    <item>
+      <title>   </title>
+      <link>https://example-edges.test/empty-title</link>
+      <pubDate>Fri, 09 Oct 2026 02:00:00 +0000</pubDate>
+      <description><![CDATA[This item has no usable title and must be dropped.]]></description>
+    </item>
+
+    <item>
+      <title>Malware campaign abuses calendar invites to spread info stealer</title>
+      <link></link>
+      <pubDate>Fri, 09 Oct 2026 01:00:00 +0000</pubDate>
+      <description><![CDATA[An item without a link must be dropped rather than linked to a guess.]]></description>
+    </item>
+
+    <item>
+      <title>Vulnerability in file transfer software allows authentication bypass</title>
+      <link>https://example-edges.test/file-transfer-auth-bypass</link>
+      <pubDate>Wed, 01 Oct 2030 01:00:00 +0000</pubDate>
+      <description><![CDATA[A vulnerability in managed file transfer software permits an authentication bypass. The advisory says: "Update immediately to version 8.2.1" and describes the impact at length so that the excerpt builder has something realistic to truncate: organisations running the affected versions are exposed to unauthenticated access to administrative interfaces, and the vendor recommends restricting management ports to trusted networks while patches are being rolled out across large environments.]]></description>
+    </item>
+  </channel>
+</rss>
