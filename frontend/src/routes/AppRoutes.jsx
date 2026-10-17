@@ -22,6 +22,9 @@ import XSSAttack from "../pages/Attacks/XSSAttack.jsx";
 import MitmAttack from "../pages/Attacks/MitmAttack.jsx";
 import ClickJacking from "../pages/Attacks/ClickJacking.jsx";
 import CSRFAttack from "../pages/Attacks/CSRFAttack.jsx";
+import SupplyChainAttack from "../pages/Attacks/SupplyChainAttack.jsx";
+import Ransomware from "../pages/Attacks/Ransomware.jsx";
+import DictionaryAttack from "../pages/Attacks/DictionaryAttack.jsx";
 
 // Secure Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -150,6 +153,30 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute>
               <CSRFAttack />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/supply-chain"
+          element={
+            <ProtectedRoute>
+              <SupplyChainAttack />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/ransomware"
+          element={
+            <ProtectedRoute>
+              <Ransomware />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/dictionary-attack"
+          element={
+            <ProtectedRoute>
+              <DictionaryAttack />
             </ProtectedRoute>
           }
         />
