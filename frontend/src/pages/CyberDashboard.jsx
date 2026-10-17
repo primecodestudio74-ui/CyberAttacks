@@ -5,7 +5,7 @@ import {
   ExternalLink, User, Clock,
   BrainCircuit, Bot, BookOpen, Settings, Keyboard, Key, Newspaper,
   ServerCrash, Code2, Radar, SquareStack, ArrowLeftRight, Star, Search, Trophy, Flame, Lightbulb, Target,
-  CheckCircle2, RotateCcw, Zap, ShieldCheck, X, Library
+  CheckCircle2, RotateCcw, Zap, ShieldCheck, X, Library, Package, Skull, KeyRound
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -130,6 +130,33 @@ const ATTACKS = [
       path: "/dashboard/csrf",
       difficulty: "Intermediate",
     },
+    {
+      id: "SUPPLY_CHAIN",
+      title: "Supply Chain Attack",
+      desc: "Simulate compromised dependencies, typosquatting and malicious postinstall scripts in CI/CD pipelines, then enforce lockfile integrity.",
+      icon: <Package className="text-amber-400" />,
+      tag: "SUPPLY_CHAIN",
+      path: "/dashboard/supply-chain",
+      difficulty: "Advanced",
+    },
+    {
+      id: "RANSOMWARE",
+      title: "Ransomware Attack",
+      desc: "Watch how a phishing attachment encrypts local and shared files, then contain and recover using email filtering, EDR, segmentation and offline backups.",
+      icon: <Skull className="text-rose-400" />,
+      tag: "MALWARE",
+      path: "/dashboard/ransomware",
+      difficulty: "Intermediate",
+    },
+    {
+      id: "DICTIONARY_ATTACK",
+      title: "Dictionary Attack",
+      desc: "Test a wordlist of common and leaked passwords against a target account, and stop credential cracking with rate limiting, breach checks and MFA.",
+      icon: <KeyRound className="text-emerald-400" />,
+      tag: "AUTH_TEST",
+      path: "/dashboard/dictionary-attack",
+      difficulty: "Beginner",
+    },
   ];
 
 const DEFENSES = {
@@ -144,6 +171,9 @@ const DEFENSES = {
   MITM_ATTACK: ['Use HTTPS and never ignore certificate warnings', 'Avoid sensitive activity on untrusted public Wi-Fi', 'Use a trusted VPN when appropriate', 'Enable HSTS and secure certificate validation'],
   CLICKJACKING: ['Set Content-Security-Policy frame-ancestors', 'Use X-Frame-Options where appropriate', 'Require confirmation for sensitive actions', 'Keep important buttons clearly visible and contextual'],
   CSRF: ['Use unpredictable CSRF tokens for state-changing requests', 'Set session cookies to an appropriate SameSite mode', 'Validate Origin or Referer on sensitive requests', 'Never change account state through GET requests'],
+  SUPPLY_CHAIN: ['Pin exact dependency versions and commit lockfiles with SHA-512 integrity hashes', 'Run CI installs with --ignore-scripts to block malicious postinstall hooks', 'Scan dependencies with Software Composition Analysis (SCA) tools', 'Verify package names carefully to avoid typosquatting'],
+  RANSOMWARE: ['Filter email attachments and never enable macros in untrusted documents', 'Use Endpoint Detection and Response (EDR) to stop mass file encryption', 'Segment networks so a single infected workstation cannot reach shared servers', 'Maintain 3-2-1 backups with at least one offline copy and test restores regularly'],
+  DICTIONARY_ATTACK: ['Rate-limit login endpoints and lock out repeated failed attempts', 'Reject passwords that appear in known public data breaches', 'Require multi-factor authentication (MFA/OTP) for account sign-in', 'Use long, unique passphrases and hash stored credentials with bcrypt or Argon2'],
 };
 
 const TIPS = [
